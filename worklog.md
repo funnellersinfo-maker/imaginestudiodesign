@@ -35,3 +35,26 @@ Stage Summary:
 - Framer Motion animations for scroll-triggered reveals
 - Glass morphism, gradient glows, custom scrollbar premium design system
 - All files: src/app/page.tsx, src/components/quote-form-modal.tsx, src/components/sticky-cta.tsx, src/app/api/leads/route.ts, src/app/globals.css, prisma/schema.prisma
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Fix Wilmington badge positioning and font size on mobile, prevent overlap with language toggle
+
+Work Log:
+- Changed badge font from text-sm to text-[11px] sm:text-sm for mobile
+- Added whitespace-nowrap to badge text span to prevent line wrapping
+- Reduced badge padding on mobile: px-3 py-1.5 (vs px-4 py-2 on desktop)
+- Reduced MapPin icon size on mobile: w-3.5 h-3.5 (vs w-4 h-4 on desktop)
+- Added mt-12 sm:mt-0 to push badge down on mobile (lowered by ~1 line)
+- Changed mb-6 sm:mb-8 to tighten spacing below badge on mobile
+- Moved LangToggle from top-20 right-4 to top-[88px] right-3 on mobile
+- Verified with agent-browser: 16px vertical gap between toggle and badge on mobile
+- Confirmed badge text stays on single line at text-[11px]
+- Confirmed no overlap between any elements (menu toggle, lang toggle, badge)
+
+Stage Summary:
+- Badge lowered by one line on mobile with mt-12
+- Font reduced to 11px on mobile, stays on one line
+- 16px gap between language toggle and badge prevents overlap
+- No errors, compiles cleanly
