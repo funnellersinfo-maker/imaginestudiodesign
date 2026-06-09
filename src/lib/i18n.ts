@@ -52,6 +52,8 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.trust5Stars": "500+ 5-Star Reviews",
     "hero.trustProjects": "500+",
     "hero.trustProjectsLabel": "Projects Completed in Wilmington",
+    "hero.trustYears": "7+",
+    "hero.trustYearsLabel": "Years in the Market",
 
     // Problem
     "problem.tag": "The Problem",
@@ -274,6 +276,8 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.trust5Stars": "500+ Reseñas 5 Estrellas",
     "hero.trustProjects": "500+",
     "hero.trustProjectsLabel": "Proyectos Completados en Wilmington",
+    "hero.trustYears": "7+",
+    "hero.trustYearsLabel": "Años en el Mercado",
 
     // Problem
     "problem.tag": "El Problema",

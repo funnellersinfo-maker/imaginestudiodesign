@@ -203,7 +203,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       <motion.div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 sm:pt-24 pb-20 sm:pb-16" style={{ opacity }}>
         {/* Badge */}
         <FadeUp delay={0.1}>
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mb-5 sm:mb-8">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-5 sm:mb-8">
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-hot-pink" />
             <span className="text-[11px] sm:text-sm text-gray-300 whitespace-nowrap">{t("hero.badge")}</span>
           </div>
@@ -274,6 +274,10 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <span className="text-base sm:text-lg font-black gradient-brand-text">{t("hero.trustProjects")}</span>
                 <span className="text-xs sm:text-sm text-gray-400">{t("hero.trustProjectsLabel")}</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-base sm:text-lg font-black gradient-brand-text">{t("hero.trustYears")}</span>
+                <span className="text-xs sm:text-sm text-gray-400">{t("hero.trustYearsLabel")}</span>
               </div>
             </div>
           </div>
