@@ -200,71 +200,80 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px]" />
       <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px]" />
 
-      <motion.div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16" style={{ opacity }}>
+      <motion.div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 sm:pt-24 pb-20 sm:pb-16" style={{ opacity }}>
+        {/* Badge */}
         <FadeUp delay={0.1}>
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-12 sm:mt-0 mb-6 sm:mb-8">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mb-5 sm:mb-8">
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-hot-pink" />
             <span className="text-[11px] sm:text-sm text-gray-300 whitespace-nowrap">{t("hero.badge")}</span>
           </div>
         </FadeUp>
-        <div className="relative min-h-[3.5rem] sm:min-h-[5.5rem] md:min-h-[7rem] lg:min-h-[8.5rem]">
+
+        {/* Rotating Headlines */}
+        <div className="relative min-h-[9rem] sm:min-h-[5.5rem] md:min-h-[7rem] lg:min-h-[8.5rem] mb-5 sm:mb-6">
           <AnimatePresence mode="wait">
             <motion.h1
               key={key}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6 absolute inset-0 flex flex-col items-center justify-center"
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0 flex flex-col items-center justify-center"
             >
-              <span className="text-white">{h.line1}</span>
-              <span className="gradient-brand-text">{h.line2}</span>
-              <span className="text-white">{h.line3}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line3}</span>
             </motion.h1>
           </AnimatePresence>
         </div>
+
+        {/* Subtitle */}
         <FadeUp delay={0.4}>
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">{t("hero.subtitle")}</p>
+          <p className="text-[0.9rem] sm:text-xl text-gray-400 max-w-2xl mx-auto mb-7 sm:mb-10 leading-relaxed">{t("hero.subtitle")}</p>
         </FadeUp>
+
+        {/* CTA Buttons */}
         <FadeUp delay={0.6}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-4 rounded-xl text-base tracking-wide flex items-center gap-2 min-w-[240px] justify-center">
-              {t("hero.cta")} <ArrowRight className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-7 sm:mb-0">
+            <button onClick={onQuote} className="cta-primary text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-sm sm:text-base tracking-wide flex items-center gap-2 min-w-[200px] sm:min-w-[240px] justify-center">
+              {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <a href="#transformations" className="group flex items-center gap-2 px-6 py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm font-medium">
+            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm font-medium">
               {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </FadeUp>
+
+        {/* Social Proof */}
         <FadeUp delay={0.8}>
-          <div className="mt-10 sm:mt-12 w-full max-w-xl mx-auto">
-            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-3 sm:gap-x-6 sm:gap-y-3">
+          <div className="mt-6 sm:mt-12 w-full max-w-xl mx-auto">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 sm:gap-x-6 sm:gap-y-3">
               {[
                 t("hero.trust1"), // Vehicle Wraps
                 t("hero.trust2"), // Commercial Signs
                 t("hero.trust3"), // Custom Apparel
                 t("hero.trust4"), // Fleet Branding
               ].map((txt, i) => (
-                <div key={i} className="flex items-center gap-2 justify-center sm:justify-start">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <div key={i} className="flex items-center gap-1.5 sm:gap-2 justify-center sm:justify-start">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   </div>
-                  <span className="text-sm text-gray-300 font-medium">{txt}</span>
+                  <span className="text-xs sm:text-sm text-gray-300 font-medium">{txt}</span>
                 </div>
               ))}
             </div>
-            <div className="mt-5 pt-5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-              <div className="flex items-center gap-2">
+            <div className="mt-4 pt-4 sm:mt-5 sm:pt-5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="flex -space-x-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />
                   ))}
                 </div>
-                <span className="text-sm text-gray-400">{t("hero.trust5Stars")}</span>
+                <span className="text-xs sm:text-sm text-gray-400">{t("hero.trust5Stars")}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-black gradient-brand-text">{t("hero.trustProjects")}</span>
-                <span className="text-sm text-gray-400">{t("hero.trustProjectsLabel")}</span>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-base sm:text-lg font-black gradient-brand-text">{t("hero.trustProjects")}</span>
+                <span className="text-xs sm:text-sm text-gray-400">{t("hero.trustProjectsLabel")}</span>
               </div>
             </div>
           </div>
