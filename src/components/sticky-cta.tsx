@@ -3,12 +3,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, MessageCircle, X } from "lucide-react";
+import { useLang } from "@/lib/i18n";
 
 interface StickyCTAProps {
   onQuoteClick: () => void;
 }
 
 export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
+  const { t } = useLang();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
@@ -36,7 +38,7 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
               onClick={onQuoteClick}
               className="flex-1 cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2"
             >
-              GET MY FREE QUOTE
+              {t("sticky.cta")}
             </button>
             <a
               href="tel:+19105550123"

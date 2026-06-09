@@ -1,0 +1,423 @@
+import { create } from "zustand";
+
+export type Lang = "en" | "es";
+
+interface LangStore {
+  lang: Lang;
+  toggle: () => void;
+  set: (lang: Lang) => void;
+  t: (key: string) => string;
+}
+
+const translations: Record<Lang, Record<string, string>> = {
+  en: {
+    // Nav
+    "nav.transformations": "Transformations",
+    "nav.industries": "Industries",
+    "nav.projects": "Projects",
+    "nav.process": "Process",
+    "nav.getQuote": "GET MY QUOTE",
+    "nav.getFreeQuote": "GET MY FREE QUOTE",
+
+    // Hero
+    "hero.badge": "Wilmington, NC's #1 Business Visibility Company",
+    "hero.line1": "LOOK PROFESSIONAL.",
+    "hero.line2": "GET NOTICED.",
+    "hero.line3": "WIN MORE CUSTOMERS.",
+    "hero.subtitle": "Your competitors look more professional than you — and they're getting the calls. It's time to change that. Turn every vehicle, every sign, every impression into a customer magnet.",
+    "hero.cta": "GET MY FREE QUOTE",
+    "hero.see": "SEE WHAT WE DO",
+    "hero.freeConsultation": "Free Consultation",
+    "hero.customDesign": "Custom Design Included",
+    "hero.resultsInDays": "Results in Days, Not Weeks",
+
+    // Problem
+    "problem.tag": "The Problem",
+    "problem.title1": "Your Business Looks",
+    "problem.titleHighlight": "Invisible",
+    "problem.subtitle": "People judge your business before they call you. If you look generic, outdated, or unprofessional — they move on. Every day you wait costs you customers.",
+    "problem.pain1": "Nobody knows who you are — your plain white van blends into the parking lot.",
+    "problem.pain2": "Customers choose competitors who look more established and trustworthy.",
+    "problem.pain3": "You're losing jobs before you even get a chance to bid — all because of first impressions.",
+    "problem.soundFamiliar": "Sound familiar?",
+    "problem.goodNews": "The good news:",
+    "problem.fixable": "it's fixable in days, not months.",
+
+    // Transformation
+    "transform.tag": "The Transformation",
+    "transform.from": "From",
+    "transform.invisible": "Invisible",
+    "transform.to": "to",
+    "transform.impossible": "Impossible to Ignore",
+    "transform.subtitle": "This is what happens when your business gets a professional brand identity. See the difference with your own eyes.",
+    "transform.beforeAfter": "Before → After",
+    "transform.real": "Real Transformation",
+    "transform.fleet": "Fleet Branding",
+    "transform.graphics": "Vehicle Graphics",
+    "transform.fullFleet": "Full Fleet Design",
+
+    // Who We Help
+    "who.tag": "Who We Help",
+    "who.title1": "Built for Businesses That",
+    "who.titleHighlight": "Work Hard",
+    "who.subtitle": "If you drive to your customers, your vehicles are your best marketing tool. We make sure they work for you.",
+    "who.also": "Also: Restaurants, retail shops, and local service businesses",
+    "who.seeCta": "SEE WHAT YOUR BUSINESS COULD LOOK LIKE",
+
+    // Industries
+    "ind.contractors": "Contractors",
+    "ind.contractorsDesc": "Build trust before you step on site",
+    "ind.roofing": "Roofing",
+    "ind.roofingDesc": "Dominate neighborhoods with mobile authority",
+    "ind.hvac": "HVAC",
+    "ind.hvacDesc": "Be the company everyone recognizes",
+    "ind.plumbing": "Plumbing",
+    "ind.plumbingDesc": "First call, not the last resort",
+    "ind.electrical": "Electrical",
+    "ind.electricalDesc": "Professional power, visible brand",
+    "ind.landscaping": "Landscaping",
+    "ind.landscapingDesc": "Green work, bold branding",
+    "ind.painting": "Painting",
+    "ind.paintingDesc": "Your vans are your gallery",
+    "ind.tree": "Tree Service",
+    "ind.treeDesc": "Stand tall with a stand-out brand",
+    "ind.concrete": "Concrete",
+    "ind.concreteDesc": "Solid brand on solid wheels",
+    "ind.construction": "Construction",
+    "ind.constructionDesc": "Project credibility on every truck",
+
+    // Visibility System
+    "vis.tag": "The System",
+    "vis.title1": "The Business",
+    "vis.titleHighlight": "Visibility System",
+    "vis.subtitle": "Not random services. A complete system designed to make your business impossible to ignore — from the street to the screen.",
+    "vis.wraps": "Vehicle Wraps & Fleet Branding",
+    "vis.wrapsDesc": "Turn every mile into a marketing opportunity. Full wraps, partial wraps, and fleet-consistent designs.",
+    "vis.signage": "Custom Signage",
+    "vis.signageDesc": "Storefront signs, banners, window graphics, yard signs — everything that makes you impossible to miss.",
+    "vis.apparel": "Branded Apparel",
+    "vis.apparelDesc": "Uniforms, safety vests, caps, polos — your team becomes walking brand ambassadors.",
+    "vis.promo": "Promotional Materials",
+    "vis.promoDesc": "Business cards, brochures, vehicle magnets, and marketing collateral that matches your brand.",
+    "vis.brandIdentity": "Brand Identity Design",
+    "vis.brandIdentityDesc": "Logos, color systems, brand guidelines — build a visual identity that commands respect.",
+    "vis.digital": "Digital Presence",
+    "vis.digitalDesc": "Consistent branding across your website, social media, and digital platforms.",
+    "vis.everything": "Everything works together. Everything matches. Everything screams",
+    "vis.professional": "professional",
+    "vis.customCta": "GET A CUSTOM QUOTE FOR MY BUSINESS",
+
+    // Featured Projects
+    "projects.tag": "Our Work",
+    "projects.title1": "Real Projects.",
+    "projects.titleHighlight": "Real Results",
+    "projects.subtitle": "Every project below is real work we've delivered for businesses just like yours.",
+    "projects.hvacFleet": "HVAC Fleet Wrap",
+    "projects.plumberVan": "Plumber Van Branding",
+    "projects.electricFleet": "Electrician Fleet",
+    "projects.constructionPickup": "Construction Pickup",
+    "projects.landscapeFleet": "Landscaping Fleet",
+    "projects.premiumInstall": "Premium Installation",
+    "projects.businessSignage": "Business Signage",
+    "projects.brandedApparel": "Branded Apparel",
+
+    // Trust
+    "trust.projects": "Projects Completed",
+    "trust.satisfaction": "Client Satisfaction",
+    "trust.experience": "Years Experience",
+    "trust.turnaround": "Quote Turnaround",
+    "trust.testimonial1": "After Imagine Studio wrapped our fleet, our phone started ringing from people who saw our trucks on the road. Best investment we ever made.",
+    "trust.testimonial1Name": "Mike Rodriguez",
+    "trust.testimonial1Biz": "Rodriguez Roofing — Wilmington, NC",
+    "trust.testimonial2": "We went from looking like a two-man operation to looking like the biggest company in town. Customers trust us before we even show up.",
+    "trust.testimonial2Name": "James Patterson",
+    "trust.testimonial2Biz": "Patterson HVAC — Leland, NC",
+    "trust.guarantee": "Premium materials • Professional installation • 100% satisfaction guarantee",
+
+    // Process
+    "process.tag": "How It Works",
+    "process.title1": "Simple Process.",
+    "process.titleHighlight": "Stunning Results",
+    "process.subtitle": "From first call to finished install — we handle everything so you can focus on running your business.",
+    "process.step1": "Request Your Quote",
+    "process.step1Desc": "Tell us about your business and vision. Free, no-obligation.",
+    "process.step2": "Design Approval",
+    "process.step2Desc": "We create a custom design. You approve it before anything is printed.",
+    "process.step3": "Production",
+    "process.step3Desc": "Premium materials, precision printing. Built to last and impress.",
+    "process.step4": "Installation",
+    "process.step4Desc": "Professional installation at your location. Minimal downtime.",
+    "process.step5": "You're Visible",
+    "process.step5Desc": "Your business becomes impossible to ignore. Watch the calls roll in.",
+    "process.cta": "START WITH A FREE QUOTE",
+
+    // Final CTA
+    "final.title1": "Stop Being",
+    "final.titleHighlight": "Invisible",
+    "final.title2": "in Your Market.",
+    "final.subtitle": "Your competitors invested in their image. They're winning the customers you deserve. The longer you wait, the more business you lose.",
+    "final.build": "Let's build a brand that makes your business",
+    "final.unstoppable": "unstoppable",
+    "final.cta": "GET MY FREE QUOTE",
+    "final.fast": "Fast Turnaround",
+    "final.quality": "Quality Guaranteed",
+    "final.wilmington": "Wilmington, NC",
+
+    // Footer
+    "footer.location": "Wilmington, North Carolina",
+    "footer.rights": "Imagine Studio Design. All rights reserved. Business Visibility Company.",
+
+    // Quote Form
+    "quote.title": "Get Your Free Quote",
+    "quote.subtitle": "Tell us about your business — we'll make it look amazing.",
+    "quote.name": "Full Name *",
+    "quote.namePlaceholder": "John Smith",
+    "quote.phone": "Phone Number *",
+    "quote.phonePlaceholder": "(910) 555-0123",
+    "quote.business": "Business Type *",
+    "quote.businessPlaceholder": "Select your industry...",
+    "quote.email": "Email (Optional)",
+    "quote.emailPlaceholder": "john@company.com",
+    "quote.details": "Project Details (Optional)",
+    "quote.detailsPlaceholder": "Tell us about your project — vehicle wraps, fleet branding, signage, etc.",
+    "quote.submit": "GET MY FREE QUOTE →",
+    "quote.submitting": "Submitting...",
+    "quote.noSpam": "No spam. No obligation. Just a real quote for your business.",
+    "quote.success": "Request Received!",
+    "quote.successMsg": "We'll review your project and contact you within 24 hours with a custom quote.",
+    "quote.close": "CLOSE",
+    "quote.nameRequired": "Please fill in all required fields.",
+
+    // Business types
+    "biz.contractor": "Contractor / General Construction",
+    "biz.roofing": "Roofing",
+    "biz.hvac": "HVAC",
+    "biz.plumbing": "Plumbing",
+    "biz.electrical": "Electrical",
+    "biz.landscaping": "Landscaping",
+    "biz.painting": "Painting",
+    "biz.tree": "Tree Service",
+    "biz.concrete": "Concrete / Masonry",
+    "biz.restaurant": "Restaurant / Food Service",
+    "biz.retail": "Retail Store",
+    "biz.otherService": "Other Service Business",
+    "biz.other": "Other",
+
+    // Sticky CTA
+    "sticky.cta": "GET MY FREE QUOTE",
+
+    // Errors
+    "quote.error": "Failed to submit your request. Please try again or call us directly.",
+    "quote.networkError": "Network error. Please check your connection.",
+  },
+  es: {
+    // Nav
+    "nav.transformations": "Transformaciones",
+    "nav.industries": "Industrias",
+    "nav.projects": "Proyectos",
+    "nav.process": "Proceso",
+    "nav.getQuote": "COTIZACIÓN GRATIS",
+    "nav.getFreeQuote": "MI COTIZACIÓN GRATIS",
+
+    // Hero
+    "hero.badge": "La #1 Empresa de Visibilidad de Negocios en Wilmington, NC",
+    "hero.line1": "LUCE PROFESIONAL.",
+    "hero.line2": "SÉ NOTADO.",
+    "hero.line3": "GANA MÁS CLIENTES.",
+    "hero.subtitle": "Tus competidores se ven más profesionales que tú — y ellos se llevan los clientes. Es hora de cambiar eso. Convierte cada vehículo, cada letrero, cada impresión en un imán de clientes.",
+    "hero.cta": "MI COTIZACIÓN GRATIS",
+    "hero.see": "VE LO QUE HACEMOS",
+    "hero.freeConsultation": "Consulta Gratuita",
+    "hero.customDesign": "Diseño Personalizado Incluido",
+    "hero.resultsInDays": "Resultados en Días, No Semanas",
+
+    // Problem
+    "problem.tag": "El Problema",
+    "problem.title1": "Tu Negocio Se Ve",
+    "problem.titleHighlight": "Invisible",
+    "problem.subtitle": "La gente juzga tu negocio antes de llamarte. Si te ves genérico, desactualizado o poco profesional — te pasan por alto. Cada día que esperas te cuesta clientes.",
+    "problem.pain1": "Nadie sabe quién eres — tu vanilla blanca se confunde con el estacionamiento.",
+    "problem.pain2": "Los clientes eligen a los competidores que se ven más establecidos y confiables.",
+    "problem.pain3": "Estás perdiendo trabajos antes de poder cotizar — todo por las primeras impresiones.",
+    "problem.soundFamiliar": "¿Te suena familiar?",
+    "problem.goodNews": "La buena noticia:",
+    "problem.fixable": "se soluciona en días, no en meses.",
+
+    // Transformation
+    "transform.tag": "La Transformación",
+    "transform.from": "De",
+    "transform.invisible": "Invisible",
+    "transform.to": "a",
+    "transform.impossible": "Imposible de Ignorar",
+    "transform.subtitle": "Esto es lo que pasa cuando tu negocio obtiene una identidad de marca profesional. Ve la diferencia con tus propios ojos.",
+    "transform.beforeAfter": "Antes → Después",
+    "transform.real": "Transformación Real",
+    "transform.fleet": "Marca de Flota",
+    "transform.graphics": "Gráficos Vehiculares",
+    "transform.fullFleet": "Diseño de Flota Completa",
+
+    // Who We Help
+    "who.tag": "A Quién Ayudamos",
+    "who.title1": "Hecho para Negocios Que",
+    "who.titleHighlight": "Trabajan Duro",
+    "who.subtitle": "Si vas a donde están tus clientes, tus vehículos son tu mejor herramienta de marketing. Nos aseguramos de que trabajen para ti.",
+    "who.also": "También: Restaurantes, tiendas y negocios de servicios locales",
+    "who.seeCta": "VE CÓMO PODRÍA VERSE TU NEGOCIO",
+
+    // Industries
+    "ind.contractors": "Contratistas",
+    "ind.contractorsDesc": "Genera confianza antes de llegar a la obra",
+    "ind.roofing": "Techos",
+    "ind.roofingDesc": "Domina los vecindarios con autoridad móvil",
+    "ind.hvac": "HVAC",
+    "ind.hvacDesc": "Sé la empresa que todos reconocen",
+    "ind.plumbing": "Plomería",
+    "ind.plumbingDesc": "Primera llamada, no el último recurso",
+    "ind.electrical": "Electricidad",
+    "ind.electricalDesc": "Poder profesional, marca visible",
+    "ind.landscaping": "Paisajismo",
+    "ind.landscapingDesc": "Trabajo verde, marca audaz",
+    "ind.painting": "Pintura",
+    "ind.paintingDesc": "Tus vans son tu galería",
+    "ind.tree": "Servicio de Árboles",
+    "ind.treeDesc": "Mantente alto con una marca que destaca",
+    "ind.concrete": "Concreto",
+    "ind.concreteDesc": "Marca sólida sobre ruedas sólidas",
+    "ind.construction": "Construcción",
+    "ind.constructionDesc": "Credibilidad de proyecto en cada camión",
+
+    // Visibility System
+    "vis.tag": "El Sistema",
+    "vis.title1": "El Sistema de",
+    "vis.titleHighlight": "Visibilidad Empresarial",
+    "vis.subtitle": "No son servicios al azar. Un sistema completo diseñado para hacer tu negocio imposible de ignorar — desde la calle hasta la pantalla.",
+    "vis.wraps": "Viniles Vehiculares y Marca de Flota",
+    "vis.wrapsDesc": "Convierte cada milla en una oportunidad de marketing. Viniles completos, parciales y diseños consistentes para tu flota.",
+    "vis.signage": "Señalización Personalizada",
+    "vis.signageDesc": "Letreros de tienda, pancartas, gráficos de ventanas, señales de patio — todo lo que te hace imposible de pasar por alto.",
+    "vis.apparel": "Ropa de Marca",
+    "vis.apparelDesc": "Uniformes, chalecos de seguridad, gorras, polos — tu equipo se convierte en embajadores de marca ambulantes.",
+    "vis.promo": "Materiales Promocionales",
+    "vis.promoDesc": "Tarjetas de presentación, folletos, imanes vehiculares y material de marketing que coincide con tu marca.",
+    "vis.brandIdentity": "Diseño de Identidad de Marca",
+    "vis.brandIdentityDesc": "Logos, sistemas de color, guías de marca — construye una identidad visual que impone respeto.",
+    "vis.digital": "Presencia Digital",
+    "vis.digitalDesc": "Marca consistente en tu sitio web, redes sociales y plataformas digitales.",
+    "vis.everything": "Todo funciona junto. Todo coincide. Todo grita",
+    "vis.professional": "profesional",
+    "vis.customCta": "COTIZACIÓN PERSONALIZADA PARA MI NEGOCIO",
+
+    // Featured Projects
+    "projects.tag": "Nuestro Trabajo",
+    "projects.title1": "Proyectos Reales.",
+    "projects.titleHighlight": "Resultados Reales",
+    "projects.subtitle": "Cada proyecto a continuación es trabajo real que hemos entregado para negocios como el tuyo.",
+    "projects.hvacFleet": "Vinilo de Flota HVAC",
+    "projects.plumberVan": "Marca de Van de Plomería",
+    "projects.electricFleet": "Flota Eléctrica",
+    "projects.constructionPickup": "Camioneta de Construcción",
+    "projects.landscapeFleet": "Flota de Paisajismo",
+    "projects.premiumInstall": "Instalación Premium",
+    "projects.businessSignage": "Señalización Empresarial",
+    "projects.brandedApparel": "Ropa de Marca",
+
+    // Trust
+    "trust.projects": "Proyectos Completados",
+    "trust.satisfaction": "Satisfacción del Cliente",
+    "trust.experience": "Años de Experiencia",
+    "trust.turnaround": "Entrega de Cotización",
+    "trust.testimonial1": "Después de que Imagine Studio envolvió nuestra flota, el teléfono empezó a sonar con personas que vieron nuestros camiones en la carretera. La mejor inversión que hemos hecho.",
+    "trust.testimonial1Name": "Mike Rodríguez",
+    "trust.testimonial1Biz": "Rodríguez Roofing — Wilmington, NC",
+    "trust.testimonial2": "Pasamos de parecer una operación de dos personas a parecernos la empresa más grande de la ciudad. Los clientes confían en nosotros antes de que lleguemos.",
+    "trust.testimonial2Name": "James Patterson",
+    "trust.testimonial2Biz": "Patterson HVAC — Leland, NC",
+    "trust.guarantee": "Materiales premium • Instalación profesional • 100% garantía de satisfacción",
+
+    // Process
+    "process.tag": "Cómo Funciona",
+    "process.title1": "Proceso Simple.",
+    "process.titleHighlight": "Resultados Increíbles",
+    "process.subtitle": "Desde la primera llamada hasta la instalación final — nosotros nos encargamos de todo para que tú te enfoques en tu negocio.",
+    "process.step1": "Solicita Tu Cotización",
+    "process.step1Desc": "Cuéntanos sobre tu negocio y visión. Gratis, sin compromiso.",
+    "process.step2": "Aprobación de Diseño",
+    "process.step2Desc": "Creamos un diseño personalizado. Tú lo apruebas antes de imprimir nada.",
+    "process.step3": "Producción",
+    "process.step3Desc": "Materiales premium, impresión de precisión. Hecho para durar e impresionar.",
+    "process.step4": "Instalación",
+    "process.step4Desc": "Instalación profesional en tu ubicación. Mínimo tiempo de inactividad.",
+    "process.step5": "Eres Visible",
+    "process.step5Desc": "Tu negocio se vuelve imposible de ignorar. Mira cómo llegan las llamadas.",
+    "process.cta": "EMPIEZA CON UNA COTIZACIÓN GRATIS",
+
+    // Final CTA
+    "final.title1": "Deja de Ser",
+    "final.titleHighlight": "Invisible",
+    "final.title2": "en Tu Mercado.",
+    "final.subtitle": "Tus competidores invirtieron en su imagen. Se están llevando los clientes que mereces. Cuanto más esperes, más negocio pierdes.",
+    "final.build": "Construyamos una marca que haga tu negocio",
+    "final.unstoppable": "imparable",
+    "final.cta": "MI COTIZACIÓN GRATIS",
+    "final.fast": "Entrega Rápida",
+    "final.quality": "Calidad Garantizada",
+    "final.wilmington": "Wilmington, NC",
+
+    // Footer
+    "footer.location": "Wilmington, Carolina del Norte",
+    "footer.rights": "Imagine Studio Design. Todos los derechos reservados. Empresa de Visibilidad de Negocios.",
+
+    // Quote Form
+    "quote.title": "Obtén Tu Cotización Gratis",
+    "quote.subtitle": "Cuéntanos sobre tu negocio — lo haremos lucir increíble.",
+    "quote.name": "Nombre Completo *",
+    "quote.namePlaceholder": "Juan Pérez",
+    "quote.phone": "Número de Teléfono *",
+    "quote.phonePlaceholder": "(910) 555-0123",
+    "quote.business": "Tipo de Negocio *",
+    "quote.businessPlaceholder": "Selecciona tu industria...",
+    "quote.email": "Correo Electrónico (Opcional)",
+    "quote.emailPlaceholder": "juan@empresa.com",
+    "quote.details": "Detalles del Proyecto (Opcional)",
+    "quote.detailsPlaceholder": "Cuéntanos sobre tu proyecto — vinilos vehiculares, marca de flota, señalización, etc.",
+    "quote.submit": "MI COTIZACIÓN GRATIS →",
+    "quote.submitting": "Enviando...",
+    "quote.noSpam": "Sin spam. Sin obligación. Solo una cotización real para tu negocio.",
+    "quote.success": "¡Solicitud Recibida!",
+    "quote.successMsg": "Revisaremos tu proyecto y te contactaremos en 24 horas con una cotización personalizada.",
+    "quote.close": "CERRAR",
+    "quote.nameRequired": "Por favor completa todos los campos requeridos.",
+
+    // Business types
+    "biz.contractor": "Contratista / Construcción General",
+    "biz.roofing": "Techos",
+    "biz.hvac": "HVAC",
+    "biz.plumbing": "Plomería",
+    "biz.electrical": "Electricidad",
+    "biz.landscaping": "Paisajismo",
+    "biz.painting": "Pintura",
+    "biz.tree": "Servicio de Árboles",
+    "biz.concrete": "Concreto / Albañilería",
+    "biz.restaurant": "Restaurante / Servicio de Comida",
+    "biz.retail": "Tienda Minorista",
+    "biz.otherService": "Otro Negocio de Servicios",
+    "biz.other": "Otro",
+
+    // Sticky CTA
+    "sticky.cta": "MI COTIZACIÓN GRATIS",
+
+    // Errors
+    "quote.error": "Error al enviar tu solicitud. Por favor intenta de nuevo o llámanos directamente.",
+    "quote.networkError": "Error de red. Por favor verifica tu conexión.",
+  },
+};
+
+export const useLang = create<LangStore>((set, get) => ({
+  lang: "en",
+  toggle: () => set((s) => ({ lang: s.lang === "en" ? "es" : "en" })),
+  set: (lang) => set({ lang }),
+  t: (key: string) => {
+    const { lang } = get();
+    return translations[lang]?.[key] ?? translations.en[key] ?? key;
+  },
+}));
