@@ -44,6 +44,7 @@ import { useLang } from "@/lib/i18n";
 import QuoteFormModal from "@/components/quote-form-modal";
 import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
 import LangToggle from "@/components/lang-toggle";
+import BeforeAfterSlider from "@/components/before-after-slider";
 
 /* ───────── ANIMATION HELPERS ───────── */
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -334,7 +335,7 @@ function ProblemSection() {
 
 /* ───────── 3. TRANSFORMATION ───────── */
 function TransformationSection() {
-  const { t, lang } = useLang();
+  const { t } = useLang();
   const gridItems = [
     { src: "/images/truck-wrap-1.png", labelKey: "transform.fleet" },
     { src: "/images/pickup-wrap.png", labelKey: "transform.graphics" },
@@ -347,30 +348,25 @@ function TransformationSection() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px]" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 sm:mb-16">
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("transform.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
               {t("transform.from")} <span className="text-gray-500">{t("transform.invisible")}</span> {t("transform.to")} <span className="gradient-brand-text">{t("transform.impossible")}</span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("transform.subtitle")}</p>
+            <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">{t("transform.subtitle")}</p>
           </div>
         </FadeUp>
+
+        {/* Interactive Before/After Slider — Real project */}
         <ScaleIn delay={0.1}>
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 glow-brand mb-10">
-            <div className="grid md:grid-cols-2">
-              <div className="relative aspect-[4/3] md:aspect-auto">
-                <Image src="/images/before-after-van.png" alt={t("transform.beforeAfter")} fill className="object-cover" />
-                <div className="absolute top-4 left-4 px-3 py-1.5 rounded-lg bg-gray-900/80 border border-white/10">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("transform.beforeAfter")}</span>
-                </div>
-              </div>
-              <div className="relative aspect-[4/3] md:aspect-auto">
-                <Image src="/images/transformation-1.png" alt={t("transform.real")} fill className="object-cover" />
-                <div className="absolute top-4 left-4 px-3 py-1.5 rounded-lg bg-gray-900/80 border border-white/10">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("transform.real")}</span>
-                </div>
-              </div>
-            </div>
+          <div className="mb-10">
+            <BeforeAfterSlider
+              beforeSrc="/images/before-brothers-painting.png"
+              afterSrc="/images/after-brothers-painting.png"
+              beforeAlt="Van before wrap - plain white"
+              afterAlt="Van after wrap - Brothers Painting Services LLC"
+            />
+            <p className="text-center text-sm text-gray-500 mt-4">{t("transform.realProject")}</p>
           </div>
         </ScaleIn>
         <div className="grid sm:grid-cols-3 gap-4">

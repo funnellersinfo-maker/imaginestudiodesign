@@ -76,9 +76,13 @@ const translations: Record<Lang, Record<string, string>> = {
     "transform.subtitle": "This is what happens when your business gets a professional brand identity. See the difference with your own eyes.",
     "transform.beforeAfter": "Before → After",
     "transform.real": "Real Transformation",
+    "transform.realProject": "Real project — Brothers Painting Services LLC",
     "transform.fleet": "Fleet Branding",
     "transform.graphics": "Vehicle Graphics",
     "transform.fullFleet": "Full Fleet Design",
+    "slider.before": "Before",
+    "slider.after": "After",
+    "slider.hint": "Drag to compare",
 
     // Who We Help
     "who.tag": "Who We Help",
@@ -300,9 +304,13 @@ const translations: Record<Lang, Record<string, string>> = {
     "transform.subtitle": "Esto es lo que pasa cuando tu negocio obtiene una identidad de marca profesional. Ve la diferencia con tus propios ojos.",
     "transform.beforeAfter": "Antes → Después",
     "transform.real": "Transformación Real",
+    "transform.realProject": "Proyecto real — Brothers Painting Services LLC",
     "transform.fleet": "Marca de Flota",
     "transform.graphics": "Gráficos Vehiculares",
     "transform.fullFleet": "Diseño de Flota Completa",
+    "slider.before": "Antes",
+    "slider.after": "Después",
+    "slider.hint": "Arrastra para comparar",
 
     // Who We Help
     "who.tag": "A Quién Ayudamos",
