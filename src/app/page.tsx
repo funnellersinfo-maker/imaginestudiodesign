@@ -205,10 +205,36 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           </div>
         </FadeUp>
         <FadeUp delay={0.8}>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-gray-500 text-sm">
-            {[t("hero.freeConsultation"), t("hero.customDesign"), t("hero.resultsInDays")].map((txt, i) => (
-              <div key={i} className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-brand-purple" />{txt}</div>
-            ))}
+          <div className="mt-10 sm:mt-12 w-full max-w-xl mx-auto">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-3 sm:gap-x-6 sm:gap-y-3">
+              {[
+                t("hero.trust1"), // Vehicle Wraps
+                t("hero.trust2"), // Commercial Signs
+                t("hero.trust3"), // Custom Apparel
+                t("hero.trust4"), // Fleet Branding
+              ].map((txt, i) => (
+                <div key={i} className="flex items-center gap-2 justify-center sm:justify-start">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  </div>
+                  <span className="text-sm text-gray-300 font-medium">{txt}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 pt-5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                  ))}
+                </div>
+                <span className="text-sm text-gray-400">{t("hero.trust5Stars")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-black gradient-brand-text">{t("hero.trustProjects")}</span>
+                <span className="text-sm text-gray-400">{t("hero.trustProjectsLabel")}</span>
+              </div>
+            </div>
           </div>
         </FadeUp>
       </motion.div>

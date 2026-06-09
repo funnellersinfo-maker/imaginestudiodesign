@@ -30,6 +30,13 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.freeConsultation": "Free Consultation",
     "hero.customDesign": "Custom Design Included",
     "hero.resultsInDays": "Results in Days, Not Weeks",
+    "hero.trust1": "Vehicle Wraps",
+    "hero.trust2": "Commercial Signs",
+    "hero.trust3": "Custom Apparel",
+    "hero.trust4": "Fleet Branding",
+    "hero.trust5Stars": "500+ 5-Star Reviews",
+    "hero.trustProjects": "500+",
+    "hero.trustProjectsLabel": "Projects Completed in Wilmington",
 
     // Problem
     "problem.tag": "The Problem",
@@ -230,6 +237,13 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.freeConsultation": "Consulta Gratuita",
     "hero.customDesign": "Diseño Personalizado Incluido",
     "hero.resultsInDays": "Resultados en Días, No Semanas",
+    "hero.trust1": "Vinilos de Vehículos",
+    "hero.trust2": "Señalización Comercial",
+    "hero.trust3": "Ropa Personalizada",
+    "hero.trust4": "Marca de Flota",
+    "hero.trust5Stars": "500+ Reseñas 5 Estrellas",
+    "hero.trustProjects": "500+",
+    "hero.trustProjectsLabel": "Proyectos Completados en Wilmington",
 
     // Problem
     "problem.tag": "El Problema",
