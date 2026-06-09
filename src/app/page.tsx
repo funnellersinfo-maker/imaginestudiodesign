@@ -168,18 +168,12 @@ function Nav({ onQuote }: { onQuote: () => void }) {
 /* ───────── 1. HERO ───────── */
 function HeroSection({ onQuote }: { onQuote: () => void }) {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 600], [0, 200]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
   const { t } = useLang();
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <motion.div className="absolute inset-0 z-0" style={{ y }}>
-        <Image src="/images/hero-bg.jpg" alt="Professional vehicle wrap showcase" fill priority sizes="100vw" className="object-cover object-center md:object-[center_40%]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-black/60 md:from-black/40 md:via-transparent md:to-black/40" />
-        <div className="absolute inset-0 md:bg-black/10" />
-      </motion.div>
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a0a1a] via-background to-background" />
       <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px]" />
       <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px]" />
 
