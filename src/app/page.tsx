@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
 import {
   Phone,
   ChevronRight,
@@ -171,6 +171,29 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
   const { t } = useLang();
 
+  const headlines = [
+    { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
+    { line1: t("hero.h2.line1"), line2: t("hero.h2.line2"), line3: t("hero.h2.line3") },
+    { line1: t("hero.h3.line1"), line2: t("hero.h3.line2"), line3: t("hero.h3.line3") },
+    { line1: t("hero.h4.line1"), line2: t("hero.h4.line2"), line3: t("hero.h4.line3") },
+    { line1: t("hero.h5.line1"), line2: t("hero.h5.line2"), line3: t("hero.h5.line3") },
+  ];
+
+  const [idx, setIdx] = useState(0);
+
+  const scheduleNext = useCallback(() => {
+    const delay = 9000 + Math.random() * 3000; // 9–12s random
+    return setTimeout(() => setIdx((i) => (i + 1) % headlines.length), delay);
+  }, [headlines.length]);
+
+  useEffect(() => {
+    const id = scheduleNext();
+    return () => clearTimeout(id);
+  }, [idx, scheduleNext]);
+
+  const h = headlines[idx];
+  const key = `${idx}-${h.line1}`;
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a0a1a] via-background to-background" />
@@ -184,13 +207,22 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             <span className="text-[11px] sm:text-sm text-gray-300 whitespace-nowrap">{t("hero.badge")}</span>
           </div>
         </FadeUp>
-        <FadeUp delay={0.2}>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6">
-            <span className="text-white">{t("hero.line1")}</span><br />
-            <span className="gradient-brand-text">{t("hero.line2")}</span><br />
-            <span className="text-white">{t("hero.line3")}</span>
-          </h1>
-        </FadeUp>
+        <div className="relative min-h-[3.5rem] sm:min-h-[5.5rem] md:min-h-[7rem] lg:min-h-[8.5rem]">
+          <AnimatePresence mode="wait">
+            <motion.h1
+              key={key}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6 absolute inset-0 flex flex-col items-center justify-center"
+            >
+              <span className="text-white">{h.line1}</span>
+              <span className="gradient-brand-text">{h.line2}</span>
+              <span className="text-white">{h.line3}</span>
+            </motion.h1>
+          </AnimatePresence>
+        </div>
         <FadeUp delay={0.4}>
           <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">{t("hero.subtitle")}</p>
         </FadeUp>
