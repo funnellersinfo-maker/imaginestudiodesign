@@ -45,6 +45,7 @@ import QuoteFormModal from "@/components/quote-form-modal";
 import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
 import LangToggle from "@/components/lang-toggle";
 import BeforeAfterSlider from "@/components/before-after-slider";
+import GalleryCarousel from "@/components/gallery-carousel";
 
 /* ───────── ANIMATION HELPERS ───────── */
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -706,6 +707,7 @@ export default function Home() {
       <Nav onQuote={() => setQuoteOpen(true)} />
       <LangToggle />
       <HeroSection onQuote={() => setQuoteOpen(true)} />
+      <GalleryCarousel />
       <ProblemSection />
       <TransformationSection />
       <WhoWeHelpSection onQuote={() => setQuoteOpen(true)} />
