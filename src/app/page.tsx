@@ -212,7 +212,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         </FadeUp>
 
         {/* Rotating Headlines */}
-        <div className="relative min-h-[9rem] sm:min-h-[6rem] md:min-h-[7.5rem] lg:min-h-[18rem] xl:min-h-[16rem] mb-8 lg:mb-12">
+        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[18rem] xl:min-h-[16rem] mb-8 lg:mb-12">
           <AnimatePresence mode="wait">
             <motion.h1
               key={key}
