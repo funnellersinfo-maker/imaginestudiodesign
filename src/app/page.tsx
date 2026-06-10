@@ -133,24 +133,24 @@ function Nav({ onQuote }: { onQuote: () => void }) {
           <a href="#" className="flex items-center gap-3 flex-shrink-0">
             <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 lg:h-12 w-auto object-contain" priority />
           </a>
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             <a href="#transformations" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.transformations")}</a>
             <a href="#who-we-help" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.industries")}</a>
             <a href="#projects" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.projects")}</a>
             <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.process")}</a>
           </div>
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3 lg:gap-4">
             <a href="tel:+19105550123" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
               <Phone className="w-4 h-4" />(910) 555-0123
             </a>
             <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("nav.getQuote")}</button>
           </div>
-          <button onClick={() => setOpen(!open)} className="lg:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
+          <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
             {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
           </button>
         </div>
         {open && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="lg:hidden pb-6 pt-2 border-t border-white/5">
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden pb-6 pt-2 border-t border-white/5">
             <div className="flex flex-col gap-4">
               <a href="#transformations" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.transformations")}</a>
               <a href="#who-we-help" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.industries")}</a>
@@ -588,7 +588,7 @@ function ProcessSection({ onQuote }: { onQuote: () => void }) {
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("process.subtitle")}</p>
           </div>
         </FadeUp>
-        <div className="hidden lg:grid lg:grid-cols-5 gap-6 relative">
+        <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-6 relative">
           <div className="absolute top-12 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue via-brand-purple to-brand-hot-pink opacity-30" />
           {PROCESS_DATA.map((step, i) => (
             <FadeUp key={i} delay={i * 0.1}>
@@ -603,7 +603,7 @@ function ProcessSection({ onQuote }: { onQuote: () => void }) {
             </FadeUp>
           ))}
         </div>
-        <div className="lg:hidden space-y-4">
+        <div className="md:hidden space-y-4">
           {PROCESS_DATA.map((step, i) => (
             <FadeUp key={i} delay={i * 0.1}>
               <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
