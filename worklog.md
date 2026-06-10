@@ -82,3 +82,30 @@ Stage Summary:
 - Gallery carousel now properly visible with correct aspect ratio and padding on desktop
 - Nav, hero, and all content sections scale appropriately on large screens
 - VLM verification at both 1440x900 and 1920x1080 confirms no remaining cramped/squished areas
+
+---
+Task ID: 4
+Agent: Main Agent
+Task: Rewrite hero headline copies to be aspirational and fix PC spacing
+
+Work Log:
+- Analyzed user's conversion insight: "Quiero que mi empresa se vea así" — emotional desire > generic benefits
+- Rewrote all 5 headline variants (EN + ES) to aspirational tone:
+  - V1: "LOOK LIKE THE COMPANY / PEOPLE WANT TO HIRE."
+  - V2: "YOUR BUSINESS SHOULD / LOOK THIS GOOD."
+  - V3: "BE THE BRAND / EVERYONE RECOGNIZES."
+  - V4: "DON'T JUST EXIST. / BE THE OBVIOUS CHOICE."
+  - V5: "YOUR TRUCK IS YOUR / BEST SALESPERSON."
+  - (ES equivalents for all)
+- Fixed PC spacing: badge lg:mb-16 → lg:mb-20, headline container lg:mb-14 → lg:mb-20
+- VLM-audited PC (1440x900): badge well separated, headline exactly 2 lines, subtitle well separated, no overlap, clean layout — all 5 checks PASS
+- VLM-audited mobile (390x844): badge visible, headline 3 lines readable, subtitle separated, CTAs visible, social proof visible — all 5 checks PASS
+- Verified headline rotation: variant 2 "YOUR BUSINESS SHOULD / LOOK THIS GOOD." confirmed rotating correctly
+- Verified Spanish toggle: variant 4 "NO SOLO EXISTAS. / SÉ LA OPCIÓN OBVIA." confirmed in Spanish
+- ESLint passes clean
+
+Stage Summary:
+- All 5 headline variants rewritten to aspirational, emotionally-driven copy focused on "look like the company people want to hire"
+- PC spacing increased: badge→headline and headline→subtitle both at lg:mb-20 (5rem)
+- Browser-verified at both PC (1440x900) and mobile (390x844) — all checks pass
+- Spanish and English variants both confirmed working via VLM audit
