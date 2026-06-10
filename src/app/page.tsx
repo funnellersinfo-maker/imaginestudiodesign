@@ -202,17 +202,17 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px]" />
       <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px]" />
 
-      <motion.div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 sm:pt-24 pb-20 sm:pb-16" style={{ opacity }}>
+      <motion.div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-36 pb-20 md:pb-16 lg:pb-20" style={{ opacity }}>
         {/* Badge */}
         <FadeUp delay={0.1}>
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-5 sm:mb-8">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-6 md:mb-10">
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-hot-pink" />
             <span className="text-[11px] sm:text-sm text-gray-300 whitespace-nowrap">{t("hero.badge")}</span>
           </div>
         </FadeUp>
 
         {/* Rotating Headlines */}
-        <div className="relative min-h-[9rem] sm:min-h-[5.5rem] md:min-h-[7rem] lg:min-h-[8.5rem] mb-5 sm:mb-6">
+        <div className="relative min-h-[9rem] sm:min-h-[6rem] md:min-h-[7.5rem] lg:min-h-[9rem] mb-6 md:mb-8">
           <AnimatePresence mode="wait">
             <motion.h1
               key={key}
@@ -231,16 +231,16 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 
         {/* Subtitle */}
         <FadeUp delay={0.4}>
-          <p className="text-[0.9rem] sm:text-xl text-gray-400 max-w-2xl mx-auto mb-7 sm:mb-10 leading-relaxed">{t("hero.subtitle")}</p>
+          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-[1.35rem] text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-8 md:mb-12 leading-relaxed">{t("hero.subtitle")}</p>
         </FadeUp>
 
         {/* CTA Buttons */}
         <FadeUp delay={0.6}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-7 sm:mb-0">
-            <button onClick={onQuote} className="cta-primary text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-sm sm:text-base tracking-wide flex items-center gap-2 min-w-[200px] sm:min-w-[240px] justify-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5 mb-8 md:mb-0">
+            <button onClick={onQuote} className="cta-primary text-white font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-4.5 rounded-xl text-sm sm:text-base md:text-lg tracking-wide flex items-center gap-2 min-w-[200px] sm:min-w-[240px] md:min-w-[280px] justify-center">
               {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm font-medium">
+            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-4.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm md:text-base font-medium">
               {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -248,23 +248,23 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 
         {/* Social Proof */}
         <FadeUp delay={0.8}>
-          <div className="mt-6 sm:mt-12 w-full max-w-xl mx-auto">
-            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 sm:gap-x-6 sm:gap-y-3">
+          <div className="mt-8 sm:mt-14 md:mt-16 w-full max-w-xl md:max-w-2xl mx-auto">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 md:gap-x-8 md:gap-y-4">
               {[
                 t("hero.trust1"), // Vehicle Wraps
                 t("hero.trust2"), // Commercial Signs
                 t("hero.trust3"), // Custom Apparel
                 t("hero.trust4"), // Fleet Branding
               ].map((txt, i) => (
-                <div key={i} className="flex items-center gap-1.5 sm:gap-2 justify-center sm:justify-start">
-                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <div key={i} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 justify-center sm:justify-start">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   </div>
-                  <span className="text-xs sm:text-sm text-gray-300 font-medium">{txt}</span>
+                  <span className="text-xs sm:text-sm md:text-base text-gray-300 font-medium">{txt}</span>
                 </div>
               ))}
             </div>
-            <div className="mt-4 pt-4 sm:mt-5 sm:pt-5 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-8">
+            <div className="mt-4 pt-4 sm:mt-6 sm:pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-10">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="flex -space-x-1">
                   {[...Array(5)].map((_, i) => (
@@ -274,12 +274,12 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                 <span className="text-xs sm:text-sm text-gray-400">{t("hero.trust5Stars")}</span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg font-black gradient-brand-text">{t("hero.trustProjects")}</span>
-                <span className="text-xs sm:text-sm text-gray-400">{t("hero.trustProjectsLabel")}</span>
+                <span className="text-base sm:text-lg md:text-xl font-black gradient-brand-text">{t("hero.trustProjects")}</span>
+                <span className="text-xs sm:text-sm md:text-base text-gray-400">{t("hero.trustProjectsLabel")}</span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg font-black gradient-brand-text">{t("hero.trustYears")}</span>
-                <span className="text-xs sm:text-sm text-gray-400">{t("hero.trustYearsLabel")}</span>
+                <span className="text-base sm:text-lg md:text-xl font-black gradient-brand-text">{t("hero.trustYears")}</span>
+                <span className="text-xs sm:text-sm md:text-base text-gray-400">{t("hero.trustYearsLabel")}</span>
               </div>
             </div>
           </div>
