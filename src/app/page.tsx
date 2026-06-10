@@ -212,7 +212,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         </FadeUp>
 
         {/* Rotating Headlines */}
-        <div className="relative min-h-[9rem] sm:min-h-[6rem] md:min-h-[7.5rem] lg:min-h-[10rem] mb-6 lg:mb-10">
+        <div className="relative min-h-[9rem] sm:min-h-[6rem] md:min-h-[7.5rem] lg:min-h-[18rem] xl:min-h-[16rem] mb-8 lg:mb-12">
           <AnimatePresence mode="wait">
             <motion.h1
               key={key}
@@ -222,9 +222,9 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 flex flex-col items-center justify-center"
             >
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.1] lg:leading-[1.15] text-white">{h.line1}</span>
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.1] lg:leading-[1.15] gradient-brand-text">{h.line2}</span>
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.1] lg:leading-[1.15] text-white">{h.line3}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line3}</span>
             </motion.h1>
           </AnimatePresence>
         </div>
