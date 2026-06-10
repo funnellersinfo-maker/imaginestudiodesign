@@ -178,7 +178,6 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
     { line1: t("hero.h2.line1"), line2: t("hero.h2.line2"), line3: t("hero.h2.line3") },
     { line1: t("hero.h3.line1"), line2: t("hero.h3.line2"), line3: t("hero.h3.line3") },
     { line1: t("hero.h4.line1"), line2: t("hero.h4.line2"), line3: t("hero.h4.line3") },
-    { line1: t("hero.h5.line1"), line2: t("hero.h5.line2"), line3: t("hero.h5.line3") },
   ];
 
   const [idx, setIdx] = useState(0);
