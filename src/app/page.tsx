@@ -202,17 +202,17 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px]" />
       <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px]" />
 
-      <motion.div className="relative z-10 max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity }}>
+      <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity }}>
         {/* Badge */}
         <FadeUp delay={0.1}>
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-6 lg:mb-12">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-6 lg:mb-16">
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-hot-pink" />
             <span className="text-[11px] sm:text-sm text-gray-300 whitespace-nowrap">{t("hero.badge")}</span>
           </div>
         </FadeUp>
 
         {/* Rotating Headlines */}
-        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[18rem] xl:min-h-[16rem] mb-8 lg:mb-12">
+        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[11rem] mb-8 lg:mb-14">
           <AnimatePresence mode="wait">
             <motion.h1
               key={key}
@@ -222,16 +222,20 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 flex flex-col items-center justify-center"
             >
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line3}</span>
+              {/* Mobile/tablet: 3 separate lines */}
+              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
+              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
+              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white">{h.line3}</span>
+              {/* Desktop: 2 lines only */}
+              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
+              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
             </motion.h1>
           </AnimatePresence>
         </div>
 
         {/* Subtitle */}
         <FadeUp delay={0.4}>
-          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-[1.4rem] xl:text-xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-14 leading-relaxed">{t("hero.subtitle")}</p>
+          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-16 leading-relaxed">{t("hero.subtitle")}</p>
         </FadeUp>
 
         {/* CTA Buttons */}
