@@ -8,7 +8,7 @@ export default function LangToggle() {
   const { lang, toggle } = useLang();
 
   return (
-    <div className="fixed top-[88px] right-3 z-50 md:top-20 md:right-6">
+    <div className="fixed top-[88px] right-3 z-50 lg:top-[92px] lg:right-6">
       <button
         onClick={toggle}
         className="group flex items-center gap-2 px-3 py-2 rounded-full glass-strong hover:bg-white/10 transition-all duration-300 cursor-pointer"

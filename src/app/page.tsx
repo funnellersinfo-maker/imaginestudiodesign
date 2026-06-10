@@ -129,28 +129,28 @@ function Nav({ onQuote }: { onQuote: () => void }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 glass-strong">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-18">
+        <div className="flex items-center justify-between h-16 lg:h-20">
           <a href="#" className="flex items-center gap-3 flex-shrink-0">
-            <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 md:h-10 w-auto object-contain" priority />
+            <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 lg:h-12 w-auto object-contain" priority />
           </a>
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#transformations" className="text-sm text-gray-400 hover:text-white transition-colors">{t("nav.transformations")}</a>
-            <a href="#who-we-help" className="text-sm text-gray-400 hover:text-white transition-colors">{t("nav.industries")}</a>
-            <a href="#projects" className="text-sm text-gray-400 hover:text-white transition-colors">{t("nav.projects")}</a>
-            <a href="#process" className="text-sm text-gray-400 hover:text-white transition-colors">{t("nav.process")}</a>
+          <div className="hidden lg:flex items-center gap-8">
+            <a href="#transformations" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.transformations")}</a>
+            <a href="#who-we-help" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.industries")}</a>
+            <a href="#projects" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.projects")}</a>
+            <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.process")}</a>
           </div>
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-4">
             <a href="tel:+19105550123" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
               <Phone className="w-4 h-4" />(910) 555-0123
             </a>
-            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-5 py-2.5 rounded-lg tracking-wide">{t("nav.getQuote")}</button>
+            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("nav.getQuote")}</button>
           </div>
-          <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
+          <button onClick={() => setOpen(!open)} className="lg:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
             {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
           </button>
         </div>
         {open && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden pb-6 pt-2 border-t border-white/5">
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="lg:hidden pb-6 pt-2 border-t border-white/5">
             <div className="flex flex-col gap-4">
               <a href="#transformations" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.transformations")}</a>
               <a href="#who-we-help" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.industries")}</a>
@@ -202,17 +202,17 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px]" />
       <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px]" />
 
-      <motion.div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-36 pb-20 md:pb-16 lg:pb-20" style={{ opacity }}>
+      <motion.div className="relative z-10 max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity }}>
         {/* Badge */}
         <FadeUp delay={0.1}>
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-6 md:mb-10">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-6 lg:mb-12">
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-hot-pink" />
             <span className="text-[11px] sm:text-sm text-gray-300 whitespace-nowrap">{t("hero.badge")}</span>
           </div>
         </FadeUp>
 
         {/* Rotating Headlines */}
-        <div className="relative min-h-[9rem] sm:min-h-[6rem] md:min-h-[7.5rem] lg:min-h-[9rem] mb-6 md:mb-8">
+        <div className="relative min-h-[9rem] sm:min-h-[6rem] md:min-h-[7.5rem] lg:min-h-[10rem] mb-6 lg:mb-10">
           <AnimatePresence mode="wait">
             <motion.h1
               key={key}
@@ -222,25 +222,25 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 flex flex-col items-center justify-center"
             >
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
-              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line3}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.1] lg:leading-[1.15] text-white">{h.line1}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.1] lg:leading-[1.15] gradient-brand-text">{h.line2}</span>
+              <span className="text-[1.65rem] sm:text-5xl md:text-6xl lg:text-[5rem] xl:text-7xl font-black tracking-tight leading-[1.1] lg:leading-[1.15] text-white">{h.line3}</span>
             </motion.h1>
           </AnimatePresence>
         </div>
 
         {/* Subtitle */}
         <FadeUp delay={0.4}>
-          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-[1.35rem] text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-8 md:mb-12 leading-relaxed">{t("hero.subtitle")}</p>
+          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-[1.4rem] xl:text-xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-14 leading-relaxed">{t("hero.subtitle")}</p>
         </FadeUp>
 
         {/* CTA Buttons */}
         <FadeUp delay={0.6}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-5 mb-8 md:mb-0">
-            <button onClick={onQuote} className="cta-primary text-white font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-4.5 rounded-xl text-sm sm:text-base md:text-lg tracking-wide flex items-center gap-2 min-w-[200px] sm:min-w-[240px] md:min-w-[280px] justify-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-6 mb-8 lg:mb-4">
+            <button onClick={onQuote} className="cta-primary text-white font-bold px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-sm sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[200px] sm:min-w-[240px] lg:min-w-[300px] justify-center">
               {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-4.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm md:text-base font-medium">
+            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
               {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -248,38 +248,38 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 
         {/* Social Proof */}
         <FadeUp delay={0.8}>
-          <div className="mt-8 sm:mt-14 md:mt-16 w-full max-w-xl md:max-w-2xl mx-auto">
-            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 md:gap-x-8 md:gap-y-4">
+          <div className="mt-8 sm:mt-14 lg:mt-20 w-full max-w-xl lg:max-w-3xl mx-auto">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 lg:gap-x-10 lg:gap-y-4">
               {[
                 t("hero.trust1"), // Vehicle Wraps
                 t("hero.trust2"), // Commercial Signs
                 t("hero.trust3"), // Custom Apparel
                 t("hero.trust4"), // Fleet Branding
               ].map((txt, i) => (
-                <div key={i} className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 justify-center sm:justify-start">
-                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <div key={i} className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 justify-center sm:justify-start">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                   </div>
-                  <span className="text-xs sm:text-sm md:text-base text-gray-300 font-medium">{txt}</span>
+                  <span className="text-xs sm:text-sm lg:text-base text-gray-300 font-medium">{txt}</span>
                 </div>
               ))}
             </div>
-            <div className="mt-4 pt-4 sm:mt-6 sm:pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-10">
+            <div className="mt-4 pt-4 sm:mt-8 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-14">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="flex -space-x-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-yellow-400 fill-yellow-400" />
                   ))}
                 </div>
-                <span className="text-xs sm:text-sm text-gray-400">{t("hero.trust5Stars")}</span>
+                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trust5Stars")}</span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg md:text-xl font-black gradient-brand-text">{t("hero.trustProjects")}</span>
-                <span className="text-xs sm:text-sm md:text-base text-gray-400">{t("hero.trustProjectsLabel")}</span>
+                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustProjects")}</span>
+                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustProjectsLabel")}</span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg md:text-xl font-black gradient-brand-text">{t("hero.trustYears")}</span>
-                <span className="text-xs sm:text-sm md:text-base text-gray-400">{t("hero.trustYearsLabel")}</span>
+                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustYears")}</span>
+                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustYearsLabel")}</span>
               </div>
             </div>
           </div>
@@ -298,35 +298,35 @@ function ProblemSection() {
   const pains = [t("problem.pain1"), t("problem.pain2"), t("problem.pain3")];
   const icons = [Eye, Shield, Target];
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 lg:mb-20">
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("problem.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
               {t("problem.title1")} <span className="gradient-brand-text">{t("problem.titleHighlight")}</span>.
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("problem.subtitle")}</p>
+            <p className="text-gray-400 text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("problem.subtitle")}</p>
           </div>
         </FadeUp>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {pains.map((txt, i) => (
             <FadeUp key={i} delay={i * 0.15}>
-              <div className="relative group p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full">
-                <div className="w-12 h-12 rounded-xl gradient-purple-pink flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {(() => { const Ic = icons[i]; return <Ic className="w-6 h-6 text-white" />; })()}
+              <div className="relative group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-purple-pink flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300">
+                  {(() => { const Ic = icons[i]; return <Ic className="w-6 h-6 lg:w-7 lg:h-7 text-white" />; })()}
                 </div>
-                <p className="text-gray-300 leading-relaxed text-base">{txt}</p>
+                <p className="text-gray-300 leading-relaxed text-base lg:text-lg">{txt}</p>
               </div>
             </FadeUp>
           ))}
         </div>
         <FadeUp delay={0.4}>
           <div className="mt-12 text-center">
-            <p className="text-xl sm:text-2xl font-bold text-white mb-2">{t("problem.soundFamiliar")}</p>
-            <p className="text-gray-400 text-base">{t("problem.goodNews")} <span className="text-brand-bright-blue font-semibold">{t("problem.fixable")}</span></p>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{t("problem.soundFamiliar")}</p>
+            <p className="text-gray-400 text-base lg:text-lg">{t("problem.goodNews")} <span className="text-brand-bright-blue font-semibold">{t("problem.fixable")}</span></p>
           </div>
         </FadeUp>
       </div>
@@ -343,18 +343,18 @@ function TransformationSection() {
     { src: "/images/fleet-branding.png", labelKey: "transform.fullFleet" },
   ];
   return (
-    <section id="transformations" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="transformations" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px]" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("transform.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
               {t("transform.from")} <span className="text-gray-500">{t("transform.invisible")}</span> {t("transform.to")} <span className="gradient-brand-text">{t("transform.impossible")}</span>
             </h2>
-            <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">{t("transform.subtitle")}</p>
+            <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("transform.subtitle")}</p>
           </div>
         </FadeUp>
 
@@ -370,7 +370,7 @@ function TransformationSection() {
             <p className="text-center text-sm text-gray-500 mt-4">{t("transform.realProject")}</p>
           </div>
         </ScaleIn>
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
           {gridItems.map((item, i) => (
             <FadeUp key={i} delay={i * 0.1}>
               <div className="project-card relative rounded-xl overflow-hidden border border-white/5 group cursor-pointer aspect-[4/3]">
@@ -392,28 +392,28 @@ function TransformationSection() {
 function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
   return (
-    <section id="who-we-help" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="who-we-help" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 lg:mb-20">
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("who.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
               {t("who.title1")} <span className="gradient-brand-text">{t("who.titleHighlight")}</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("who.subtitle")}</p>
           </div>
         </FadeUp>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
           {INDUSTRIES_DATA.map((ind, i) => (
             <FadeUp key={i} delay={i * 0.05}>
-              <div className="group p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-brand-purple/20 transition-all duration-300 text-center h-full">
-                <div className="w-12 h-12 mx-auto rounded-xl gradient-blue-purple flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                  <ind.icon className="w-6 h-6 text-white" />
+              <div className="group p-4 lg:p-6 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-brand-purple/20 transition-all duration-300 text-center h-full">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 mx-auto rounded-xl gradient-blue-purple flex items-center justify-center mb-3 lg:mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <ind.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
                 </div>
-                <h3 className="text-white font-bold text-sm mb-1">{t(ind.labelKey)}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed hidden sm:block">{t(ind.descKey)}</p>
+                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(ind.labelKey)}</h3>
+                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed hidden sm:block">{t(ind.descKey)}</p>
               </div>
             </FadeUp>
           ))}
@@ -435,30 +435,30 @@ function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
 function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
   return (
-    <section id="visibility-system" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="visibility-system" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-brand-magenta/10 rounded-full blur-[150px]" />
       <div className="absolute bottom-1/3 left-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[150px]" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 lg:mb-20">
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("vis.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
               {t("vis.title1")} <span className="gradient-brand-text">{t("vis.titleHighlight")}</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("vis.subtitle")}</p>
           </div>
         </FadeUp>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {VISIBILITY_DATA.map((item, i) => (
             <FadeUp key={i} delay={i * 0.08}>
-              <div className="group p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full">
-                <div className="w-12 h-12 rounded-xl gradient-brand flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <item.icon className="w-6 h-6 text-white" />
+              <div className="group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300">
+                  <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
                 </div>
-                <h3 className="text-white font-bold text-base mb-2">{t(item.titleKey)}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{t(item.descKey)}</p>
+                <h3 className="text-white font-bold text-base lg:text-lg mb-2">{t(item.titleKey)}</h3>
+                <p className="text-gray-400 text-sm lg:text-base leading-relaxed">{t(item.descKey)}</p>
               </div>
             </FadeUp>
           ))}
@@ -480,21 +480,21 @@ function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
 function FeaturedProjectsSection() {
   const { t, lang } = useLang();
   return (
-    <section id="projects" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="projects" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 lg:mb-20">
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("projects.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
               {t("projects.title1")} <span className="gradient-brand-text">{t("projects.titleHighlight")}</span>.
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("projects.subtitle")}</p>
           </div>
         </FadeUp>
         <FadeIn delay={0.2}>
-          <div className="relative pl-12 pr-12 md:pl-14 md:pr-14">
+          <div className="relative pl-12 pr-12 lg:pl-16 lg:pr-16">
             <Carousel opts={{ align: "start", loop: true }} className="w-full">
               <CarouselContent className="-ml-4">
                 {PROJECTS_DATA.map((project, i) => (
@@ -525,30 +525,30 @@ function FeaturedProjectsSection() {
 function TrustSection() {
   const { t } = useLang();
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
             {METRICS_DATA.map((m, i) => (
               <ScaleIn key={i} delay={i * 0.1}>
-                <div className="text-center p-6 rounded-xl border border-white/5 bg-white/[0.02]">
-                  <div className="text-3xl sm:text-4xl font-black gradient-brand-text mb-1">{m.value}</div>
-                  <div className="text-gray-400 text-sm">{t(m.labelKey)}</div>
+                <div className="text-center p-6 lg:p-8 rounded-xl border border-white/5 bg-white/[0.02]">
+                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black gradient-brand-text mb-1">{m.value}</div>
+                  <div className="text-gray-400 text-sm lg:text-base">{t(m.labelKey)}</div>
                 </div>
               </ScaleIn>
             ))}
           </div>
         </FadeUp>
         <FadeUp delay={0.3}>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
             {[
               { quoteKey: "trust.testimonial1", nameKey: "trust.testimonial1Name", bizKey: "trust.testimonial1Biz", stars: 5 },
               { quoteKey: "trust.testimonial2", nameKey: "trust.testimonial2Name", bizKey: "trust.testimonial2Biz", stars: 5 },
             ].map((item, i) => (
               <FadeUp key={i} delay={i * 0.15}>
-                <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] h-full flex flex-col">
+                <div className="p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] h-full flex flex-col">
                   <div className="flex gap-1 mb-4">{Array.from({ length: item.stars }).map((_, si) => <Star key={si} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
                   <Quote className="w-8 h-8 text-brand-purple/30 mb-3" />
                   <p className="text-gray-300 leading-relaxed flex-1 mb-4">&ldquo;{t(item.quoteKey)}&rdquo;</p>
@@ -575,35 +575,35 @@ function TrustSection() {
 function ProcessSection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
   return (
-    <section id="process" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="process" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 lg:mb-20">
             <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("process.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
               {t("process.title1")} <span className="gradient-brand-text">{t("process.titleHighlight")}</span>.
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("process.subtitle")}</p>
           </div>
         </FadeUp>
-        <div className="hidden md:grid md:grid-cols-5 gap-4 relative">
+        <div className="hidden lg:grid lg:grid-cols-5 gap-6 relative">
           <div className="absolute top-12 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue via-brand-purple to-brand-hot-pink opacity-30" />
           {PROCESS_DATA.map((step, i) => (
             <FadeUp key={i} delay={i * 0.1}>
               <div className="relative text-center group">
-                <div className="relative z-10 w-24 h-24 mx-auto rounded-2xl border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center mb-4 group-hover:border-brand-purple/40 group-hover:bg-brand-purple/10 transition-all duration-300">
-                  <span className="text-2xl font-black gradient-brand-text mb-1">{step.num}</span>
-                  <step.icon className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+                <div className="relative z-10 w-24 h-24 lg:w-28 lg:h-28 mx-auto rounded-2xl border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center mb-4 lg:mb-5 group-hover:border-brand-purple/40 group-hover:bg-brand-purple/10 transition-all duration-300">
+                  <span className="text-2xl lg:text-3xl font-black gradient-brand-text mb-1">{step.num}</span>
+                  <step.icon className="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="text-white font-bold text-sm mb-1">{t(step.titleKey)}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed">{t(step.descKey)}</p>
+                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(step.titleKey)}</h3>
+                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed">{t(step.descKey)}</p>
               </div>
             </FadeUp>
           ))}
         </div>
-        <div className="md:hidden space-y-4">
+        <div className="lg:hidden space-y-4">
           {PROCESS_DATA.map((step, i) => (
             <FadeUp key={i} delay={i * 0.1}>
               <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
@@ -634,36 +634,36 @@ function ProcessSection({ onQuote }: { onQuote: () => void }) {
 function FinalCTASection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[#080818] to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-purple/15 rounded-full blur-[200px]" />
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-hot-pink/10 rounded-full blur-[150px]" />
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 w-auto object-contain mb-8 opacity-80" /></FadeUp>
+        <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
         <FadeUp delay={0.1}>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 lg:mb-8 leading-tight">
             {t("final.title1")} <span className="gradient-brand-text">{t("final.titleHighlight")}</span> {t("final.title2")}
           </h2>
         </FadeUp>
         <FadeUp delay={0.2}>
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-4 leading-relaxed">{t("final.subtitle")}</p>
+          <p className="text-lg sm:text-xl lg:text-2xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-4 lg:mb-6 leading-relaxed">{t("final.subtitle")}</p>
         </FadeUp>
         <FadeUp delay={0.3}>
-          <p className="text-white text-xl font-bold mb-10">{t("final.build")} <span className="gradient-brand-text">{t("final.unstoppable")}</span>.</p>
+          <p className="text-white text-xl lg:text-2xl font-bold mb-10 lg:mb-14">{t("final.build")} <span className="gradient-brand-text">{t("final.unstoppable")}</span>.</p>
         </FadeUp>
         <FadeUp delay={0.4}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <button onClick={onQuote} className="cta-primary text-white font-bold px-10 py-4 rounded-xl text-lg tracking-wide flex items-center gap-2 min-w-[280px] justify-center animate-pulse-glow">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-6 mb-8">
+            <button onClick={onQuote} className="cta-primary text-white font-bold px-10 lg:px-12 py-4 lg:py-5 rounded-xl text-lg lg:text-xl tracking-wide flex items-center gap-2 min-w-[280px] lg:min-w-[320px] justify-center animate-pulse-glow">
               {t("final.cta")} <ArrowRight className="w-5 h-5" />
             </button>
-            <a href="tel:+19105550123" className="flex items-center gap-2 px-6 py-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm font-semibold">
+            <a href="tel:+19105550123" className="flex items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm lg:text-base font-semibold">
               <Phone className="w-4 h-4" /> (910) 555-0123
             </a>
           </div>
         </FadeUp>
         <FadeUp delay={0.5}>
-          <div className="flex flex-wrap items-center justify-center gap-4 text-gray-500 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-gray-500 text-sm lg:text-base">
             <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {t("final.fast")}</span>
             <span className="text-white/10">|</span>
             <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> {t("final.quality")}</span>

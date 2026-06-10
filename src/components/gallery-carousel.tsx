@@ -76,17 +76,17 @@ export default function GalleryCarousel() {
   const alt = lang === "es" ? slide.altEs : slide.altEn;
 
   return (
-    <section className="relative py-10 sm:py-14 md:py-0 overflow-hidden">
+    <section className="relative py-10 sm:py-14 lg:py-16 overflow-hidden">
       {/* Carousel container */}
       <div
-        className="relative mx-auto w-full max-w-5xl lg:max-w-6xl px-2 sm:px-4"
+        className="relative mx-auto w-full max-w-5xl lg:max-w-7xl px-2 sm:px-4 lg:px-6"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={() => setIsPaused(true)}
         onTouchEnd={() => setTimeout(() => setIsPaused(false), 4000)}
       >
         {/* Main image with aspect ratio */}
-        <div className="relative w-full aspect-[3/2] sm:aspect-[16/9] md:aspect-[2/1] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10">
+        <div className="relative w-full aspect-[3/2] sm:aspect-[16/9] lg:aspect-[21/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={current}

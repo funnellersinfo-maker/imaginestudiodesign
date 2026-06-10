@@ -58,3 +58,27 @@ Stage Summary:
 - Font reduced to 11px on mobile, stays on one line
 - 16px gap between language toggle and badge prevents overlap
 - No errors, compiles cleanly
+---
+Task ID: 3
+Agent: Main Agent
+Task: Fix desktop layout - everything looked "squished/cramped" on PC
+
+Work Log:
+- Analyzed user's uploaded screenshot with VLM to identify all desktop layout issues
+- VLM found: cramped nav, hero elements too close, service badges stacked vertically, stats too close, no gallery carousel visible, overall insufficient vertical spacing
+- Fixed gallery-carousel.tsx: changed md:py-0 to lg:py-16 (was no padding on desktop!), changed md:aspect-[2/1] to lg:aspect-[21/9] (more appropriate cinematic ratio), widened to lg:max-w-7xl with lg:px-6
+- Fixed Nav: increased height lg:h-20, logo lg:h-12, menu links lg:text-base with gap-8, moved nav visibility from md to lg breakpoint, increased CTA button padding
+- Fixed Hero: increased pt-40/pb-28, badge mb-12, headline container min-h-[10rem] with lg:mb-10, headline text lg:text-[5rem] xl:text-7xl with leading-[1.1], subtitle mb-14, CTA gap-6 with larger buttons, social proof mt-20 with gap-x-10/gap-14 and larger icons/text
+- Fixed all 7 content sections: increased py to lg:py-36 (from md:py-28), title text to lg:text-6xl, mb to lg:mb-20, card padding to lg:p-8, icon sizes to lg:w-14 lg:h-14, gaps to lg:gap-8
+- Fixed Trust metrics: larger text lg:text-5xl/lg:text-base, more gap lg:gap-6, card padding lg:p-8
+- Fixed Process section: moved desktop grid to lg:grid-cols-5 (from md), step boxes lg:w-28 lg:h-28 with larger text
+- Fixed Final CTA: lg:py-40, xl:text-7xl title, larger buttons lg:px-12 lg:py-5, lg:gap-6
+- Updated lang-toggle position for new nav height: lg:top-[92px]
+- Updated process mobile fallback from md:hidden to lg:hidden
+- Browser-verified at 1440x900 and 1920x1080 — all sections properly spaced, no cramped areas
+
+Stage Summary:
+- Desktop layout fully fixed — all sections now have generous breathing room at lg/xl breakpoints
+- Gallery carousel now properly visible with correct aspect ratio and padding on desktop
+- Nav, hero, and all content sections scale appropriately on large screens
+- VLM verification at both 1440x900 and 1920x1080 confirms no remaining cramped/squished areas
