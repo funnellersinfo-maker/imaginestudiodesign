@@ -40,7 +40,7 @@ const SLIDES = [
 ];
 
 export default function GalleryCarousel() {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
@@ -77,6 +77,14 @@ export default function GalleryCarousel() {
 
   return (
     <section className="relative py-10 sm:py-14 lg:py-16 overflow-hidden">
+      {/* Header text */}
+      <div className="text-center mb-6 sm:mb-8 lg:mb-10 px-4 sm:px-6">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black text-white mb-2 lg:mb-3 leading-tight">
+          {t("projects.headline")}
+        </h2>
+        <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto">{t("projects.subline")}</p>
+      </div>
+
       {/* Carousel container */}
       <div
         className="relative mx-auto w-full max-w-5xl lg:max-w-7xl px-2 sm:px-4 lg:px-6"
