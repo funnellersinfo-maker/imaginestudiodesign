@@ -261,7 +261,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.h3.line2": "MÁS CONFIABLE DE LA CIUDAD.",
     "hero.h3.line3": "GANA LOS CLIENTES CORRECTOS.",
     "hero.h4.line1": "TU PRIMERA IMPRESIÓN",
-    "hero.h4.line2": "TE ESTÁ CUESTANDO TRABAJO.",
+    "hero.h4.line2": "TE ESTÁ COSTANDO TRABAJO.",
     "hero.h4.line3": "ARREGLEMOS ESO.",
     "hero.subtitle": "Tu imagen te está ganando clientes o se los está enviando a tus competidores.",
     "hero.cta": "QUIERO QUE MI NEGOCIO SE VEA ASÍ",

@@ -240,7 +240,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         {/* CTA Buttons */}
         <FadeUp delay={0.6}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-6 mb-8 lg:mb-4">
-            <button onClick={onQuote} className="cta-primary text-white font-bold px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-sm sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[200px] sm:min-w-[240px] lg:min-w-[300px] justify-center">
+            <button onClick={onQuote} className="cta-primary text-white font-bold px-5 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-xs sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[180px] sm:min-w-[240px] lg:min-w-[300px] justify-center whitespace-nowrap">
               {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
