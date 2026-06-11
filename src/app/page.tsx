@@ -488,12 +488,11 @@ function FeaturedProjectsSection() {
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <div className="text-center mb-16 lg:mb-20">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("projects.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              {t("projects.title1")} <span className="gradient-brand-text">{t("projects.titleHighlight")}</span>.
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 lg:mb-6 leading-tight">
+              {t("projects.headline")}
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("projects.subtitle")}</p>
+            <p className="text-sm sm:text-base text-gray-500 max-w-xl mx-auto">{t("projects.subline")}</p>
           </div>
         </FadeUp>
         <FadeIn delay={0.2}>
