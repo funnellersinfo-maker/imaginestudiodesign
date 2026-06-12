@@ -109,3 +109,28 @@ Stage Summary:
 - PC spacing increased: badge→headline and headline→subtitle both at lg:mb-20 (5rem)
 - Browser-verified at both PC (1440x900) and mobile (390x844) — all checks pass
 - Spanish and English variants both confirmed working via VLM audit
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Reemplazar video de fondo (sin marca de agua Gemini) — optimizar para web y aplicar como fondo cinemático en Hero + Problem Section
+
+Work Log:
+- Usuario subió nuevo video limpio "FONDO HOOK.mp4" sin la estrellita/marca de agua de Gemini
+- Analicé video original: 1920x1080, 8 segundos, 30fps, 12.5 Mbps (muy pesado), AAC audio
+- Procesé con ffmpeg: -an (sin audio), CRF 30, preset ultrafast, movflags +faststart
+- Resultado: 3.5 MB (reducido de 12 MB, 72% de reducción) — carga rápida en todos los dispositivos
+- Copié archivo optimizado a /public/hero-splash.mp4 y /public/problem-bg.mp4
+- Actualicé ProblemSection en page.tsx: video ahora es fondo completo de la sección (no solo en las cards)
+- Efecto scroll-triggered con Framer Motion: opacity, scale, brightness ligados al scroll
+- Video se reproduce al primer scroll (hasPlayed ref), luego hace loop
+- Gradientes overlay para fusionar video con el tema oscuro
+- Tarjetas del problem section ahora tienen backdrop-blur-sm en lugar de video individual
+- Verificado con agent-browser: desktop (1920x1080) y móvil (390x844) — sin errores visuales
+- VLM confirmó: video de fondo visible, contenido legible, layout correcto en ambas resoluciones
+
+Stage Summary:
+- Video sin marca de agua optimizado de 12MB a 3.5MB
+- Fondo cinemático scroll-triggered en Hero (ya existía) + Problem Section (nuevo)
+- Problem section: video a pantalla completa con overlays, tarjetas con backdrop-blur
+- Verificado en desktop y móvil — todo funcional
