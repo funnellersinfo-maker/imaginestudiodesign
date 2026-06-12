@@ -169,9 +169,32 @@ function Nav({ onQuote }: { onQuote: () => void }) {
 
 /* ───────── 1. HERO ───────── */
 function HeroSection({ onQuote }: { onQuote: () => void }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const contentOpacity = useTransform(scrollY, [0, 400], [1, 0]);
   const { t } = useLang();
+
+  // Scroll-driven video: opacity + scale for cinematic effect
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.15, 0.5, 0.85], [0, 0.5, 0.7, 0]);
+  const videoScale = useTransform(scrollYProgress, [0, 0.3, 0.7], [1.15, 1.05, 1.2]);
+  const videoFilter = useTransform(scrollYProgress, [0, 0.15, 0.5], [0.4, 0.8, 1.2]);
+  const videoFilterStr = useTransform(videoFilter, (v: number) => `brightness(${v})`);
+
+  // Play video on first scroll, then let it loop
+  const hasPlayed = useRef(false);
+  useEffect(() => {
+    const unsub = scrollYProgress.on("change", (v) => {
+      const vid = videoRef.current;
+      if (!vid || hasPlayed.current) return;
+      if (v > 0.02) {
+        vid.play().catch(() => {});
+        hasPlayed.current = true;
+      }
+    });
+    return unsub;
+  }, [scrollYProgress]);
 
   const headlines = [
     { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
@@ -183,7 +206,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const [idx, setIdx] = useState(0);
 
   const scheduleNext = useCallback(() => {
-    const delay = 9000 + Math.random() * 3000; // 9–12s random
+    const delay = 9000 + Math.random() * 3000;
     return setTimeout(() => setIdx((i) => (i + 1) % headlines.length), delay);
   }, [headlines.length]);
 
@@ -196,15 +219,38 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const key = `${idx}-${h.line1}`;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a0a1a] via-background to-background" />
-      <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px]" />
+    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Dark base gradient */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
-      <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity }}>
+      {/* Cinematic video background — scroll-driven */}
+      <motion.div
+        className="absolute inset-0 z-[1] will-change-transform"
+        style={{ opacity: videoOpacity, scale: videoScale, filter: videoFilterStr }}
+      >
+        <video
+          ref={videoRef}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/hero-splash.mp4" type="video/mp4" />
+        </video>
+        {/* Color overlay to blend video with dark theme */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050510]/60 via-[#0a0a1a]/40 to-[#0a0a1a]/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050510]/50 via-transparent to-[#050510]/50" />
+      </motion.div>
+
+      {/* Subtle glow orbs on top of video */}
+      <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px] z-[2]" />
+      <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px] z-[2]" />
+
+      <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
         {/* Badge */}
         <FadeUp delay={0.1}>
-          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 mt-8 sm:mt-0 mb-6 lg:mb-20">
+          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mt-8 sm:mt-0 mb-6 lg:mb-20">
             <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-brand-hot-pink flex-shrink-0" />
             <span className="text-[9px] sm:text-sm text-gray-300 text-center leading-tight whitespace-nowrap">{t("hero.badge")}</span>
           </div>
@@ -222,19 +268,19 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
               className="absolute inset-0 flex flex-col items-center justify-center"
             >
               {/* Mobile/tablet: 3 separate lines */}
-              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
-              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
-              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white">{h.line3}</span>
+              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
+              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line3}</span>
               {/* Desktop: 2 lines only */}
-              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] text-white">{h.line1}</span>
-              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text">{h.line2}</span>
+              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
             </motion.h1>
           </AnimatePresence>
         </div>
 
         {/* Subtitle */}
         <FadeUp delay={0.4}>
-          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-16 leading-relaxed">{t("hero.subtitle")}</p>
+          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-16 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
         </FadeUp>
 
         {/* CTA Buttons */}
@@ -243,7 +289,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             <button onClick={onQuote} className="cta-primary text-white font-bold px-5 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-xs sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[180px] sm:min-w-[240px] lg:min-w-[300px] justify-center whitespace-nowrap">
               {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
+            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
               {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -254,10 +300,10 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           <div className="mt-8 sm:mt-14 lg:mt-20 w-full max-w-xl lg:max-w-3xl mx-auto">
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 lg:gap-x-10 lg:gap-y-4">
               {[
-                t("hero.trust1"), // Vehicle Wraps
-                t("hero.trust2"), // Commercial Signs
-                t("hero.trust3"), // Custom Apparel
-                t("hero.trust4"), // Fleet Branding
+                t("hero.trust1"),
+                t("hero.trust2"),
+                t("hero.trust3"),
+                t("hero.trust4"),
               ].map((txt, i) => (
                 <div key={i} className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 justify-center sm:justify-start">
                   <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
