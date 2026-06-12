@@ -304,6 +304,8 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px] z-[4]" />
 
       <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
+        {/* Frosted backdrop behind copy for readability */}
+        <div className="absolute inset-0 -top-8 -bottom-8 left-1/2 -translate-x-1/2 w-[120%] max-w-4xl bg-black/25 backdrop-blur-md sm:backdrop-blur-lg rounded-3xl -z-10" />
         {/* Badge */}
         <FadeUp delay={0.1}>
           <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mt-8 sm:mt-0 mb-6 lg:mb-20">
