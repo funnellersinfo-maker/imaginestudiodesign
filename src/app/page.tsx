@@ -170,68 +170,9 @@ function Nav({ onQuote }: { onQuote: () => void }) {
 /* ───────── 1. HERO ───────── */
 function HeroSection({ onQuote }: { onQuote: () => void }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const video1Ref = useRef<HTMLVideoElement>(null);
-  const video2Ref = useRef<HTMLVideoElement>(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const { scrollY } = useScroll();
   const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
   const { t } = useLang();
-
-  // Layer 1 (FONDO HOOK) — frozen at 4s as static colorful bg, plays on first scroll
-  const video1Scale = useTransform(scrollYProgress, [0, 0.3, 0.7], [1, 1.05, 1.15]);
-  const video1Filter = useTransform(scrollYProgress, [0, 0.2, 0.5], [0.75, 0.9, 1.3]);
-  const video1FilterStr = useTransform(video1Filter, (v: number) => `brightness(${v})`);
-
-  // Layer 2 (splash explosion) — scroll-driven fade
-  const video2Opacity = useTransform(scrollYProgress, [0, 0.12, 0.35, 0.8], [0, 0, 0.7, 0]);
-  const video2Scale = useTransform(scrollYProgress, [0, 0.2, 0.6], [1.3, 1.1, 1.4]);
-  const video2Filter = useTransform(scrollYProgress, [0.1, 0.3, 0.6], [0.6, 1, 1.4]);
-  const video2FilterStr = useTransform(video2Filter, (v: number) => `brightness(${v}) saturate(${0.8 + v * 0.3})`);
-
-  const hasPlayed1 = useRef(false);
-  const layer2Triggered = useRef(false);
-
-  // Seek video 1 to 4s on load so it shows a colorful static frame
-  useEffect(() => {
-    const v1 = video1Ref.current;
-    if (!v1) return;
-    const onReady = () => {
-      v1.currentTime = 4;
-    };
-    if (v1.readyState >= 2) {
-      onReady();
-    } else {
-      v1.addEventListener("loadeddata", onReady);
-      return () => v1.removeEventListener("loadeddata", onReady);
-    }
-  }, []);
-
-  // Play video 1 on first scroll, trigger video 2 at 80%
-  useEffect(() => {
-    const unsub = scrollYProgress.on("change", (v) => {
-      if (!hasPlayed1.current && v > 0.02) {
-        video1Ref.current?.play().catch(() => {});
-        hasPlayed1.current = true;
-      }
-    });
-    return unsub;
-  }, [scrollYProgress]);
-
-  // Monitor video 1 time to trigger video 2 at 80% of duration
-  useEffect(() => {
-    const v1 = video1Ref.current;
-    if (!v1) return;
-    const onTime = () => {
-      if (layer2Triggered.current) return;
-      const progress = v1.currentTime / v1.duration;
-      if (progress >= 0.78) {
-        layer2Triggered.current = true;
-        video2Ref.current?.play().catch(() => {});
-      }
-    };
-    v1.addEventListener("timeupdate", onTime);
-    return () => v1.removeEventListener("timeupdate", onTime);
-  }, []);
 
   const headlines = [
     { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
@@ -260,44 +201,11 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Dark base gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
-      {/* Layer 1: FONDO HOOK — poster instant + video on load */}
-      <motion.div
-        className="absolute inset-0 z-[1] will-change-transform bg-cover bg-center"
-        style={{ scale: video1Scale, filter: video1FilterStr, backgroundImage: "url('/hero-poster.jpg')" }}
-      >
-        <video
-          ref={video1Ref}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/hero-poster.jpg"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/hero-splash.mp4" type="video/mp4" />
-        </video>
-      </motion.div>
-
-      {/* Layer 2: Color splash explosion — starts when layer 1 hits 80% */}
-      <motion.div
-        className="absolute inset-0 z-[2] will-change-transform mix-blend-screen"
-        style={{ opacity: video2Opacity, scale: video2Scale, filter: video2FilterStr }}
-      >
-        <video
-          ref={video2Ref}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/hero-splash-layer2.mp4" type="video/mp4" />
-        </video>
-      </motion.div>
-
-      {/* Color overlay to blend videos with dark theme */}
-      <div className="absolute inset-0 z-[3] bg-gradient-to-b from-[#050510]/50 sm:from-[#050510]/60 via-[#0a0a1a]/20 sm:via-[#0a0a1a]/30 to-[#0a0a1a]/70 sm:to-[#0a0a1a]/80" />
-      <div className="absolute inset-0 z-[3] bg-gradient-to-r from-[#050510]/30 sm:from-[#050510]/50 via-transparent to-[#050510]/30 sm:to-[#050510]/50" />
+      {/* Static poster background */}
+      <div
+        className="absolute inset-0 z-[1] bg-cover bg-center"
+        style={{ backgroundImage: "url('/hero-poster.jpg')" }}
+      />
 
       {/* Subtle glow orbs on top */}
       <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px] z-[4]" />
