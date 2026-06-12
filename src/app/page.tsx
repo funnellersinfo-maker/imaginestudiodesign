@@ -177,7 +177,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
   const { t } = useLang();
 
-  // Layer 1 (FONDO HOOK) — always visible, static until first scroll
+  // Layer 1 (FONDO HOOK) — frozen at 4s as static colorful bg, plays on first scroll
   const video1Scale = useTransform(scrollYProgress, [0, 0.3, 0.7], [1, 1.05, 1.15]);
   const video1Filter = useTransform(scrollYProgress, [0, 0.2, 0.5], [0.5, 0.85, 1.3]);
   const video1FilterStr = useTransform(video1Filter, (v: number) => `brightness(${v})`);
@@ -188,34 +188,45 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const video2Filter = useTransform(scrollYProgress, [0.1, 0.3, 0.6], [0.6, 1, 1.4]);
   const video2FilterStr = useTransform(video2Filter, (v: number) => `brightness(${v}) saturate(${0.8 + v * 0.3})`);
 
-  // Play video 1 on first scroll
   const hasPlayed1 = useRef(false);
+  const layer2Triggered = useRef(false);
+
+  // Seek video 1 to 4s on load so it shows a colorful static frame
+  useEffect(() => {
+    const v1 = video1Ref.current;
+    if (!v1) return;
+    const onReady = () => {
+      v1.currentTime = 4;
+    };
+    if (v1.readyState >= 2) {
+      onReady();
+    } else {
+      v1.addEventListener("loadeddata", onReady);
+      return () => v1.removeEventListener("loadeddata", onReady);
+    }
+  }, []);
+
+  // Play video 1 on first scroll, trigger video 2 at 80%
   useEffect(() => {
     const unsub = scrollYProgress.on("change", (v) => {
       if (!hasPlayed1.current && v > 0.02) {
         video1Ref.current?.play().catch(() => {});
         hasPlayed1.current = true;
       }
-      // Start video 2 when video 1 is at ~80% of its duration (~6.4s of 8s)
-      if (hasPlayed1.current && video1Ref.current) {
-        const v1 = video1Ref.current;
-        const progress = v1.currentTime / v1.duration;
-        if (progress >= 0.78 && !video2Ref.current?.ended) {
-          video2Ref.current?.play().catch(() => {});
-        }
-      }
     });
     return unsub;
   }, [scrollYProgress]);
 
-  // Fallback: also check video 1 timeupdate for layer 2 trigger
+  // Monitor video 1 time to trigger video 2 at 80% of duration
   useEffect(() => {
     const v1 = video1Ref.current;
     if (!v1) return;
     const onTime = () => {
+      if (layer2Triggered.current) return;
       const progress = v1.currentTime / v1.duration;
-      if (progress >= 0.78 && video2Ref.current && video2Ref.current.paused) {
-        video2Ref.current.play().catch(() => {});
+      if (progress >= 0.78) {
+        layer2Triggered.current = true;
+        video2Ref.current?.play().catch(() => {});
       }
     };
     v1.addEventListener("timeupdate", onTime);
