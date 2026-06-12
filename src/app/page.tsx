@@ -173,7 +173,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const { scrollY } = useScroll();
-  const contentOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
   const { t } = useLang();
 
   // Scroll-driven video: opacity + scale for cinematic effect
