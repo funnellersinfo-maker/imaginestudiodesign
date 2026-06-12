@@ -179,7 +179,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 
   // Layer 1 (FONDO HOOK) — frozen at 4s as static colorful bg, plays on first scroll
   const video1Scale = useTransform(scrollYProgress, [0, 0.3, 0.7], [1, 1.05, 1.15]);
-  const video1Filter = useTransform(scrollYProgress, [0, 0.2, 0.5], [0.5, 0.85, 1.3]);
+  const video1Filter = useTransform(scrollYProgress, [0, 0.2, 0.5], [0.75, 0.9, 1.3]);
   const video1FilterStr = useTransform(video1Filter, (v: number) => `brightness(${v})`);
 
   // Layer 2 (splash explosion) — scroll-driven fade
@@ -296,8 +296,8 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       </motion.div>
 
       {/* Color overlay to blend videos with dark theme */}
-      <div className="absolute inset-0 z-[3] bg-gradient-to-b from-[#050510]/60 via-[#0a0a1a]/30 to-[#0a0a1a]/80" />
-      <div className="absolute inset-0 z-[3] bg-gradient-to-r from-[#050510]/50 via-transparent to-[#050510]/50" />
+      <div className="absolute inset-0 z-[3] bg-gradient-to-b from-[#050510]/50 sm:from-[#050510]/60 via-[#0a0a1a]/20 sm:via-[#0a0a1a]/30 to-[#0a0a1a]/70 sm:to-[#0a0a1a]/80" />
+      <div className="absolute inset-0 z-[3] bg-gradient-to-r from-[#050510]/30 sm:from-[#050510]/50 via-transparent to-[#050510]/30 sm:to-[#050510]/50" />
 
       {/* Subtle glow orbs on top */}
       <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px] z-[4]" />
