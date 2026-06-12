@@ -260,10 +260,10 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Dark base gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
-      {/* Layer 1: FONDO HOOK — static background, plays on first scroll */}
+      {/* Layer 1: FONDO HOOK — poster instant + video on load */}
       <motion.div
-        className="absolute inset-0 z-[1] will-change-transform"
-        style={{ scale: video1Scale, filter: video1FilterStr }}
+        className="absolute inset-0 z-[1] will-change-transform bg-cover bg-center"
+        style={{ scale: video1Scale, filter: video1FilterStr, backgroundImage: "url('/hero-poster.jpg')" }}
       >
         <video
           ref={video1Ref}
@@ -271,6 +271,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           loop
           playsInline
           preload="auto"
+          poster="/hero-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/hero-splash.mp4" type="video/mp4" />
