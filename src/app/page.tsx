@@ -170,31 +170,57 @@ function Nav({ onQuote }: { onQuote: () => void }) {
 /* ───────── 1. HERO ───────── */
 function HeroSection({ onQuote }: { onQuote: () => void }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const video1Ref = useRef<HTMLVideoElement>(null);
+  const video2Ref = useRef<HTMLVideoElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const { scrollY } = useScroll();
   const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
   const { t } = useLang();
 
-  // Scroll-driven video: opacity + scale for cinematic effect
-  const videoOpacity = useTransform(scrollYProgress, [0, 0.15, 0.5, 0.85], [0, 0.5, 0.7, 0]);
-  const videoScale = useTransform(scrollYProgress, [0, 0.3, 0.7], [1.15, 1.05, 1.2]);
-  const videoFilter = useTransform(scrollYProgress, [0, 0.15, 0.5], [0.4, 0.8, 1.2]);
-  const videoFilterStr = useTransform(videoFilter, (v: number) => `brightness(${v})`);
+  // Layer 1 (FONDO HOOK) — always visible, static until first scroll
+  const video1Scale = useTransform(scrollYProgress, [0, 0.3, 0.7], [1, 1.05, 1.15]);
+  const video1Filter = useTransform(scrollYProgress, [0, 0.2, 0.5], [0.5, 0.85, 1.3]);
+  const video1FilterStr = useTransform(video1Filter, (v: number) => `brightness(${v})`);
 
-  // Play video on first scroll, then let it loop
-  const hasPlayed = useRef(false);
+  // Layer 2 (splash explosion) — scroll-driven fade
+  const video2Opacity = useTransform(scrollYProgress, [0, 0.12, 0.35, 0.8], [0, 0, 0.7, 0]);
+  const video2Scale = useTransform(scrollYProgress, [0, 0.2, 0.6], [1.3, 1.1, 1.4]);
+  const video2Filter = useTransform(scrollYProgress, [0.1, 0.3, 0.6], [0.6, 1, 1.4]);
+  const video2FilterStr = useTransform(video2Filter, (v: number) => `brightness(${v}) saturate(${0.8 + v * 0.3})`);
+
+  // Play video 1 on first scroll
+  const hasPlayed1 = useRef(false);
   useEffect(() => {
     const unsub = scrollYProgress.on("change", (v) => {
-      const vid = videoRef.current;
-      if (!vid || hasPlayed.current) return;
-      if (v > 0.02) {
-        vid.play().catch(() => {});
-        hasPlayed.current = true;
+      if (!hasPlayed1.current && v > 0.02) {
+        video1Ref.current?.play().catch(() => {});
+        hasPlayed1.current = true;
+      }
+      // Start video 2 when video 1 is at ~80% of its duration (~6.4s of 8s)
+      if (hasPlayed1.current && video1Ref.current) {
+        const v1 = video1Ref.current;
+        const progress = v1.currentTime / v1.duration;
+        if (progress >= 0.78 && !video2Ref.current?.ended) {
+          video2Ref.current?.play().catch(() => {});
+        }
       }
     });
     return unsub;
   }, [scrollYProgress]);
+
+  // Fallback: also check video 1 timeupdate for layer 2 trigger
+  useEffect(() => {
+    const v1 = video1Ref.current;
+    if (!v1) return;
+    const onTime = () => {
+      const progress = v1.currentTime / v1.duration;
+      if (progress >= 0.78 && video2Ref.current && video2Ref.current.paused) {
+        video2Ref.current.play().catch(() => {});
+      }
+    };
+    v1.addEventListener("timeupdate", onTime);
+    return () => v1.removeEventListener("timeupdate", onTime);
+  }, []);
 
   const headlines = [
     { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
@@ -223,13 +249,13 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Dark base gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
-      {/* Cinematic video background — scroll-driven */}
+      {/* Layer 1: FONDO HOOK — static background, plays on first scroll */}
       <motion.div
         className="absolute inset-0 z-[1] will-change-transform"
-        style={{ opacity: videoOpacity, scale: videoScale, filter: videoFilterStr }}
+        style={{ scale: video1Scale, filter: video1FilterStr }}
       >
         <video
-          ref={videoRef}
+          ref={video1Ref}
           muted
           loop
           playsInline
@@ -238,14 +264,32 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         >
           <source src="/hero-splash.mp4" type="video/mp4" />
         </video>
-        {/* Color overlay to blend video with dark theme */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050510]/60 via-[#0a0a1a]/40 to-[#0a0a1a]/80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050510]/50 via-transparent to-[#050510]/50" />
       </motion.div>
 
-      {/* Subtle glow orbs on top of video */}
-      <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px] z-[2]" />
-      <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px] z-[2]" />
+      {/* Layer 2: Color splash explosion — starts when layer 1 hits 80% */}
+      <motion.div
+        className="absolute inset-0 z-[2] will-change-transform mix-blend-screen"
+        style={{ opacity: video2Opacity, scale: video2Scale, filter: video2FilterStr }}
+      >
+        <video
+          ref={video2Ref}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/hero-splash-layer2.mp4" type="video/mp4" />
+        </video>
+      </motion.div>
+
+      {/* Color overlay to blend videos with dark theme */}
+      <div className="absolute inset-0 z-[3] bg-gradient-to-b from-[#050510]/60 via-[#0a0a1a]/30 to-[#0a0a1a]/80" />
+      <div className="absolute inset-0 z-[3] bg-gradient-to-r from-[#050510]/50 via-transparent to-[#050510]/50" />
+
+      {/* Subtle glow orbs on top */}
+      <div className="absolute top-1/4 left-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px] z-[4]" />
+      <div className="absolute bottom-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-brand-magenta/15 rounded-full blur-[100px] sm:blur-[120px] z-[4]" />
 
       <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
         {/* Badge */}
