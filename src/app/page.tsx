@@ -350,10 +350,10 @@ function ProblemSection() {
 /* ───────── 3. TRANSFORMATION ───────── */
 function TransformationSection() {
   const { t } = useLang();
-  const gridItems = [
-    { src: "/images/truck-wrap-1.png", labelKey: "transform.fleet" },
-    { src: "/images/pickup-wrap.png", labelKey: "transform.graphics" },
-    { src: "/images/fleet-branding.png", labelKey: "transform.fullFleet" },
+  const realProjects = [
+    { src: "/images/real-leon-tires.jpg", name: "Leon Tires & Body Services LLC" },
+    { src: "/images/real-pelones-framing.jpg", name: "Los Pelones Framing LLC" },
+    { src: "/images/real-cabrera-flooring.jpg", name: "Cabrera Flooring LLC" },
   ];
   return (
     <section id="transformations" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
@@ -397,13 +397,14 @@ function TransformationSection() {
           </div>
         </ScaleIn>
         <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
-          {gridItems.map((item, i) => (
+          {realProjects.map((item, i) => (
             <FadeUp key={i} delay={i * 0.1}>
-              <div className="project-card relative rounded-xl overflow-hidden border border-white/5 group cursor-pointer aspect-[4/3]">
-                <Image src={item.src} alt={t(item.labelKey)} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <span className="text-sm font-bold text-white">{t(item.labelKey)}</span>
+              <div className="project-card relative rounded-xl overflow-hidden border border-white/5 group">
+                <div className="relative aspect-[4/3]">
+                  <Image src={item.src} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div className="p-3 lg:p-4 bg-white/[0.02]">
+                  <p className="text-xs sm:text-sm font-bold text-white/80 group-hover:text-white transition-colors text-center">{item.name}</p>
                 </div>
               </div>
             </FadeUp>
