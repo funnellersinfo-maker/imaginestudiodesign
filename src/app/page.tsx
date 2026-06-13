@@ -359,7 +359,20 @@ function TransformationSection() {
     <section id="transformations" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px]" />
+      {/* Dopaminic looping video background */}
+      <div className="absolute inset-0 z-[1]">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
+        >
+          <source src="/transform-bg.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px] z-[2]" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
