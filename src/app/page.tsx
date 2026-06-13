@@ -298,54 +298,12 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 /* ───────── 2. PROBLEM ───────── */
 function ProblemSection() {
   const { t } = useLang();
-  const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
-  const hasPlayed = useRef(false);
-
-  // Scroll-driven cinematic video
-  const videoOpacity = useTransform(scrollYProgress, [0, 0.2, 0.5, 0.9], [0, 0.25, 0.35, 0]);
-  const videoScale = useTransform(scrollYProgress, [0, 0.4, 0.8], [1.2, 1.05, 1.25]);
-  const videoFilter = useTransform(scrollYProgress, [0, 0.2, 0.5], [0.3, 0.7, 1.1]);
-  const videoFilterStr = useTransform(videoFilter, (v: number) => `brightness(${v})`);
-
-  useEffect(() => {
-    const unsub = scrollYProgress.on("change", (v) => {
-      const vid = videoRef.current;
-      if (!vid || hasPlayed.current) return;
-      if (v > 0.02) {
-        vid.play().catch(() => {});
-        hasPlayed.current = true;
-      }
-    });
-    return unsub;
-  }, [scrollYProgress]);
-
   const pains = [t("problem.pain1"), t("problem.pain2"), t("problem.pain3")];
   const icons = [Eye, Shield, Target];
   return (
-    <section ref={sectionRef} className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
-      {/* Full cinematic video background */}
-      <motion.div
-        className="absolute inset-0 z-[1] will-change-transform"
-        style={{ opacity: videoOpacity, scale: videoScale, filter: videoFilterStr }}
-      >
-        <video
-          ref={videoRef}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/problem-bg.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-[#0a0a1a]/60 to-background/90" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
-      </motion.div>
-
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
-      <div className="absolute top-0 left-0 right-0 section-divider z-[2]" />
+    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+      <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-16 lg:mb-20">
