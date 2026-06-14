@@ -405,8 +405,8 @@ function TransformationSection() {
         <ScaleIn delay={0.1}>
           <div className="mb-10">
             <BeforeAfterSlider
-              beforeSrc="/images/after-brothers-painting.png"
-              afterSrc="/images/before-brothers-painting.png"
+              beforeSrc="/images/before-brothers-painting.png"
+              afterSrc="/images/after-brothers-painting.png"
               beforeAlt="Van before wrap - plain white"
               afterAlt="Van after wrap - Brothers Painting Services LLC"
             />
