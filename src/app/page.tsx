@@ -201,6 +201,63 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Dark base gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
+      {/* Floating dopaminic elements */}
+      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+        {/* Vehicle wrap icon — large, top-left */}
+        <motion.div
+          animate={{ y: [0, -18, 0], x: [0, 8, 0], rotate: [0, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[18%] left-[5%] sm:top-[15%] sm:left-[8%] opacity-[0.08] sm:opacity-[0.12]"
+        >
+          <Truck className="w-16 h-16 sm:w-28 sm:h-28 text-brand-blue" />
+        </motion.div>
+
+        {/* Palette/brush — medium, top-right */}
+        <motion.div
+          animate={{ y: [0, 14, 0], x: [0, -10, 0], rotate: [0, -8, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-[12%] right-[6%] sm:top-[10%] sm:right-[10%] opacity-[0.08] sm:opacity-[0.12]"
+        >
+          <Palette className="w-12 h-12 sm:w-20 sm:h-20 text-brand-magenta" />
+        </motion.div>
+
+        {/* Star rating — small, bottom-left */}
+        <motion.div
+          animate={{ y: [0, -12, 0], rotate: [0, 15, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[25%] left-[8%] sm:bottom-[20%] sm:left-[12%] opacity-[0.07] sm:opacity-[0.1]"
+        >
+          <Star className="w-10 h-10 sm:w-16 sm:h-16 text-yellow-400" />
+        </motion.div>
+
+        {/* Layers/signage — medium, bottom-right */}
+        <motion.div
+          animate={{ y: [0, 16, 0], x: [0, 12, 0], rotate: [0, -6, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute bottom-[30%] right-[4%] sm:bottom-[25%] sm:right-[7%] opacity-[0.07] sm:opacity-[0.1]"
+        >
+          <Layers className="w-12 h-12 sm:w-18 sm:h-18 text-brand-purple" />
+        </motion.div>
+
+        {/* Wrench — small, mid-left */}
+        <motion.div
+          animate={{ y: [0, 10, 0], rotate: [0, 20, 0] }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          className="absolute top-[55%] left-[3%] sm:left-[5%] opacity-[0.05] sm:opacity-[0.08] hidden md:block"
+        >
+          <Wrench className="w-10 h-10 sm:w-14 sm:h-14 text-brand-blue/60" />
+        </motion.div>
+
+        {/* PaintBucket — small, mid-right */}
+        <motion.div
+          animate={{ y: [0, -14, 0], rotate: [0, -12, 0] }}
+          transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          className="absolute top-[50%] right-[5%] sm:right-[4%] opacity-[0.05] sm:opacity-[0.08] hidden md:block"
+        >
+          <PaintBucket className="w-10 h-10 sm:w-14 sm:h-14 text-brand-magenta/60" />
+        </motion.div>
+      </div>
+
       <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
         {/* Badge */}
         <FadeUp delay={0.1}>
@@ -559,7 +616,41 @@ function FeaturedProjectsSection() {
 
 /* ───────── 7. TRUST ───────── */
 function TrustSection() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+
+  const realReviews = [
+    {
+      name: "River Vibes",
+      text: lang === "es"
+        ? "No puedo decir lo suficiente sobre este negocio. Mi hija se gradúa de UNCW en 4 días y el negocio que tenía 2 meses de aviso bordó la bata del lado equivocado... Este lugar vino al rescate y bordó una nueva bata en solo unas horas, ¡el bordado se ve mejor que el original! Solo le cobraron $8. ¡Gracias por hacer perfecto el día de graduación de mi hija!"
+        : "I can't say enough about this business. My daughter is graduating in 4 days from UNCW and the business that had a 2 month notice embroidered on the wrong side... This place came in clutch and embroidered a new coat in just a few hours and the stitching looks better than the original one! They only charged her $8! Thank you soooo very much for making her graduation day memories perfect!",
+      stars: 5,
+      time: lang === "es" ? "hace 2 años" : "2 years ago",
+    },
+    {
+      name: "Jose Avendaño",
+      text: "Son los más profesionales, los recomiendo 100%.",
+      stars: 5,
+      time: lang === "es" ? "hace 1 mes" : "a month ago",
+    },
+    {
+      name: "Laura Main Photography",
+      text: lang === "es"
+        ? "Productos realmente bonitos y una familia encantadora. ¡Negocio local y familiar, hay que apoyarlos! ¡Muy feliz con el servicio y productos! ¡Rápido también!"
+        : "Really nice products and such a lovely family. Local and mom and pop shop, gotta support them! Very happy with the service and products! Fast turn around too!",
+      stars: 5,
+      time: lang === "es" ? "hace 1 mes" : "a month ago",
+    },
+    {
+      name: "Christopher Sperry",
+      text: lang === "es"
+        ? "Imagine Design Studio hizo un trabajo excepcional creando camisas de empresa y materiales de stand para nuestro pequeño negocio. Los diseños se veían geniales, la calidad era excelente, y fueron fáciles de trabajar durante todo el proceso. ¡Definitivamente los usaremos de nuevo!"
+        : "Imagine Design Studio did an outstanding job creating company shirts and booth materials for our small business. The designs looked great, the quality was excellent, and they were easy to work with throughout the process. We will absolutely be using them again.",
+      stars: 5,
+      time: lang === "es" ? "hace 2 meses" : "2 months ago",
+    },
+  ];
+
   return (
     <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
@@ -578,19 +669,24 @@ function TrustSection() {
           </div>
         </FadeUp>
         <FadeUp delay={0.3}>
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-            {[
-              { quoteKey: "trust.testimonial1", nameKey: "trust.testimonial1Name", bizKey: "trust.testimonial1Biz", stars: 5 },
-              { quoteKey: "trust.testimonial2", nameKey: "trust.testimonial2Name", bizKey: "trust.testimonial2Biz", stars: 5 },
-            ].map((item, i) => (
-              <FadeUp key={i} delay={i * 0.15}>
+          <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
+            {realReviews.map((review, i) => (
+              <FadeUp key={i} delay={i * 0.12}>
                 <div className="p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] h-full flex flex-col">
-                  <div className="flex gap-1 mb-4">{Array.from({ length: item.stars }).map((_, si) => <Star key={si} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
+                  <div className="flex gap-1 mb-4">{Array.from({ length: review.stars }).map((_, si) => <Star key={si} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
                   <Quote className="w-8 h-8 text-brand-purple/30 mb-3" />
-                  <p className="text-gray-300 leading-relaxed flex-1 mb-4">&ldquo;{t(item.quoteKey)}&rdquo;</p>
-                  <div>
-                    <p className="text-white font-semibold text-sm">{t(item.nameKey)}</p>
-                    <p className="text-gray-500 text-xs">{t(item.bizKey)}</p>
+                  <p className="text-gray-300 leading-relaxed flex-1 mb-4 text-sm lg:text-base">&ldquo;{review.text}&rdquo;</p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white font-semibold text-sm">{review.name}</p>
+                      <p className="text-gray-500 text-xs">{review.time}</p>
+                    </div>
+                    <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
                   </div>
                 </div>
               </FadeUp>
@@ -712,6 +808,54 @@ function FinalCTASection({ onQuote }: { onQuote: () => void }) {
   );
 }
 
+/* ───────── GOOGLE MAPS ───────── */
+function MapSection() {
+  const { t, lang } = useLang();
+  return (
+    <section className="relative py-16 md:py-20 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#050510]" />
+      <div className="absolute top-0 left-0 right-0 section-divider" />
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeUp>
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <MapPin className="w-6 h-6 text-brand-purple" />
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white">
+              {lang === "es" ? "Encuéntranos en Wilmington, NC" : "Find Us in Wilmington, NC"}
+            </h2>
+          </div>
+        </FadeUp>
+        <FadeUp delay={0.2}>
+          <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3247.5!2d-77.947!3d34.226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89afa3e5c2c2c0a1%3A0x0!2s4608+Cedar+Ave%2C+Wilmington%2C+NC+28403!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Imagine Studio Design Location"
+              className="w-full"
+            />
+          </div>
+        </FadeUp>
+        <FadeUp delay={0.3}>
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-400">
+            <a href="https://www.google.com/maps/place/4608+Cedar+Ave,+Wilmington,+NC+28403" target="_blank" rel="noopener noreferrer" className="hover:text-brand-purple transition-colors flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              4608 Cedar Ave, Wilmington, NC 28403
+            </a>
+            <a href="tel:+19105474314" className="hover:text-brand-purple transition-colors flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              (910) 547-4314
+            </a>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
 /* ───────── FOOTER ───────── */
 function Footer() {
   const { t } = useLang();
@@ -753,6 +897,7 @@ export default function Home() {
       <TrustSection />
       <ProcessSection onQuote={() => setQuoteOpen(true)} />
       <FinalCTASection onQuote={() => setQuoteOpen(true)} />
+      <MapSection />
       <Footer />
       <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
       <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
