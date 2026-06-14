@@ -55,17 +55,16 @@ function buildWhatsAppURL(data: { name: string; phone: string; businessType: str
 interface QuoteFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  source?: string;
 }
 
-export default function QuoteFormModal({ open, onOpenChange, source = "website" }: QuoteFormModalProps) {
+export default function QuoteFormModal({ open, onOpenChange }: QuoteFormModalProps) {
   const { t, lang } = useLang();
   const [formData, setFormData] = useState({ name: "", phone: "", businessType: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     if (!formData.name.trim() || !formData.phone.trim() || !formData.businessType) {
@@ -73,29 +72,18 @@ export default function QuoteFormModal({ open, onOpenChange, source = "website" 
       return;
     }
     setIsSubmitting(true);
-    try {
-      // Save to database
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, source }),
-      });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || t("quote.error")); return; }
 
-      // Build WhatsApp URL with personalized message
-      const waURL = buildWhatsAppURL(formData, lang);
+    // Build WhatsApp URL with personalized message
+    const waURL = buildWhatsAppURL(formData, lang);
 
-      // Show success briefly, then redirect to WhatsApp
+    // Show success briefly, then redirect to WhatsApp
+    setTimeout(() => {
+      setIsSubmitting(false);
       setIsSuccess(true);
       setTimeout(() => {
         window.open(waURL, "_blank", "noopener,noreferrer");
-      }, 1000);
-    } catch {
-      setError(t("quote.networkError"));
-    } finally {
-      setIsSubmitting(false);
-    }
+      }, 800);
+    }, 400);
   };
 
   const handleReset = () => {
