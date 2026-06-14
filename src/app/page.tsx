@@ -33,6 +33,9 @@ import {
   Menu,
   X,
   Mail,
+  Scissors,
+  Shirt,
+  Play,
 } from "lucide-react";
 import {
   Carousel,
@@ -736,31 +739,11 @@ function TrustSection() {
     { src: "/images/gallery-IMG_7721-web.png", alt: "Commercial wrap installation" },
   ];
 
-  const realReviews = [
-    {
-      name: "River Vibes",
-      stars: 5,
-      textEs: "Excelente trabajo y atención al detalle. Mi vehículo quedó impecable. Totalmente recomendado si quieres que tu negocio destaque.",
-      textEn: "Excellent work and attention to detail. My vehicle looked flawless. Totally recommended if you want your business to stand out.",
-    },
-    {
-      name: "Jose Avendaño",
-      stars: 5,
-      textEs: "Muy profesionales, el vinilo se ve de alta calidad y la instalación fue perfecta. Mi flota quedó lista en tiempo récord.",
-      textEn: "Very professional, the vinyl looks high quality and the installation was perfect. My fleet was ready in record time.",
-    },
-    {
-      name: "Laura Main Photography",
-      stars: 5,
-      textEs: "Increíble el trabajo que hicieron con mi vehículo. Quedó espectacular y ya tengo clientes nuevos que me encontraron por la calle.",
-      textEn: "Incredible work they did on my vehicle. It looks spectacular and I already have new clients who found me on the street.",
-    },
-    {
-      name: "Christopher Sperry",
-      stars: 5,
-      textEs: "Best wrap shop in Wilmington, hands down. Great communication, fair pricing, and the result exceeded my expectations.",
-      textEn: "Best wrap shop in Wilmington, hands down. Great communication, fair pricing, and the result exceeded my expectations.",
-    },
+  const reviewScreenshots = [
+    { src: "/reviews/review-river-vibes.png", alt: "Google review - River Vibes" },
+    { src: "/reviews/review-jose-avendano.png", alt: "Google review - Jose Avendaño" },
+    { src: "/reviews/review-laura-main.png", alt: "Google review - Laura Main Photography" },
+    { src: "/reviews/review-christopher-sperry.png", alt: "Google review - Christopher Sperry" },
   ];
 
   return (
@@ -852,7 +835,7 @@ function TrustSection() {
           </div>
         </FadeUp>
 
-        {/* Real Google Reviews as text cards */}
+        {/* Real Google Review Screenshots */}
         <FadeUp delay={0.5}>
           <div className="mb-8">
             <div className="flex items-center justify-center gap-2 mb-6">
@@ -866,21 +849,17 @@ function TrustSection() {
                 {lang === "es" ? "Reseñas Reales de Google" : "Real Google Reviews"}
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {realReviews.map((review, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+              {reviewScreenshots.map((review, i) => (
                 <FadeUp key={i} delay={i * 0.08}>
-                  <div className="rounded-xl p-5 border border-white/[0.06] bg-white/[0.02]">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex -space-x-0.5">
-                        {[...Array(review.stars)].map((_, j) => (
-                          <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                        ))}
-                      </div>
-                      <span className="text-white font-bold text-sm">{review.name}</span>
-                    </div>
-                    <p className="text-gray-300 text-sm leading-relaxed">
-                      {lang === "es" ? review.textEs : review.textEn}
-                    </p>
+                  <div className="rounded-xl overflow-hidden border border-white/[0.08] bg-white/[0.03] hover:border-brand-purple/20 transition-all duration-300">
+                    <Image
+                      src={review.src}
+                      alt={review.alt}
+                      width={600}
+                      height={400}
+                      className="w-full h-auto object-contain"
+                    />
                   </div>
                 </FadeUp>
               ))}
@@ -1001,6 +980,149 @@ function FinalCTASection({ onQuote }: { onQuote: () => void }) {
   );
 }
 
+/* ───────── TEXTILE / CONFECCIÓN TEXTIL ───────── */
+function TextileSection({ onQuote }: { onQuote: () => void }) {
+  const { lang } = useLang();
+  const textileItems = [
+    {
+      icon: Shirt,
+      titleEs: "Camisas Corporativas",
+      titleEn: "Corporate Shirts",
+      descEs: "Diseño e impresión de camisas con tu logo. Uniformes profesionales que proyectan confianza.",
+      descEn: "Logo design and printing on shirts. Professional uniforms that project trust.",
+    },
+    {
+      icon: Scissors,
+      titleEs: "Bordados Personalizados",
+      titleEn: "Custom Embroidery",
+      descEs: "Bordado de alta calidad para delantales, gorras, chaquetas y más. Detalle que marca la diferencia.",
+      descEn: "High-quality embroidery for aprons, caps, jackets and more. Detail that makes the difference.",
+    },
+    {
+      icon: Palette,
+      titleEs: "Material para Stands y Eventos",
+      titleEn: "Booth & Event Materials",
+      descEs: "Banners, lonas, manteles impresos y todo lo que necesitas para que tu stand destaque.",
+      descEn: "Banners, table covers, printed linens and everything you need to make your booth stand out.",
+    },
+    {
+      icon: Users,
+      titleEs: "Uniformes para Equipos",
+      titleEn: "Team Uniforms",
+      descEs: "Viste a todo tu equipo con identidad visual. Desde empleados de campo hasta oficina.",
+      descEn: "Dress your entire team with visual identity. From field workers to office staff.",
+    },
+  ];
+  return (
+    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-[#080818]" />
+      <div className="absolute top-0 left-0 right-0 section-divider" />
+      <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-brand-hot-pink/8 rounded-full blur-[180px]" />
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeUp>
+          <div className="text-center mb-14 lg:mb-16">
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">
+              {lang === "es" ? "Confección Textil" : "Textile & Apparel"}
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+              {lang === "es" ? "Más que vinilos. " : "More than wraps. "}
+              <span className="gradient-brand-text">
+                {lang === "es" ? "Tu marca en tela." : "Your brand on fabric."}
+              </span>
+            </h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
+              {lang === "es"
+                ? "Camisas corporativas, bordados, uniformes y material para eventos. Todo lo que tu negocio necesita para verse profesional de la cabeza a los pies."
+                : "Corporate shirts, embroidery, uniforms, and event materials. Everything your business needs to look professional from head to toe."}
+            </p>
+          </div>
+        </FadeUp>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6 mb-12">
+          {textileItems.map((item, i) => (
+            <FadeUp key={i} delay={i * 0.1}>
+              <div className="group p-6 lg:p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-brand-hot-pink/25 hover:bg-brand-hot-pink/[0.04] transition-all duration-300">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl bg-brand-hot-pink/10 border border-brand-hot-pink/20 flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform">
+                  <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-brand-hot-pink" />
+                </div>
+                <h3 className="text-white font-bold text-lg lg:text-xl mb-2">
+                  {lang === "es" ? item.titleEs : item.titleEn}
+                </h3>
+                <p className="text-gray-400 text-sm lg:text-base leading-relaxed">
+                  {lang === "es" ? item.descEs : item.descEn}
+                </p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+        <FadeUp delay={0.5}>
+          <div className="text-center">
+            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 lg:px-10 py-3.5 lg:py-4 rounded-xl text-base lg:text-lg tracking-wide inline-flex items-center gap-2">
+              {lang === "es" ? "Cotizar Confección Textil" : "Quote Textile Services"} <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── SHOWREEL VIDEO ───────── */
+function ShowreelVideo() {
+  const { lang } = useLang();
+  const [playing, setPlaying] = useState(false);
+  return (
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] to-background" />
+      <div className="absolute top-0 left-0 right-0 section-divider" />
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeUp>
+          <div className="text-center mb-8 lg:mb-10">
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-purple mb-4">
+              {lang === "es" ? "Nuestro Trabajo en Video" : "Our Work in Video"}
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
+              {lang === "es" ? "Mira cómo " : "Watch how "}
+              <span className="gradient-brand-text">
+                {lang === "es" ? "transformamos" : "we transform"}
+              </span>
+              {lang === "es" ? " vehículos" : " vehicles"}
+            </h2>
+          </div>
+        </FadeUp>
+        <FadeUp delay={0.2}>
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10">
+            {!playing ? (
+              <button
+                onClick={() => setPlaying(true)}
+                className="relative w-full aspect-video bg-black/60 flex items-center justify-center cursor-pointer group"
+              >
+                <video
+                  src="/showreel.mp4"
+                  className="absolute inset-0 w-full h-full object-cover opacity-60"
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+                <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all duration-300">
+                  <Play className="w-7 h-7 sm:w-8 sm:h-8 text-white ml-1" fill="white" />
+                </div>
+              </button>
+            ) : (
+              <video
+                src="/showreel.mp4"
+                className="w-full aspect-video object-cover"
+                controls
+                autoPlay
+                playsInline
+              />
+            )}
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
 /* ───────── GOOGLE MAPS ───────── */
 function MapSection() {
   const { t, lang } = useLang();
@@ -1089,7 +1211,9 @@ export default function Home() {
       <FeaturedProjectsSection />
       <TrustSection />
       <ProcessSection onQuote={() => setQuoteOpen(true)} />
+      <TextileSection onQuote={() => setQuoteOpen(true)} />
       <FinalCTASection onQuote={() => setQuoteOpen(true)} />
+      <ShowreelVideo />
       <MapSection />
       <Footer />
       <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />

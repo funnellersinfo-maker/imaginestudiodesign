@@ -19,13 +19,28 @@ const SLIDES = [
   },
   {
     src: "/images/gallery-IMG_7721-web.png",
-    altEn: "Commercial signage and branding project",
-    altEs: "Proyecto de señalización y marca comercial",
+    altEn: "Leon Tires branded vehicle",
+    altEs: "Vehículo Leon Tires con marca",
   },
   {
-    src: "/images/gallery-IMG_7809-web.png",
-    altEn: "Eye-catching vehicle wrap design",
-    altEs: "Diseño de vinilo vehicular llamativo",
+    src: "/images/wrap-shaved-ice-truck.jpg",
+    altEn: "Shaved ice food truck wrap",
+    altEs: "Vinilo de camión de raspados",
+  },
+  {
+    src: "/images/wrap-food-truck-colorful.jpg",
+    altEn: "Colorful food truck wrap",
+    altEs: "Vinilo de camión de comida colorido",
+  },
+  {
+    src: "/images/wrap-hernandez-construction.jpg",
+    altEn: "Hernandez Construction LLC trailer wrap",
+    altEs: "Vinilo de remolque Hernandez Construction",
+  },
+  {
+    src: "/images/wrap-wolf-hvac.jpg",
+    altEn: "WOLF Heating & Cooling LLC trailer wrap",
+    altEs: "Vinilo de remolque WOLF Heating & Cooling",
   },
   {
     src: "/images/gallery-IMG_7991-web.JPG",
