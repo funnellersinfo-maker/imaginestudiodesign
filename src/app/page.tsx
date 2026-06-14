@@ -212,12 +212,12 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             rotate: [0, 5, -3, 2, 0],
           }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[12%] left-[2%] sm:left-[5%] lg:left-[7%]"
+          className="absolute top-[10%] left-[1%] sm:left-[4%] lg:left-[6%]"
         >
           <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-brand-blue/25 via-brand-purple/20 to-brand-hot-pink/15 blur-2xl" />
-            <div className="relative w-[72px] h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[120px] lg:h-[120px] rounded-2xl lg:rounded-3xl border border-white/[0.12] bg-white/[0.05] backdrop-blur-sm flex items-center justify-center shadow-lg shadow-brand-purple/10">
-              <svg viewBox="0 0 100 100" className="w-10 h-10 sm:w-14 sm:h-14 lg:w-[72px] lg:h-[72px]" fill="none">
+            <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-brand-blue/40 via-brand-purple/30 to-brand-hot-pink/25 blur-2xl" />
+            <div className="relative w-[76px] h-[76px] sm:w-[100px] sm:h-[100px] lg:w-[130px] lg:h-[130px] rounded-2xl lg:rounded-3xl border border-brand-purple/30 bg-brand-purple/[0.12] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-purple/20">
+              <svg viewBox="0 0 100 100" className="w-11 h-11 sm:w-14 sm:h-14 lg:w-[78px] lg:h-[78px]" fill="none">
                 <defs>
                   <linearGradient id="roll-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#2D7FE0" />
@@ -225,19 +225,16 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                     <stop offset="100%" stopColor="#E71D8C" />
                   </linearGradient>
                   <filter id="roll-glow">
-                    <feGaussianBlur stdDeviation="2" result="blur" />
+                    <feGaussianBlur stdDeviation="3" result="blur" />
                     <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                   </filter>
                 </defs>
-                {/* Roll body */}
-                <circle cx="42" cy="50" r="28" fill="none" stroke="url(#roll-grad)" strokeWidth="3" opacity="0.7" filter="url(#roll-glow)" />
-                <circle cx="42" cy="50" r="18" fill="none" stroke="url(#roll-grad)" strokeWidth="1.5" opacity="0.3" />
-                <circle cx="42" cy="50" r="6" fill="url(#roll-grad)" opacity="0.5" />
-                {/* Unpeeling vinyl strip */}
-                <path d="M70 50 Q78 50 82 44 L92 28 Q94 24 90 23 L75 30 Q68 34 66 42 Z" fill="url(#roll-grad)" opacity="0.4" />
-                {/* Design lines on vinyl */}
-                <path d="M72 42 L86 30" stroke="white" strokeWidth="1.5" opacity="0.3" strokeLinecap="round" />
-                <path d="M70 46 L82 36" stroke="white" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
+                <circle cx="42" cy="50" r="28" fill="none" stroke="url(#roll-grad)" strokeWidth="3.5" opacity="1" filter="url(#roll-glow)" />
+                <circle cx="42" cy="50" r="18" fill="none" stroke="url(#roll-grad)" strokeWidth="1.5" opacity="0.6" />
+                <circle cx="42" cy="50" r="6" fill="url(#roll-grad)" opacity="0.9" />
+                <path d="M70 50 Q78 50 82 44 L92 28 Q94 24 90 23 L75 30 Q68 34 66 42 Z" fill="url(#roll-grad)" opacity="0.75" />
+                <path d="M72 42 L86 30" stroke="white" strokeWidth="2" opacity="0.6" strokeLinecap="round" />
+                <path d="M70 46 L82 36" stroke="white" strokeWidth="1.5" opacity="0.4" strokeLinecap="round" />
               </svg>
             </div>
           </div>
@@ -252,28 +249,25 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             scale: [1, 1.06, 0.97, 1.03, 1],
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute top-[22%] right-[2%] sm:right-[5%] lg:right-[7%]"
+          className="absolute top-[20%] right-[1%] sm:right-[4%] lg:right-[6%]"
         >
           <div className="relative">
-            <div className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-brand-hot-pink/20 via-brand-purple/20 to-brand-blue/15 blur-xl" />
-            <div className="relative w-[56px] h-[56px] sm:w-[72px] sm:h-[72px] lg:w-[88px] lg:h-[88px] rounded-xl lg:rounded-2xl border border-white/[0.12] bg-white/[0.05] backdrop-blur-sm flex items-center justify-center shadow-lg shadow-brand-hot-pink/10">
-              <svg viewBox="0 0 100 100" className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" fill="none">
+            <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-brand-hot-pink/35 via-brand-purple/30 to-brand-blue/25 blur-xl" />
+            <div className="relative w-[60px] h-[60px] sm:w-[76px] sm:h-[76px] lg:w-[96px] lg:h-[96px] rounded-xl lg:rounded-2xl border border-brand-hot-pink/25 bg-brand-hot-pink/[0.10] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-hot-pink/20">
+              <svg viewBox="0 0 100 100" className="w-9 h-9 sm:w-11 sm:h-11 lg:w-14 lg:h-14" fill="none">
                 <defs>
                   <filter id="pal-glow">
-                    <feGaussianBlur stdDeviation="2" result="blur" />
+                    <feGaussianBlur stdDeviation="3" result="blur" />
                     <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                   </filter>
                 </defs>
-                {/* Palette shape */}
-                <path d="M50 10 C25 10 8 28 8 52 C8 78 25 95 50 95 C60 95 65 88 62 80 C59 73 66 68 73 72 C80 76 90 70 90 52 C90 28 75 10 50 10Z" fill="white/[0.06]" stroke="url(#roll-grad)" strokeWidth="2" opacity="0.6" filter="url(#pal-glow)" />
-                {/* Color dots */}
-                <circle cx="30" cy="38" r="6" fill="#1D68B3" opacity="0.8" />
-                <circle cx="50" cy="28" r="6" fill="#6A3DFF" opacity="0.8" />
-                <circle cx="70" cy="38" r="6" fill="#E71D8C" opacity="0.8" />
-                <circle cx="25" cy="58" r="6" fill="#FBBF24" opacity="0.7" />
-                <circle cx="45" cy="52" r="5" fill="#34D399" opacity="0.7" />
-                {/* Hole */}
-                <ellipse cx="72" cy="62" rx="6" ry="7" fill="#0a0a1a" stroke="white/[0.08]" strokeWidth="1" />
+                <path d="M50 10 C25 10 8 28 8 52 C8 78 25 95 50 95 C60 95 65 88 62 80 C59 73 66 68 73 72 C80 76 90 70 90 52 C90 28 75 10 50 10Z" fill="white/[0.10]" stroke="url(#roll-grad)" strokeWidth="2.5" opacity="1" filter="url(#pal-glow)" />
+                <circle cx="30" cy="38" r="7" fill="#1D68B3" opacity="1" />
+                <circle cx="50" cy="28" r="7" fill="#6A3DFF" opacity="1" />
+                <circle cx="70" cy="38" r="7" fill="#E71D8C" opacity="1" />
+                <circle cx="25" cy="58" r="6" fill="#FBBF24" opacity="0.9" />
+                <circle cx="45" cy="52" r="6" fill="#34D399" opacity="0.9" />
+                <ellipse cx="72" cy="62" rx="6" ry="7" fill="#0a0a1a" stroke="white/[0.15]" strokeWidth="1" />
               </svg>
             </div>
           </div>
@@ -286,28 +280,25 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             rotate: [0, 8, -5, 3, 0],
           }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute top-[58%] left-[4%] sm:left-[7%] lg:left-[9%]"
+          className="absolute top-[56%] left-[2%] sm:left-[5%] lg:left-[8%]"
         >
           <div className="relative">
-            <div className="absolute -inset-2 rounded-xl bg-gradient-to-br from-brand-blue/18 via-brand-purple/15 to-brand-hot-pink/12 blur-lg" />
-            <div className="relative w-[48px] h-[48px] sm:w-[60px] sm:h-[60px] lg:w-[72px] lg:h-[72px] rounded-lg lg:rounded-xl border border-white/[0.10] bg-white/[0.04] backdrop-blur-sm flex items-center justify-center shadow-lg shadow-brand-blue/8">
-              <svg viewBox="0 0 100 100" className="w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10" fill="none">
+            <div className="absolute -inset-3 rounded-xl bg-gradient-to-br from-brand-blue/30 via-brand-purple/25 to-brand-hot-pink/20 blur-lg" />
+            <div className="relative w-[52px] h-[52px] sm:w-[66px] sm:h-[66px] lg:w-[80px] lg:h-[80px] rounded-lg lg:rounded-xl border border-brand-blue/25 bg-brand-blue/[0.10] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-blue/15">
+              <svg viewBox="0 0 100 100" className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" fill="none">
                 <defs>
                   <linearGradient id="sq-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#2D7FE0" />
                     <stop offset="100%" stopColor="#6A3DFF" />
                   </linearGradient>
                 </defs>
-                {/* Handle */}
-                <rect x="42" y="8" width="16" height="40" rx="4" fill="url(#sq-grad)" opacity="0.6" />
-                <rect x="44" y="10" width="12" height="36" rx="3" fill="white/[0.08]" />
-                {/* Squeegee blade */}
-                <rect x="30" y="48" width="40" height="8" rx="2" fill="url(#sq-grad)" opacity="0.7" />
-                <rect x="32" y="56" width="36" height="14" rx="3" fill="white/[0.06]" stroke="url(#sq-grad)" strokeWidth="1.5" opacity="0.5" />
-                {/* Application lines */}
-                <line x1="35" y1="78" x2="30" y2="90" stroke="#6A3DFF" strokeWidth="1" opacity="0.3" strokeLinecap="round" />
-                <line x1="50" y1="78" x2="50" y2="92" stroke="#E71D8C" strokeWidth="1" opacity="0.25" strokeLinecap="round" />
-                <line x1="65" y1="78" x2="70" y2="90" stroke="#2D7FE0" strokeWidth="1" opacity="0.3" strokeLinecap="round" />
+                <rect x="42" y="8" width="16" height="40" rx="4" fill="url(#sq-grad)" opacity="1" />
+                <rect x="44" y="10" width="12" height="36" rx="3" fill="white/[0.15]" />
+                <rect x="30" y="48" width="40" height="8" rx="2" fill="url(#sq-grad)" opacity="1" />
+                <rect x="32" y="56" width="36" height="14" rx="3" fill="white/[0.10]" stroke="url(#sq-grad)" strokeWidth="2" opacity="0.9" />
+                <line x1="35" y1="78" x2="30" y2="90" stroke="#6A3DFF" strokeWidth="1.5" opacity="0.6" strokeLinecap="round" />
+                <line x1="50" y1="78" x2="50" y2="92" stroke="#E71D8C" strokeWidth="1.5" opacity="0.5" strokeLinecap="round" />
+                <line x1="65" y1="78" x2="70" y2="90" stroke="#2D7FE0" strokeWidth="1.5" opacity="0.6" strokeLinecap="round" />
               </svg>
             </div>
           </div>
@@ -321,12 +312,12 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             rotate: [0, -3, 4, -1, 0],
           }}
           transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
-          className="absolute top-[52%] right-[1%] sm:right-[4%] lg:right-[6%]"
+          className="absolute top-[50%] right-[0%] sm:right-[3%] lg:right-[5%]"
         >
           <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-brand-hot-pink/20 via-brand-purple/25 to-brand-blue/20 blur-2xl" />
-            <div className="relative w-[80px] h-[80px] sm:w-[104px] sm:h-[104px] lg:w-[130px] lg:h-[130px] rounded-2xl lg:rounded-3xl border border-white/[0.12] bg-white/[0.05] backdrop-blur-sm flex items-center justify-center shadow-lg shadow-brand-purple/10">
-              <svg viewBox="0 0 160 100" className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20" fill="none">
+            <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-brand-hot-pink/35 via-brand-purple/35 to-brand-blue/30 blur-2xl" />
+            <div className="relative w-[84px] h-[84px] sm:w-[110px] sm:h-[110px] lg:w-[140px] lg:h-[140px] rounded-2xl lg:rounded-3xl border border-brand-purple/30 bg-brand-purple/[0.10] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-purple/20">
+              <svg viewBox="0 0 160 100" className="w-14 h-14 sm:w-16 sm:h-16 lg:w-22 lg:h-14" fill="none">
                 <defs>
                   <linearGradient id="van-body" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#1D68B3" />
@@ -338,46 +329,41 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                     <stop offset="100%" stopColor="#E71D8C" />
                   </linearGradient>
                   <filter id="van-glow">
-                    <feGaussianBlur stdDeviation="2" result="blur" />
+                    <feGaussianBlur stdDeviation="3" result="blur" />
                     <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                   </filter>
                 </defs>
-                {/* Van body */}
-                <path d="M16 48 L16 32 Q16 22 26 20 L80 16 Q90 15 96 22 L112 32 Q120 36 125 42 L132 48 Q136 52 130 56 L128 58 Q118 64 106 64 L26 64 Q18 64 16 56Z" fill="url(#van-body)" opacity="0.5" filter="url(#van-glow)" />
-                {/* Wrap design stripe */}
-                <path d="M16 38 Q40 32 70 34 Q100 36 125 44" stroke="url(#van-stripe)" strokeWidth="3" opacity="0.6" strokeLinecap="round" fill="none" />
-                <path d="M20 44 Q50 38 80 40 Q110 42 130 50" stroke="url(#van-stripe)" strokeWidth="2" opacity="0.35" strokeLinecap="round" fill="none" />
-                {/* Windows */}
-                <rect x="28" y="30" width="18" height="14" rx="2" fill="white/[0.1]" />
-                <rect x="52" y="28" width="18" height="16" rx="2" fill="white/[0.1]" />
-                <rect x="76" y="28" width="18" height="16" rx="2" fill="white/[0.1]" />
-                {/* Wheels */}
-                <circle cx="36" cy="70" r="9" fill="#0a0a1a" stroke="url(#van-body)" strokeWidth="2.5" opacity="0.7" />
-                <circle cx="36" cy="70" r="4" fill="url(#van-body)" opacity="0.4" />
-                <circle cx="116" cy="70" r="9" fill="#0a0a1a" stroke="url(#van-body)" strokeWidth="2.5" opacity="0.7" />
-                <circle cx="116" cy="70" r="4" fill="url(#van-body)" opacity="0.4" />
-                {/* Star/brand mark on van */}
-                <circle cx="100" cy="38" r="5" fill="url(#van-stripe)" opacity="0.5" />
+                <path d="M16 48 L16 32 Q16 22 26 20 L80 16 Q90 15 96 22 L112 32 Q120 36 125 42 L132 48 Q136 52 130 56 L128 58 Q118 64 106 64 L26 64 Q18 64 16 56Z" fill="url(#van-body)" opacity="0.85" filter="url(#van-glow)" />
+                <path d="M16 38 Q40 32 70 34 Q100 36 125 44" stroke="url(#van-stripe)" strokeWidth="3.5" opacity="1" strokeLinecap="round" fill="none" />
+                <path d="M20 44 Q50 38 80 40 Q110 42 130 50" stroke="url(#van-stripe)" strokeWidth="2.5" opacity="0.7" strokeLinecap="round" fill="none" />
+                <rect x="28" y="30" width="18" height="14" rx="2" fill="white/[0.2]" />
+                <rect x="52" y="28" width="18" height="16" rx="2" fill="white/[0.2]" />
+                <rect x="76" y="28" width="18" height="16" rx="2" fill="white/[0.2]" />
+                <circle cx="36" cy="70" r="9" fill="#0a0a1a" stroke="url(#van-body)" strokeWidth="2.5" opacity="1" />
+                <circle cx="36" cy="70" r="4" fill="url(#van-body)" opacity="0.8" />
+                <circle cx="116" cy="70" r="9" fill="#0a0a1a" stroke="url(#van-body)" strokeWidth="2.5" opacity="1" />
+                <circle cx="116" cy="70" r="4" fill="url(#van-body)" opacity="0.8" />
+                <circle cx="100" cy="38" r="5" fill="url(#van-stripe)" opacity="0.9" />
               </svg>
             </div>
           </div>
         </motion.div>
 
-        {/* Sparkle particles scattered around */}
-        <motion.div animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.8, 1.2, 0.8] }} transition={{ duration: 3, repeat: Infinity, delay: 0 }} className="absolute top-[18%] left-[20%]">
-          <div className="w-1.5 h-1.5 rounded-full bg-brand-purple/40" />
+        {/* Sparkle particles — bigger on mobile */}
+        <motion.div animate={{ opacity: [0.4, 1, 0.4], scale: [0.8, 1.4, 0.8] }} transition={{ duration: 3, repeat: Infinity, delay: 0 }} className="absolute top-[18%] left-[20%]">
+          <div className="w-2 h-2 rounded-full bg-brand-purple/60" />
         </motion.div>
-        <motion.div animate={{ opacity: [0.2, 0.7, 0.2], scale: [0.6, 1.1, 0.6] }} transition={{ duration: 4, repeat: Infinity, delay: 1.2 }} className="absolute top-[35%] right-[18%]">
-          <div className="w-1 h-1 rounded-full bg-brand-hot-pink/40" />
+        <motion.div animate={{ opacity: [0.3, 0.9, 0.3], scale: [0.6, 1.3, 0.6] }} transition={{ duration: 4, repeat: Infinity, delay: 1.2 }} className="absolute top-[35%] right-[18%]">
+          <div className="w-1.5 h-1.5 rounded-full bg-brand-hot-pink/60" />
         </motion.div>
-        <motion.div animate={{ opacity: [0.2, 0.6, 0.2], scale: [0.7, 1.3, 0.7] }} transition={{ duration: 3.5, repeat: Infinity, delay: 2.4 }} className="absolute top-[65%] left-[25%]">
-          <div className="w-1.5 h-1.5 rounded-full bg-brand-bright-blue/40" />
+        <motion.div animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.7, 1.5, 0.7] }} transition={{ duration: 3.5, repeat: Infinity, delay: 2.4 }} className="absolute top-[65%] left-[25%]">
+          <div className="w-2 h-2 rounded-full bg-brand-bright-blue/60" />
         </motion.div>
-        <motion.div animate={{ opacity: [0.15, 0.5, 0.15], scale: [0.5, 1, 0.5] }} transition={{ duration: 5, repeat: Infinity, delay: 0.8 }} className="absolute top-[45%] right-[25%]">
-          <div className="w-1 h-1 rounded-full bg-brand-hot-pink/30" />
+        <motion.div animate={{ opacity: [0.2, 0.7, 0.2], scale: [0.5, 1.2, 0.5] }} transition={{ duration: 5, repeat: Infinity, delay: 0.8 }} className="absolute top-[45%] right-[25%]">
+          <div className="w-1.5 h-1.5 rounded-full bg-brand-hot-pink/50" />
         </motion.div>
-        <motion.div animate={{ opacity: [0.2, 0.6, 0.2], scale: [0.6, 1.2, 0.6] }} transition={{ duration: 4.5, repeat: Infinity, delay: 3.2 }} className="absolute top-[75%] right-[35%]">
-          <div className="w-1 h-1 rounded-full bg-brand-purple/30" />
+        <motion.div animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.6, 1.4, 0.6] }} transition={{ duration: 4.5, repeat: Infinity, delay: 3.2 }} className="absolute top-[75%] right-[35%]">
+          <div className="w-1.5 h-1.5 rounded-full bg-brand-purple/50" />
         </motion.div>
       </div>
 
@@ -737,41 +723,15 @@ function FeaturedProjectsSection() {
   );
 }
 
-/* ───────── 7. TRUST ───────── */
+/* ───────── 7. TRUST / SOCIAL PROOF ───────── */
 function TrustSection() {
   const { t, lang } = useLang();
 
-  const realReviews = [
-    {
-      name: "River Vibes",
-      text: lang === "es"
-        ? "No puedo decir lo suficiente sobre este negocio. Mi hija se gradúa de UNCW en 4 días y el negocio que tenía 2 meses de aviso bordó la bata del lado equivocado... Este lugar vino al rescate y bordó una nueva bata en solo unas horas, ¡el bordado se ve mejor que el original! Solo le cobraron $8. ¡Gracias por hacer perfecto el día de graduación de mi hija!"
-        : "I can't say enough about this business. My daughter is graduating in 4 days from UNCW and the business that had a 2 month notice embroidered on the wrong side... This place came in clutch and embroidered a new coat in just a few hours and the stitching looks better than the original one! They only charged her $8! Thank you soooo very much for making her graduation day memories perfect!",
-      stars: 5,
-      time: lang === "es" ? "hace 2 años" : "2 years ago",
-    },
-    {
-      name: "Jose Avendaño",
-      text: "Son los más profesionales, los recomiendo 100%.",
-      stars: 5,
-      time: lang === "es" ? "hace 1 mes" : "a month ago",
-    },
-    {
-      name: "Laura Main Photography",
-      text: lang === "es"
-        ? "Productos realmente bonitos y una familia encantadora. ¡Negocio local y familiar, hay que apoyarlos! ¡Muy feliz con el servicio y productos! ¡Rápido también!"
-        : "Really nice products and such a lovely family. Local and mom and pop shop, gotta support them! Very happy with the service and products! Fast turn around too!",
-      stars: 5,
-      time: lang === "es" ? "hace 1 mes" : "a month ago",
-    },
-    {
-      name: "Christopher Sperry",
-      text: lang === "es"
-        ? "Imagine Design Studio hizo un trabajo excepcional creando camisas de empresa y materiales de stand para nuestro pequeño negocio. Los diseños se veían geniales, la calidad era excelente, y fueron fáciles de trabajar durante todo el proceso. ¡Definitivamente los usaremos de nuevo!"
-        : "Imagine Design Studio did an outstanding job creating company shirts and booth materials for our small business. The designs looked great, the quality was excellent, and they were easy to work with throughout the process. We will absolutely be using them again.",
-      stars: 5,
-      time: lang === "es" ? "hace 2 meses" : "2 months ago",
-    },
+  const reviewScreenshots = [
+    { src: "/reviews/review-river-vibes.png", alt: "Google review - River Vibes" },
+    { src: "/reviews/review-jose-avendano.png", alt: "Google review - Jose Avendaño" },
+    { src: "/reviews/review-laura-main.png", alt: "Google review - Laura Main Photography" },
+    { src: "/reviews/review-christopher-sperry.png", alt: "Google review - Christopher Sperry" },
   ];
 
   return (
@@ -779,6 +739,7 @@ function TrustSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Metrics bar */}
         <FadeUp>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
             {METRICS_DATA.map((m, i) => (
@@ -791,34 +752,75 @@ function TrustSection() {
             ))}
           </div>
         </FadeUp>
+
+        {/* Section title */}
+        <FadeUp delay={0.2}>
+          <div className="text-center mb-10 lg:mb-14">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              <span className="text-lg sm:text-xl font-bold text-white">{lang === "es" ? "Reseñas Reales de Google" : "Real Google Reviews"}</span>
+            </div>
+            <p className="text-gray-400 text-sm sm:text-base max-w-xl mx-auto">
+              {lang === "es"
+                ? "Esto es lo que dicen nuestros clientes reales en Google. Sin textos adaptados — capturas reales."
+                : "This is what our real customers say on Google. No adapted text — real screenshots."}
+            </p>
+          </div>
+        </FadeUp>
+
+        {/* Real review screenshots */}
         <FadeUp delay={0.3}>
-          <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
-            {realReviews.map((review, i) => (
-              <FadeUp key={i} delay={i * 0.12}>
-                <div className="p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] h-full flex flex-col">
-                  <div className="flex gap-1 mb-4">{Array.from({ length: review.stars }).map((_, si) => <Star key={si} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
-                  <Quote className="w-8 h-8 text-brand-purple/30 mb-3" />
-                  <p className="text-gray-300 leading-relaxed flex-1 mb-4 text-sm lg:text-base">&ldquo;{review.text}&rdquo;</p>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-white font-semibold text-sm">{review.name}</p>
-                      <p className="text-gray-500 text-xs">{review.time}</p>
-                    </div>
-                    <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6 mb-12">
+            {reviewScreenshots.map((review, i) => (
+              <FadeUp key={i} delay={i * 0.1}>
+                <div className="group rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.03] hover:border-brand-purple/25 transition-all duration-300 hover:shadow-xl hover:shadow-brand-purple/10">
+                  <div className="relative w-full">
+                    <Image
+                      src={review.src}
+                      alt={review.alt}
+                      width={600}
+                      height={400}
+                      className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                    />
                   </div>
                 </div>
               </FadeUp>
             ))}
           </div>
         </FadeUp>
+
+        {/* Many more success cases CTA */}
         <FadeUp delay={0.5}>
-          <div className="mt-12 text-center">
-            <p className="text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
+          <div className="text-center">
+            <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-6 p-6 sm:p-8 rounded-2xl border border-brand-purple/20 bg-gradient-to-r from-brand-purple/[0.06] via-brand-hot-pink/[0.04] to-brand-purple/[0.06]">
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                  ))}
+                </div>
+                <span className="text-white font-bold text-sm sm:text-base">{lang === "es" ? "4.9 Promedio" : "4.9 Average"}</span>
+              </div>
+              <div className="hidden sm:block w-px h-8 bg-white/10" />
+              <div>
+                <p className="text-white font-bold text-base sm:text-lg">
+                  {lang === "es"
+                    ? "Y muchos más casos de éxito como estos..."
+                    : "And many more success cases like these..."}
+                </p>
+                <p className="text-gray-400 text-xs sm:text-sm mt-1">
+                  {lang === "es"
+                    ? "Cada semana ayudamos a nuevos negocios a brillar. Tu negocio puede ser el próximo."
+                    : "Every week we help new businesses shine. Your business could be next."}
+                </p>
+              </div>
+            </div>
+            <p className="mt-8 text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
           </div>
         </FadeUp>
       </div>

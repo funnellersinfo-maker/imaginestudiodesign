@@ -181,3 +181,33 @@ Stage Summary:
 - 5 additional sparkle particle animations for extra dynamism
 - Visible on all screen sizes (mobile + desktop)
 - Google Maps and real Google reviews confirmed working
+
+---
+Task ID: 7
+Agent: Main Agent
+Task: Boost hero floating elements visibility + replace text reviews with real Google screenshots
+
+Work Log:
+- User reported floating elements still invisible on mobile
+- Boosted ALL SVG opacities: from 0.3-0.7 range to 0.6-1.0 range
+- Increased container styling: bg from white/[0.05] to brand-color/[0.10-0.12], borders from white/[0.12] to brand-color/25-30
+- Increased glow blur layers: from /15-25 to /25-40 opacity range
+- Increased shadow to shadow-xl with /15-20 opacity
+- Slightly increased mobile sizes: vinyl 72→76px, palette 56→60px, squeegee 48→52px, van 80→84px
+- Sparkle particles: bigger (w-2 vs w-1.5), higher opacity (/60 vs /40), stronger scale animations
+- VLM confirmed all 4 elements "clearly visible (not invisible or extremely faint)" on mobile (390x844)
+
+- Copied 4 real Google review screenshots to /public/reviews/:
+  review-river-vibes.png, review-jose-avendano.png, review-laura-main.png, review-christopher-sperry.png
+- Completely replaced TrustSection: removed text-based review cards, replaced with actual screenshot image cards
+- Added Google icon + "Real Google Reviews" header with subtitle explaining these are real screenshots
+- Added "4.9 Average" + "And many more success cases like these..." CTA banner at bottom
+- Banner text bilingual: ES "Y muchos más casos de éxito como estos..." / EN "And many more success cases like these..."
+- Grid: 1 column on mobile, 2 columns on sm+ 
+- VLM confirmed: real Google review screenshots visible on both mobile and desktop, banner visible
+
+Stage Summary:
+- Hero floating elements now clearly visible on mobile with boosted opacity and glow
+- Trust section shows 4 real Google review screenshots (not text)
+- "Many more success cases" banner with 4.9 rating added
+- Zero console errors, all 200s
