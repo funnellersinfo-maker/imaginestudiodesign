@@ -111,7 +111,7 @@ const PROCESS_DATA = [
 ];
 
 const METRICS_DATA = [
-  { value: "500+", labelKey: "trust.projects" },
+  { value: "1500+", labelKey: "trust.projects" },
   { value: "98%", labelKey: "trust.satisfaction" },
   { value: "10+", labelKey: "trust.experience" },
   { value: "24h", labelKey: "trust.turnaround" },
@@ -766,7 +766,7 @@ function TrustSection({ onQuote }: { onQuote: () => void }) {
           </div>
         </FadeUp>
 
-        {/* Google Review Screenshots */}
+        {/* Google Review Screenshots — Carousel on mobile, grid on desktop */}
         <FadeUp delay={0.15}>
           <div className="mb-14 lg:mb-16">
             <div className="flex items-center justify-center gap-2 mb-6">
@@ -780,7 +780,21 @@ function TrustSection({ onQuote }: { onQuote: () => void }) {
                 {lang === "es" ? "Reseñas Reales de Google" : "Real Google Reviews"}
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+            {/* Mobile: swipeable carousel */}
+            <div className="sm:hidden -mx-4 px-4">
+              <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-1 px-1">
+                {reviewScreenshots.map((review, i) => (
+                  <div key={i} className="flex-shrink-0 w-[85vw] max-w-[320px] snap-center rounded-xl overflow-hidden border border-white/[0.08] bg-white/[0.03]">
+                    <Image src={review.src} alt={review.alt} width={600} height={400} className="w-full h-auto object-contain" />
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center gap-1.5 mt-3">
+                {reviewScreenshots.map((_, i) => (<div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" />))}
+              </div>
+            </div>
+            {/* Desktop: grid */}
+            <div className="hidden sm:grid sm:grid-cols-2 gap-4 lg:gap-5">
               {reviewScreenshots.map((review, i) => (
                 <FadeUp key={i} delay={i * 0.08}>
                   <div className="rounded-xl overflow-hidden border border-white/[0.08] bg-white/[0.03] hover:border-brand-purple/20 transition-all duration-300">
@@ -795,16 +809,16 @@ function TrustSection({ onQuote }: { onQuote: () => void }) {
                 <div className="flex -space-x-0.5">
                   {[...Array(5)].map((_, i) => (<Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />))}
                 </div>
-                <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "5 Estrellas" : "5 Stars"}</span>
+                <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "4.8 Estrellas" : "4.8 Stars"}</span>
               </div>
               <div className="text-white/10">|</div>
               <div className="flex items-center gap-1.5">
-                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">500+</span>
+                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">1500+</span>
                 <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "Reseñas" : "Reviews"}</span>
               </div>
               <div className="text-white/10">|</div>
               <div className="flex items-center gap-1.5">
-                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">500+</span>
+                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">1500+</span>
                 <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "Proyectos" : "Projects"}</span>
               </div>
               <div className="text-white/10">|</div>

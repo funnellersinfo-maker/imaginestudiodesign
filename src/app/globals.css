@@ -158,6 +158,14 @@
   background: linear-gradient(180deg, #2D7FE0, #6A3DFF);
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Animation keyframes */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
