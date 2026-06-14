@@ -36,6 +36,7 @@ import {
   Scissors,
   Shirt,
   Play,
+  ArrowUp,
 } from "lucide-react";
 import {
   Carousel,
@@ -765,33 +766,8 @@ function TrustSection({ onQuote }: { onQuote: () => void }) {
           </div>
         </FadeUp>
 
-        {/* Video — Nuestro Trabajo Impecable */}
-        <FadeUp delay={0.15}>
-          <div className="text-center mb-8 lg:mb-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
-              <span className="gradient-brand-text">
-                {lang === "es" ? "Nuestro Trabajo Impecable" : "Our Impeccable Work"}
-              </span>
-            </h2>
-          </div>
-        </FadeUp>
-        <FadeUp delay={0.2}>
-          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10 mb-16 lg:mb-20">
-            {!videoPlaying ? (
-              <button onClick={() => setVideoPlaying(true)} className="relative w-full aspect-video bg-black/60 flex items-center justify-center cursor-pointer group">
-                <video src="/showreel.mp4" className="absolute inset-0 w-full h-full object-cover opacity-50" muted playsInline preload="metadata" />
-                <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all duration-300">
-                  <Play className="w-7 h-7 sm:w-8 sm:h-8 text-white ml-1" fill="white" />
-                </div>
-              </button>
-            ) : (
-              <video src="/showreel.mp4" className="w-full aspect-video object-cover" controls autoPlay playsInline />
-            )}
-          </div>
-        </FadeUp>
-
         {/* Google Review Screenshots */}
-        <FadeUp delay={0.3}>
+        <FadeUp delay={0.15}>
           <div className="mb-14 lg:mb-16">
             <div className="flex items-center justify-center gap-2 mb-6">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -813,26 +789,68 @@ function TrustSection({ onQuote }: { onQuote: () => void }) {
                 </FadeUp>
               ))}
             </div>
-            {/* Many more success cases */}
-            <div className="text-center mt-8">
-              <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-6 p-5 sm:p-6 rounded-2xl border border-brand-purple/20 bg-gradient-to-r from-brand-purple/[0.06] via-brand-hot-pink/[0.04] to-brand-purple/[0.06]">
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-1">
-                    {[...Array(5)].map((_, i) => (<Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />))}
-                  </div>
-                  <span className="text-white font-bold text-sm sm:text-base">{lang === "es" ? "4.9 Promedio" : "4.9 Average"}</span>
+            {/* Hero-style metrics strip */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+              <div className="flex items-center gap-1.5">
+                <div className="flex -space-x-0.5">
+                  {[...Array(5)].map((_, i) => (<Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />))}
                 </div>
-                <div className="hidden sm:block w-px h-8 bg-white/10" />
-                <div>
-                  <p className="text-white font-bold text-base sm:text-lg">
-                    {lang === "es" ? "✨ Y muchos más casos de éxito como estos..." : "✨ And many more success cases like these..."}
-                  </p>
-                  <p className="text-gray-400 text-xs sm:text-sm mt-1">
-                    {lang === "es" ? "Cada semana nuevos proyectos. Tu negocio puede ser el próximo." : "New projects every week. Your business could be next."}
-                  </p>
-                </div>
+                <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "5 Estrellas" : "5 Stars"}</span>
+              </div>
+              <div className="text-white/10">|</div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">500+</span>
+                <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "Reseñas" : "Reviews"}</span>
+              </div>
+              <div className="text-white/10">|</div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">500+</span>
+                <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "Proyectos" : "Projects"}</span>
+              </div>
+              <div className="text-white/10">|</div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">10+</span>
+                <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "Años" : "Years"}</span>
+              </div>
+              <div className="text-white/10">|</div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm sm:text-lg lg:text-xl font-black gradient-brand-text">98%</span>
+                <span className="text-xs sm:text-sm text-gray-400">{lang === "es" ? "Satisfacción" : "Satisfaction"}</span>
               </div>
             </div>
+            <div className="text-center mt-6">
+              <p className="text-white font-bold text-base sm:text-lg">
+                {lang === "es" ? "✨ Y muchos más casos de éxito como estos..." : "✨ And many more success cases like these..."}
+              </p>
+              <p className="text-gray-400 text-xs sm:text-sm mt-1">
+                {lang === "es" ? "Cada semana nuevos proyectos. Tu negocio puede ser el próximo." : "New projects every week. Your business could be next."}
+              </p>
+            </div>
+          </div>
+        </FadeUp>
+
+        {/* Video — Nuestro Trabajo Impecable */}
+        <FadeUp delay={0.3}>
+          <div className="text-center mb-8 lg:mb-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
+              <span className="gradient-brand-text">
+                {lang === "es" ? "Nuestro Trabajo Impecable" : "Our Impeccable Work"}
+              </span>
+            </h2>
+          </div>
+        </FadeUp>
+        <FadeUp delay={0.35}>
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10 mb-16 lg:mb-20">
+            {!videoPlaying ? (
+              <button onClick={() => setVideoPlaying(true)} className="relative w-full aspect-video bg-black/60 flex items-center justify-center cursor-pointer group">
+                <video src="/showreel.mp4" className="absolute inset-0 w-full h-full object-cover opacity-50" muted playsInline preload="metadata" />
+                <div className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-md border-2 border-white/40 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/30 transition-all duration-300">
+                  <Play className="w-7 h-7 sm:w-8 sm:h-8 text-white ml-1" fill="white" />
+                </div>
+              </button>
+            ) : (
+              <video src="/showreel.mp4" className="w-full aspect-video object-cover" controls autoPlay playsInline />
+            )}
           </div>
         </FadeUp>
 
@@ -1061,6 +1079,26 @@ function Footer() {
   );
 }
 
+/* ───────── SCROLL TO TOP BUTTON ───────── */
+function ScrollToTopButton() {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  if (!visible) return null;
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="fixed bottom-20 right-4 z-[60] w-11 h-11 rounded-full bg-brand-purple/80 hover:bg-brand-purple backdrop-blur-sm border border-white/10 flex items-center justify-center text-white shadow-lg shadow-brand-purple/20 transition-all duration-300 hover:scale-110"
+      aria-label="Scroll to top"
+    >
+      <ArrowUp className="w-5 h-5" />
+    </button>
+  );
+}
+
 /* ───────── MAIN PAGE ───────── */
 export default function Home() {
   const [quoteOpen, setQuoteOpen] = useState(false);
@@ -1080,6 +1118,7 @@ export default function Home() {
       <FinalCTASection onQuote={() => setQuoteOpen(true)} />
       <MapSection />
       <Footer />
+      <ScrollToTopButton />
       <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
       <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
       <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
