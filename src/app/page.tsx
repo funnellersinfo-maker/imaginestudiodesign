@@ -75,14 +75,13 @@ function ScaleIn({ children, delay = 0, className = "" }: { children: React.Reac
 
 /* ───────── DATA (uses t() inside components) ───────── */
 const PROJECTS_DATA = [
-  { src: "/images/truck-wrap-1.png", altEn: "HVAC commercial truck wrap", altEs: "Vinilo de camión HVAC", labelKey: "projects.hvacFleet" },
-  { src: "/images/plumber-van.png", altEn: "Plumber service van branding", altEs: "Marca de van de plomería", labelKey: "projects.plumberVan" },
-  { src: "/images/electrician-truck.png", altEn: "Electrician work truck wrap", altEs: "Vinilo de camión eléctrico", labelKey: "projects.electricFleet" },
-  { src: "/images/pickup-wrap.png", altEn: "Construction pickup truck wrap", altEs: "Vinilo de camioneta de construcción", labelKey: "projects.constructionPickup" },
-  { src: "/images/fleet-branding.png", altEn: "Landscaping fleet branding", altEs: "Marca de flota de paisajismo", labelKey: "projects.landscapeFleet" },
-  { src: "/images/wrap-detail.png", altEn: "Vehicle wrap installation detail", altEs: "Detalle de instalación de vinilo", labelKey: "projects.premiumInstall" },
-  { src: "/images/signage-project.png", altEn: "Commercial business signage", altEs: "Señalización comercial", labelKey: "projects.businessSignage" },
-  { src: "/images/apparel-project.png", altEn: "Branded work apparel", altEs: "Ropa de trabajo de marca", labelKey: "projects.brandedApparel" },
+  { src: "/images/carousel/empire-metal.jpg", altEn: "Empire Metal vehicle wrap", altEs: "Vinilo Empire Metal", label: "Empire Metal" },
+  { src: "/images/carousel/leon-tires.jpg", altEn: "Leon Tires & Body Services fleet branding", altEs: "Marca de flota Leon Tires", label: "Leon Tires & Body Services" },
+  { src: "/images/carousel/lecheras.jpg", altEn: "Lecheras branded vehicle", altEs: "Vehículo Lecheras", label: "Lecheras" },
+  { src: "/images/carousel/sunrise.jpg", altEn: "Sunrise vehicle wrap", altEs: "Vinilo Sunrise", label: "Sunrise" },
+  { src: "/images/carousel/four-seasons.jpg", altEn: "Four Seasons Landscapes LLC wrap", altEs: "Vinilo Four Seasons Landscapes", label: "Four Seasons Landscapes LLC" },
+  { src: "/images/carousel/rico-landscaping.jpg", altEn: "Rico Landscaping branded truck", altEs: "Camión Rico Landscaping", label: "Rico Landscaping" },
+  { src: "/images/carousel/empire-metal-works.jpg", altEn: "Empire Metal Works LLC truck", altEs: "Camión Empire Metal Works", label: "Empire Metal Works LLC" },
 ];
 
 const INDUSTRIES_DATA = [
@@ -521,7 +520,7 @@ function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
 
 /* ───────── 6. FEATURED PROJECTS ───────── */
 function FeaturedProjectsSection() {
-  const { t, lang } = useLang();
+  const { t } = useLang();
   return (
     <section id="projects" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
@@ -543,10 +542,10 @@ function FeaturedProjectsSection() {
                   <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
                     <div className="project-card group rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] cursor-pointer">
                       <div className="relative aspect-[4/3] overflow-hidden">
-                        <Image src={project.src} alt={lang === "es" ? project.altEs : project.altEn} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <Image src={project.src} alt={project.altEn} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-4">
-                          <span className="text-sm font-bold text-white">{t(project.labelKey)}</span>
+                        <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
+                          <span className="text-xs sm:text-sm font-bold text-white">{project.label}</span>
                         </div>
                       </div>
                     </div>
