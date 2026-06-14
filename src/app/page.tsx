@@ -895,7 +895,42 @@ function TrustSection({ onQuote }: { onQuote: () => void }) {
         </FadeUp>
 
         <FadeUp delay={0.5}>
-          <p className="text-center text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
+          <p className="text-center text-gray-400 text-sm mb-12"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
+        </FadeUp>
+
+        {/* Other Services Gallery */}
+        <FadeUp delay={0.55}>
+          <div>
+            <div className="text-center mb-8 lg:mb-10">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-3">
+                {lang === "es" ? "Otros Servicios" : "Other Services"}
+              </h3>
+              <p className="text-gray-400 text-sm sm:text-base max-w-lg mx-auto">
+                {lang === "es"
+                  ? "Confección textil, bordado, tarjetas de presentación y más. Todo lo que tu negocio necesita."
+                  : "Apparel printing, embroidery, business cards and more. Everything your business needs."}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 lg:gap-4">
+              {[
+                { src: "/images/svc-paz-painting-apparel.jpg", alt: "PAZ Painting branded apparel" },
+                { src: "/images/svc-vazquez-hoodie.jpg", alt: "Vazquez Remodeling custom hoodie" },
+                { src: "/images/svc-armengol-sweatshirt.jpg", alt: "Armengol Masonry branded sweatshirt" },
+                { src: "/images/svc-lucero-masonry-studio.jpg", alt: "Lucero Masonry studio display" },
+                { src: "/images/svc-vazquez-cards.jpg", alt: "Business cards design" },
+                { src: "/images/svc-cerro-grande-cap.jpg", alt: "El Cerro Grande embroidered cap" },
+                { src: "/images/svc-armengol-longsleeve.jpg", alt: "Armengol Masonry long sleeve" },
+                { src: "/images/svc-vazquez-hoodie-2.jpg", alt: "Vazquez Remodeling hoodie detail" },
+                { src: "/images/svc-az-painting-sweatshirt.jpg", alt: "AZ Painting branded sweatshirt" },
+              ].map((img, i) => (
+                <div key={i} className="group relative rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.02]">
+                  <div className="relative w-full aspect-square">
+                    <Image src={img.src} alt={img.alt} fill sizes="(max-width:640px) 50vw, 33vw" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </FadeUp>
       </div>
     </section>
@@ -1042,7 +1077,7 @@ function MapSection() {
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-400">
             <a href="https://www.google.com/maps/place/4608+Cedar+Ave,+Wilmington,+NC+28403" target="_blank" rel="noopener noreferrer" className="hover:text-brand-purple transition-colors flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              4608 Cedar Ave, Wilmington, NC 28403
+              4608 Cedar Ave, Suite 105, Wilmington, NC 28403
             </a>
             <a href="tel:+19105474314" className="hover:text-brand-purple transition-colors flex items-center gap-2">
               <Phone className="w-4 h-4" />
