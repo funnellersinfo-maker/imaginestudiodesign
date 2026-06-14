@@ -771,8 +771,8 @@ export default function Home() {
       <ProcessSection onQuote={() => setQuoteOpen(true)} />
       <FinalCTASection onQuote={() => setQuoteOpen(true)} />
       <Footer />
-      <StickyCTA onQuote={() => setQuoteOpen(true)} />
-      <FloatingCTA onQuote={() => setQuoteOpen(true)} />
+      <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
+      <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
       <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
     </main>
   );
