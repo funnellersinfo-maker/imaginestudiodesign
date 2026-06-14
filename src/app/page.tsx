@@ -201,60 +201,103 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Dark base gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
-      {/* Floating dopaminic elements */}
+      {/* Floating 3D dopaminic elements — ultra subtle, corners only */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
-        {/* Vehicle wrap icon — large, top-left */}
+        <svg className="absolute" width="0" height="0">
+          <defs>
+            <linearGradient id="g-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#1D68B3" />
+              <stop offset="100%" stopColor="#6A3DFF" />
+            </linearGradient>
+            <linearGradient id="g-magenta" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#C62285" />
+              <stop offset="100%" stopColor="#E71D8C" />
+            </linearGradient>
+            <linearGradient id="g-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#6A3DFF" />
+              <stop offset="100%" stopColor="#C62285" />
+            </linearGradient>
+            <linearGradient id="g-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#FBBF24" />
+              <stop offset="100%" stopColor="#F59E0B" />
+            </linearGradient>
+            <filter id="glow-soft">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            <filter id="glow-wide">
+              <feGaussianBlur stdDeviation="6" result="blur" />
+              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+        </svg>
+
+        {/* 3D Van — large, far top-left corner */}
         <motion.div
-          animate={{ y: [0, -18, 0], x: [0, 8, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[18%] left-[5%] sm:top-[15%] sm:left-[8%] opacity-[0.08] sm:opacity-[0.12]"
+          animate={{ y: [0, -14, 0], x: [0, 6, 0], rotateY: [0, 8, 0], rotateZ: [-2, 1, -2] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-4 -left-8 sm:-top-6 sm:-left-12 opacity-[0.04] sm:opacity-[0.06] hidden sm:block"
+          style={{ perspective: "800px", transformStyle: "preserve-3d" }}
         >
-          <Truck className="w-16 h-16 sm:w-28 sm:h-28 text-brand-blue" />
+          <svg viewBox="0 0 200 100" className="w-40 sm:w-56 lg:w-64" fill="none" filter="url(#glow-wide)">
+            <path d="M20 55 L20 35 Q20 25 30 22 L80 18 Q90 17 95 22 L105 28 L140 28 Q155 28 160 38 L165 50 Q167 55 162 58 L158 60 Q150 65 140 65 L30 65 Q22 65 20 55Z" fill="url(#g-blue)" opacity="0.9"/>
+            <path d="M105 28 L95 22 Q90 17 80 18 L30 22 Q20 25 20 35 L20 55 Q22 65 30 65 L140 65 Q150 65 158 60 L155 50 L150 38 Q145 28 140 28 L105 28Z" fill="url(#g-magenta)" opacity="0.15"/>
+            <rect x="28" y="42" width="22" height="16" rx="2" fill="rgba(255,255,255,0.1)"/>
+            <rect x="56" y="42" width="22" height="16" rx="2" fill="rgba(255,255,255,0.1)"/>
+            <rect x="84" y="42" width="22" height="16" rx="2" fill="rgba(255,255,255,0.1)"/>
+            <circle cx="40" cy="72" r="8" fill="#1a1a2e" stroke="url(#g-blue)" strokeWidth="2"/>
+            <circle cx="135" cy="72" r="8" fill="#1a1a2e" stroke="url(#g-blue)" strokeWidth="2"/>
+            <path d="M165 50 Q167 55 162 58 L160 55 L165 50Z" fill="url(#g-magenta)" opacity="0.6"/>
+          </svg>
         </motion.div>
 
-        {/* Palette/brush — medium, top-right */}
+        {/* 3D Color Swatch — medium, far top-right */}
         <motion.div
-          animate={{ y: [0, 14, 0], x: [0, -10, 0], rotate: [0, -8, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute top-[12%] right-[6%] sm:top-[10%] sm:right-[10%] opacity-[0.08] sm:opacity-[0.12]"
+          animate={{ y: [0, 10, 0], x: [0, -8, 0], rotateY: [0, -10, 0], rotateZ: [1, -2, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          className="absolute -top-2 -right-4 sm:-top-4 sm:-right-8 opacity-[0.04] sm:opacity-[0.06]"
+          style={{ perspective: "600px", transformStyle: "preserve-3d" }}
         >
-          <Palette className="w-12 h-12 sm:w-20 sm:h-20 text-brand-magenta" />
+          <svg viewBox="0 0 120 120" className="w-20 sm:w-28 lg:w-32" fill="none" filter="url(#glow-soft)">
+            <rect x="10" y="10" width="45" height="45" rx="8" fill="url(#g-blue)" opacity="0.8"/>
+            <rect x="65" y="10" width="45" height="45" rx="8" fill="url(#g-magenta)" opacity="0.8"/>
+            <rect x="10" y="65" width="45" height="45" rx="8" fill="url(#g-purple)" opacity="0.8"/>
+            <rect x="65" y="65" width="45" height="45" rx="8" fill="url(#g-gold)" opacity="0.8"/>
+            <rect x="10" y="10" width="100" height="100" rx="12" stroke="rgba(255,255,255,0.08)" strokeWidth="1" fill="none"/>
+          </svg>
         </motion.div>
 
-        {/* Star rating — small, bottom-left */}
+        {/* 3D Star Badge — small, far bottom-left */}
         <motion.div
-          animate={{ y: [0, -12, 0], rotate: [0, 15, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-[25%] left-[8%] sm:bottom-[20%] sm:left-[12%] opacity-[0.07] sm:opacity-[0.1]"
+          animate={{ y: [0, -8, 0], rotateY: [0, 12, 0], rotateZ: [0, 5, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          className="absolute -bottom-2 -left-4 sm:bottom-4 sm:-left-6 opacity-[0.03] sm:opacity-[0.05]"
+          style={{ perspective: "500px", transformStyle: "preserve-3d" }}
         >
-          <Star className="w-10 h-10 sm:w-16 sm:h-16 text-yellow-400" />
+          <svg viewBox="0 0 100 100" className="w-16 sm:w-20 lg:w-24" fill="none" filter="url(#glow-soft)">
+            <circle cx="50" cy="50" r="42" fill="url(#g-gold)" opacity="0.7"/>
+            <circle cx="50" cy="50" r="36" fill="#0a0a1a" opacity="0.5"/>
+            <path d="M50 22 L56 40 L75 40 L60 50 L66 68 L50 57 L34 68 L40 50 L25 40 L44 40Z" fill="url(#g-gold)" opacity="0.9"/>
+            <path d="M50 26 L55 40 L70 40 L58 49 L63 64 L50 55 L37 64 L42 49 L30 40 L45 40Z" fill="rgba(255,255,255,0.15)"/>
+          </svg>
         </motion.div>
 
-        {/* Layers/signage — medium, bottom-right */}
+        {/* 3D Sign/Billboard — medium, far bottom-right */}
         <motion.div
-          animate={{ y: [0, 16, 0], x: [0, 12, 0], rotate: [0, -6, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="absolute bottom-[30%] right-[4%] sm:bottom-[25%] sm:right-[7%] opacity-[0.07] sm:opacity-[0.1]"
+          animate={{ y: [0, 12, 0], x: [0, 10, 0], rotateY: [0, -6, 0], rotateZ: [-1, 2, -1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+          className="absolute -bottom-4 -right-6 sm:-bottom-6 sm:-right-10 opacity-[0.03] sm:opacity-[0.05] hidden md:block"
+          style={{ perspective: "700px", transformStyle: "preserve-3d" }}
         >
-          <Layers className="w-12 h-12 sm:w-18 sm:h-18 text-brand-purple" />
-        </motion.div>
-
-        {/* Wrench — small, mid-left */}
-        <motion.div
-          animate={{ y: [0, 10, 0], rotate: [0, 20, 0] }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute top-[55%] left-[3%] sm:left-[5%] opacity-[0.05] sm:opacity-[0.08] hidden md:block"
-        >
-          <Wrench className="w-10 h-10 sm:w-14 sm:h-14 text-brand-blue/60" />
-        </motion.div>
-
-        {/* PaintBucket — small, mid-right */}
-        <motion.div
-          animate={{ y: [0, -14, 0], rotate: [0, -12, 0] }}
-          transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute top-[50%] right-[5%] sm:right-[4%] opacity-[0.05] sm:opacity-[0.08] hidden md:block"
-        >
-          <PaintBucket className="w-10 h-10 sm:w-14 sm:h-14 text-brand-magenta/60" />
+          <svg viewBox="0 0 140 110" className="w-24 sm:w-32 lg:w-36" fill="none" filter="url(#glow-soft)">
+            <rect x="10" y="8" width="120" height="70" rx="4" fill="url(#g-purple)" opacity="0.7"/>
+            <rect x="14" y="12" width="112" height="62" rx="2" fill="#0a0a1a" opacity="0.6"/>
+            <rect x="24" y="24" width="50" height="6" rx="3" fill="url(#g-blue)" opacity="0.8"/>
+            <rect x="24" y="36" width="80" height="4" rx="2" fill="rgba(255,255,255,0.15)"/>
+            <rect x="24" y="46" width="65" height="4" rx="2" fill="rgba(255,255,255,0.1)"/>
+            <rect x="24" y="56" width="40" height="8" rx="4" fill="url(#g-magenta)" opacity="0.6"/>
+            <rect x="56" y="78" width="28" height="22" rx="0" fill="rgba(255,255,255,0.06)"/>
+          </svg>
         </motion.div>
       </div>
 
