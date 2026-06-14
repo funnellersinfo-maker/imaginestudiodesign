@@ -201,14 +201,15 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Dark base gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
-      {/* Looping video background — plays instantly, never stops */}
+      {/* Looping video background — non-blocking for fast FCP */}
       <div className="absolute inset-0 z-[1]">
         <video
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="none"
+          poster="/hero-poster-mobile.jpg"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/hero-bg.mp4" type="video/mp4" />
@@ -339,7 +340,7 @@ function ProblemSection() {
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10"
                 >
                   <source src="/card-bg.mp4" type="video/mp4" />
@@ -382,7 +383,7 @@ function TransformationSection() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           className="absolute inset-0 w-full h-full object-cover opacity-20"
         >
           <source src="/transform-bg.mp4" type="video/mp4" />
@@ -502,7 +503,7 @@ function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   className="absolute inset-0 w-full h-full object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-500 -z-10"
                 >
                   <source src="/vis-card-bg.mp4" type="video/mp4" />
