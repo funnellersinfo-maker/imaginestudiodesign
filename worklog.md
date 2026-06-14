@@ -154,3 +154,30 @@ Stage Summary:
 - Quote form: saves to DB + opens WhatsApp with personalized lead info
 - Mobile bar now has: CTA + WhatsApp + Phone + Dismiss
 - Desktop floating: Phone + WhatsApp + Quote CTA
+
+---
+Task ID: 6
+Agent: Main Agent
+Task: Fix invisible hero floating elements — make them visible, magical, and vehicle-wrap-themed
+
+Work Log:
+- Diagnosed issue: Previous floating elements were at 3-6% opacity, hidden on mobile (hidden sm:block / hidden md:block), pushed to far corners with negative offsets — effectively invisible
+- Completely replaced 4 floating elements with new vehicle-wrap-themed designs:
+  1. **Vinyl Roll** (large, top-left) — Custom SVG of a vinyl roll with unpeeling strip, gradient colors, glow filter, 9s multi-axis float animation
+  2. **Color Palette** (medium, right-upper) — Custom SVG palette with 5 brand-colored dots, 8s float+scale animation with delay
+  3. **Squeegee Tool** (small, bottom-left) — Custom SVG of application squeegee with design lines, 7s float+rotate animation
+  4. **Wrapped Van** (large, bottom-right) — Custom SVG van silhouette with design stripes/wrap marks, 11s float animation
+- Each element: glass-morphism container (backdrop-blur, semi-transparent bg, gradient border), outer glow blur layer, brand gradient SVG fills
+- Added 5 sparkle particle dots scattered around hero with pulsing opacity/scale animations
+- All elements visible on ALL screen sizes (no hidden classes), positioned with percentage-based positioning
+- Browser-verified with VLM on both mobile (390x844) and desktop (1440x900) — all 4 elements confirmed visible with glowing effects
+- Google Maps embed already implemented from previous session — confirmed working with red pin at 4608 Cedar Ave
+- Real Google reviews already implemented from previous session — confirmed working (River Vibes, Jose Avendaño, Laura Main Photography, Christopher Sperry)
+- Zero console errors on page load
+
+Stage Summary:
+- Hero floating elements now clearly visible at ~15-25% effective opacity with neon glow effects
+- 4 vehicle-wrap-themed SVGs: vinyl roll, color palette, squeegee, wrapped van
+- 5 additional sparkle particle animations for extra dynamism
+- Visible on all screen sizes (mobile + desktop)
+- Google Maps and real Google reviews confirmed working

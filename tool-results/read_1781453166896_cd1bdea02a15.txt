@@ -1,0 +1,951 @@
+     1→"use client";
+     2→
+     3→import { useState, useRef, useEffect, useCallback } from "react";
+     4→import Image from "next/image";
+     5→import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+     6→import {
+     7→  Phone,
+     8→  ChevronRight,
+     9→  ArrowRight,
+    10→  CheckCircle2,
+    11→  Shield,
+    12→  Eye,
+    13→  Zap,
+    14→  Truck,
+    15→  HardHat,
+    16→  Wrench,
+    17→  TreePine,
+    18→  PaintBucket,
+    19→  GlassWater,
+    20→  Plug,
+    21→  Snowflake,
+    22→  Building2,
+    23→  Home as HomeIcon,
+    24→  Store,
+    25→  Target,
+    26→  Clock,
+    27→  Palette,
+    28→  Layers,
+    29→  Users,
+    30→  Star,
+    31→  Quote,
+    32→  MapPin,
+    33→  Menu,
+    34→  X,
+    35→  Mail,
+    36→} from "lucide-react";
+    37→import {
+    38→  Carousel,
+    39→  CarouselContent,
+    40→  CarouselItem,
+    41→  CarouselPrevious,
+    42→  CarouselNext,
+    43→} from "@/components/ui/carousel";
+    44→import { useLang } from "@/lib/i18n";
+    45→import QuoteFormModal from "@/components/quote-form-modal";
+    46→import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
+    47→import LangToggle from "@/components/lang-toggle";
+    48→import BeforeAfterSlider from "@/components/before-after-slider";
+    49→import GalleryCarousel from "@/components/gallery-carousel";
+    50→
+    51→/* ───────── ANIMATION HELPERS ───────── */
+    52→function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    53→  const ref = useRef(null);
+    54→  const inView = useInView(ref, { once: true, margin: "-60px" });
+    55→  return (
+    56→    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+    57→      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>
+    58→  );
+    59→}
+    60→function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    61→  const ref = useRef(null);
+    62→  const inView = useInView(ref, { once: true, margin: "-40px" });
+    63→  return (
+    64→    <motion.div ref={ref} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+    65→      transition={{ duration: 0.8, delay, ease: "easeOut" }} className={className}>{children}</motion.div>
+    66→  );
+    67→}
+    68→function ScaleIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    69→  const ref = useRef(null);
+    70→  const inView = useInView(ref, { once: true, margin: "-40px" });
+    71→  return (
+    72→    <motion.div ref={ref} initial={{ opacity: 0, scale: 0.9 }} animate={inView ? { opacity: 1, scale: 1 } : {}}
+    73→      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>
+    74→  );
+    75→}
+    76→
+    77→/* ───────── DATA (uses t() inside components) ───────── */
+    78→const PROJECTS_DATA = [
+    79→  { src: "/images/carousel/empire-metal.jpg", altEn: "Empire Metal vehicle wrap", altEs: "Vinilo Empire Metal", label: "Empire Metal" },
+    80→  { src: "/images/carousel/leon-tires.jpg", altEn: "Leon Tires & Body Services fleet branding", altEs: "Marca de flota Leon Tires", label: "Leon Tires & Body Services" },
+    81→  { src: "/images/carousel/lecheras.jpg", altEn: "Lecheras branded vehicle", altEs: "Vehículo Lecheras", label: "Lecheras" },
+    82→  { src: "/images/carousel/sunrise.jpg", altEn: "Sunrise vehicle wrap", altEs: "Vinilo Sunrise", label: "Sunrise" },
+    83→  { src: "/images/carousel/four-seasons.jpg", altEn: "Four Seasons Landscapes LLC wrap", altEs: "Vinilo Four Seasons Landscapes", label: "Four Seasons Landscapes LLC" },
+    84→  { src: "/images/carousel/rico-landscaping.jpg", altEn: "Rico Landscaping branded truck", altEs: "Camión Rico Landscaping", label: "Rico Landscaping" },
+    85→  { src: "/images/carousel/empire-metal-works.jpg", altEn: "Empire Metal Works LLC truck", altEs: "Camión Empire Metal Works", label: "Empire Metal Works LLC" },
+    86→];
+    87→
+    88→const INDUSTRIES_DATA = [
+    89→  { icon: HardHat, labelKey: "ind.contractors", descKey: "ind.contractorsDesc" },
+    90→  { icon: HomeIcon, labelKey: "ind.roofing", descKey: "ind.roofingDesc" },
+    91→  { icon: Snowflake, labelKey: "ind.hvac", descKey: "ind.hvacDesc" },
+    92→  { icon: Wrench, labelKey: "ind.plumbing", descKey: "ind.plumbingDesc" },
+    93→  { icon: Plug, labelKey: "ind.electrical", descKey: "ind.electricalDesc" },
+    94→  { icon: TreePine, labelKey: "ind.landscaping", descKey: "ind.landscapingDesc" },
+    95→  { icon: PaintBucket, labelKey: "ind.painting", descKey: "ind.paintingDesc" },
+    96→  { icon: TreePine, labelKey: "ind.tree", descKey: "ind.treeDesc" },
+    97→  { icon: GlassWater, labelKey: "ind.concrete", descKey: "ind.concreteDesc" },
+    98→  { icon: Building2, labelKey: "ind.construction", descKey: "ind.constructionDesc" },
+    99→];
+   100→
+   101→const PROCESS_DATA = [
+   102→  { num: "01", titleKey: "process.step1", descKey: "process.step1Desc", icon: Phone },
+   103→  { num: "02", titleKey: "process.step2", descKey: "process.step2Desc", icon: Palette },
+   104→  { num: "03", titleKey: "process.step3", descKey: "process.step3Desc", icon: Layers },
+   105→  { num: "04", titleKey: "process.step4", descKey: "process.step4Desc", icon: Truck },
+   106→  { num: "05", titleKey: "process.step5", descKey: "process.step5Desc", icon: Eye },
+   107→];
+   108→
+   109→const METRICS_DATA = [
+   110→  { value: "500+", labelKey: "trust.projects" },
+   111→  { value: "98%", labelKey: "trust.satisfaction" },
+   112→  { value: "10+", labelKey: "trust.experience" },
+   113→  { value: "24h", labelKey: "trust.turnaround" },
+   114→];
+   115→
+   116→const VISIBILITY_DATA = [
+   117→  { icon: Layers, titleKey: "vis.wraps", descKey: "vis.wrapsDesc" },
+   118→  { icon: Eye, titleKey: "vis.signage", descKey: "vis.signageDesc" },
+   119→  { icon: Users, titleKey: "vis.apparel", descKey: "vis.apparelDesc" },
+   120→  { icon: Target, titleKey: "vis.promo", descKey: "vis.promoDesc" },
+   121→  { icon: Palette, titleKey: "vis.brandIdentity", descKey: "vis.brandIdentityDesc" },
+   122→  { icon: Zap, titleKey: "vis.digital", descKey: "vis.digitalDesc" },
+   123→];
+   124→
+   125→/* ───────── NAV ───────── */
+   126→function Nav({ onQuote }: { onQuote: () => void }) {
+   127→  const [open, setOpen] = useState(false);
+   128→  const { t } = useLang();
+   129→  return (
+   130→    <nav className="fixed top-0 left-0 right-0 z-40 glass-strong">
+   131→      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   132→        <div className="flex items-center justify-between h-16 lg:h-20">
+   133→          <a href="#" className="flex items-center gap-3 flex-shrink-0">
+   134→            <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 lg:h-12 w-auto object-contain" priority />
+   135→          </a>
+   136→          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+   137→            <a href="#transformations" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.transformations")}</a>
+   138→            <a href="#who-we-help" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.industries")}</a>
+   139→            <a href="#projects" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.projects")}</a>
+   140→            <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.process")}</a>
+   141→          </div>
+   142→          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+   143→            <a href="tel:+19105474314" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
+   144→              <Phone className="w-4 h-4" />(910) 547-4314
+   145→            </a>
+   146→            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("nav.getQuote")}</button>
+   147→          </div>
+   148→          <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
+   149→            {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+   150→          </button>
+   151→        </div>
+   152→        {open && (
+   153→          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden pb-6 pt-2 border-t border-white/5">
+   154→            <div className="flex flex-col gap-4">
+   155→              <a href="#transformations" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.transformations")}</a>
+   156→              <a href="#who-we-help" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.industries")}</a>
+   157→              <a href="#projects" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.projects")}</a>
+   158→              <a href="#process" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.process")}</a>
+   159→              <div className="section-divider" />
+   160→              <a href="tel:+19105474314" className="flex items-center gap-2 text-emerald-400 py-2"><Phone className="w-4 h-4" /> (910) 547-4314</a>
+   161→              <button onClick={() => { setOpen(false); onQuote(); }} className="cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide w-full">{t("nav.getFreeQuote")}</button>
+   162→            </div>
+   163→          </motion.div>
+   164→        )}
+   165→      </div>
+   166→    </nav>
+   167→  );
+   168→}
+   169→
+   170→/* ───────── 1. HERO ───────── */
+   171→function HeroSection({ onQuote }: { onQuote: () => void }) {
+   172→  const sectionRef = useRef<HTMLElement>(null);
+   173→  const { scrollY } = useScroll();
+   174→  const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
+   175→  const { t } = useLang();
+   176→
+   177→  const headlines = [
+   178→    { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
+   179→    { line1: t("hero.h2.line1"), line2: t("hero.h2.line2"), line3: t("hero.h2.line3") },
+   180→    { line1: t("hero.h3.line1"), line2: t("hero.h3.line2"), line3: t("hero.h3.line3") },
+   181→    { line1: t("hero.h4.line1"), line2: t("hero.h4.line2"), line3: t("hero.h4.line3") },
+   182→  ];
+   183→
+   184→  const [idx, setIdx] = useState(0);
+   185→
+   186→  const scheduleNext = useCallback(() => {
+   187→    const delay = 9000 + Math.random() * 3000;
+   188→    return setTimeout(() => setIdx((i) => (i + 1) % headlines.length), delay);
+   189→  }, [headlines.length]);
+   190→
+   191→  useEffect(() => {
+   192→    const id = scheduleNext();
+   193→    return () => clearTimeout(id);
+   194→  }, [idx, scheduleNext]);
+   195→
+   196→  const h = headlines[idx];
+   197→  const key = `${idx}-${h.line1}`;
+   198→
+   199→  return (
+   200→    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+   201→      {/* Dark base gradient */}
+   202→      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
+   203→
+   204→      {/* Floating 3D dopaminic elements — ultra subtle, corners only */}
+   205→      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+   206→        <svg className="absolute" width="0" height="0">
+   207→          <defs>
+   208→            <linearGradient id="g-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+   209→              <stop offset="0%" stopColor="#1D68B3" />
+   210→              <stop offset="100%" stopColor="#6A3DFF" />
+   211→            </linearGradient>
+   212→            <linearGradient id="g-magenta" x1="0%" y1="0%" x2="100%" y2="100%">
+   213→              <stop offset="0%" stopColor="#C62285" />
+   214→              <stop offset="100%" stopColor="#E71D8C" />
+   215→            </linearGradient>
+   216→            <linearGradient id="g-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+   217→              <stop offset="0%" stopColor="#6A3DFF" />
+   218→              <stop offset="100%" stopColor="#C62285" />
+   219→            </linearGradient>
+   220→            <linearGradient id="g-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+   221→              <stop offset="0%" stopColor="#FBBF24" />
+   222→              <stop offset="100%" stopColor="#F59E0B" />
+   223→            </linearGradient>
+   224→            <filter id="glow-soft">
+   225→              <feGaussianBlur stdDeviation="3" result="blur" />
+   226→              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+   227→            </filter>
+   228→            <filter id="glow-wide">
+   229→              <feGaussianBlur stdDeviation="6" result="blur" />
+   230→              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+   231→            </filter>
+   232→          </defs>
+   233→        </svg>
+   234→
+   235→        {/* 3D Van — large, far top-left corner */}
+   236→        <motion.div
+   237→          animate={{ y: [0, -14, 0], x: [0, 6, 0], rotateY: [0, 8, 0], rotateZ: [-2, 1, -2] }}
+   238→          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+   239→          className="absolute -top-4 -left-8 sm:-top-6 sm:-left-12 opacity-[0.04] sm:opacity-[0.06] hidden sm:block"
+   240→          style={{ perspective: "800px", transformStyle: "preserve-3d" }}
+   241→        >
+   242→          <svg viewBox="0 0 200 100" className="w-40 sm:w-56 lg:w-64" fill="none" filter="url(#glow-wide)">
+   243→            <path d="M20 55 L20 35 Q20 25 30 22 L80 18 Q90 17 95 22 L105 28 L140 28 Q155 28 160 38 L165 50 Q167 55 162 58 L158 60 Q150 65 140 65 L30 65 Q22 65 20 55Z" fill="url(#g-blue)" opacity="0.9"/>
+   244→            <path d="M105 28 L95 22 Q90 17 80 18 L30 22 Q20 25 20 35 L20 55 Q22 65 30 65 L140 65 Q150 65 158 60 L155 50 L150 38 Q145 28 140 28 L105 28Z" fill="url(#g-magenta)" opacity="0.15"/>
+   245→            <rect x="28" y="42" width="22" height="16" rx="2" fill="rgba(255,255,255,0.1)"/>
+   246→            <rect x="56" y="42" width="22" height="16" rx="2" fill="rgba(255,255,255,0.1)"/>
+   247→            <rect x="84" y="42" width="22" height="16" rx="2" fill="rgba(255,255,255,0.1)"/>
+   248→            <circle cx="40" cy="72" r="8" fill="#1a1a2e" stroke="url(#g-blue)" strokeWidth="2"/>
+   249→            <circle cx="135" cy="72" r="8" fill="#1a1a2e" stroke="url(#g-blue)" strokeWidth="2"/>
+   250→            <path d="M165 50 Q167 55 162 58 L160 55 L165 50Z" fill="url(#g-magenta)" opacity="0.6"/>
+   251→          </svg>
+   252→        </motion.div>
+   253→
+   254→        {/* 3D Color Swatch — medium, far top-right */}
+   255→        <motion.div
+   256→          animate={{ y: [0, 10, 0], x: [0, -8, 0], rotateY: [0, -10, 0], rotateZ: [1, -2, 1] }}
+   257→          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+   258→          className="absolute -top-2 -right-4 sm:-top-4 sm:-right-8 opacity-[0.04] sm:opacity-[0.06]"
+   259→          style={{ perspective: "600px", transformStyle: "preserve-3d" }}
+   260→        >
+   261→          <svg viewBox="0 0 120 120" className="w-20 sm:w-28 lg:w-32" fill="none" filter="url(#glow-soft)">
+   262→            <rect x="10" y="10" width="45" height="45" rx="8" fill="url(#g-blue)" opacity="0.8"/>
+   263→            <rect x="65" y="10" width="45" height="45" rx="8" fill="url(#g-magenta)" opacity="0.8"/>
+   264→            <rect x="10" y="65" width="45" height="45" rx="8" fill="url(#g-purple)" opacity="0.8"/>
+   265→            <rect x="65" y="65" width="45" height="45" rx="8" fill="url(#g-gold)" opacity="0.8"/>
+   266→            <rect x="10" y="10" width="100" height="100" rx="12" stroke="rgba(255,255,255,0.08)" strokeWidth="1" fill="none"/>
+   267→          </svg>
+   268→        </motion.div>
+   269→
+   270→        {/* 3D Star Badge — small, far bottom-left */}
+   271→        <motion.div
+   272→          animate={{ y: [0, -8, 0], rotateY: [0, 12, 0], rotateZ: [0, 5, 0] }}
+   273→          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+   274→          className="absolute -bottom-2 -left-4 sm:bottom-4 sm:-left-6 opacity-[0.03] sm:opacity-[0.05]"
+   275→          style={{ perspective: "500px", transformStyle: "preserve-3d" }}
+   276→        >
+   277→          <svg viewBox="0 0 100 100" className="w-16 sm:w-20 lg:w-24" fill="none" filter="url(#glow-soft)">
+   278→            <circle cx="50" cy="50" r="42" fill="url(#g-gold)" opacity="0.7"/>
+   279→            <circle cx="50" cy="50" r="36" fill="#0a0a1a" opacity="0.5"/>
+   280→            <path d="M50 22 L56 40 L75 40 L60 50 L66 68 L50 57 L34 68 L40 50 L25 40 L44 40Z" fill="url(#g-gold)" opacity="0.9"/>
+   281→            <path d="M50 26 L55 40 L70 40 L58 49 L63 64 L50 55 L37 64 L42 49 L30 40 L45 40Z" fill="rgba(255,255,255,0.15)"/>
+   282→          </svg>
+   283→        </motion.div>
+   284→
+   285→        {/* 3D Sign/Billboard — medium, far bottom-right */}
+   286→        <motion.div
+   287→          animate={{ y: [0, 12, 0], x: [0, 10, 0], rotateY: [0, -6, 0], rotateZ: [-1, 2, -1] }}
+   288→          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+   289→          className="absolute -bottom-4 -right-6 sm:-bottom-6 sm:-right-10 opacity-[0.03] sm:opacity-[0.05] hidden md:block"
+   290→          style={{ perspective: "700px", transformStyle: "preserve-3d" }}
+   291→        >
+   292→          <svg viewBox="0 0 140 110" className="w-24 sm:w-32 lg:w-36" fill="none" filter="url(#glow-soft)">
+   293→            <rect x="10" y="8" width="120" height="70" rx="4" fill="url(#g-purple)" opacity="0.7"/>
+   294→            <rect x="14" y="12" width="112" height="62" rx="2" fill="#0a0a1a" opacity="0.6"/>
+   295→            <rect x="24" y="24" width="50" height="6" rx="3" fill="url(#g-blue)" opacity="0.8"/>
+   296→            <rect x="24" y="36" width="80" height="4" rx="2" fill="rgba(255,255,255,0.15)"/>
+   297→            <rect x="24" y="46" width="65" height="4" rx="2" fill="rgba(255,255,255,0.1)"/>
+   298→            <rect x="24" y="56" width="40" height="8" rx="4" fill="url(#g-magenta)" opacity="0.6"/>
+   299→            <rect x="56" y="78" width="28" height="22" rx="0" fill="rgba(255,255,255,0.06)"/>
+   300→          </svg>
+   301→        </motion.div>
+   302→      </div>
+   303→
+   304→      <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
+   305→        {/* Badge */}
+   306→        <FadeUp delay={0.1}>
+   307→          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mt-8 sm:mt-0 mb-6 lg:mb-20">
+   308→            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-brand-hot-pink flex-shrink-0" />
+   309→            <span className="text-[9px] sm:text-sm text-gray-300 text-center leading-tight whitespace-nowrap">{t("hero.badge")}</span>
+   310→          </div>
+   311→        </FadeUp>
+   312→
+   313→        {/* Rotating Headlines */}
+   314→        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[11rem] mb-8 lg:mb-20">
+   315→          <AnimatePresence mode="wait">
+   316→            <motion.h1
+   317→              key={key}
+   318→              initial={{ opacity: 0, y: 16 }}
+   319→              animate={{ opacity: 1, y: 0 }}
+   320→              exit={{ opacity: 0, y: -16 }}
+   321→              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+   322→              className="absolute inset-0 flex flex-col items-center justify-center"
+   323→            >
+   324→              {/* Mobile/tablet: 3 separate lines */}
+   325→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+   326→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
+   327→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line3}</span>
+   328→              {/* Desktop: 2 lines only */}
+   329→              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+   330→              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
+   331→            </motion.h1>
+   332→          </AnimatePresence>
+   333→        </div>
+   334→
+   335→        {/* Subtitle */}
+   336→        <FadeUp delay={0.4}>
+   337→          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-16 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
+   338→        </FadeUp>
+   339→
+   340→        {/* CTA Buttons */}
+   341→        <FadeUp delay={0.6}>
+   342→          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-6 mb-8 lg:mb-4">
+   343→            <button onClick={onQuote} className="cta-primary text-white font-bold px-5 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-xs sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[180px] sm:min-w-[240px] lg:min-w-[300px] justify-center whitespace-nowrap">
+   344→              {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+   345→            </button>
+   346→            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
+   347→              {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+   348→            </a>
+   349→          </div>
+   350→        </FadeUp>
+   351→
+   352→        {/* Social Proof */}
+   353→        <FadeUp delay={0.8}>
+   354→          <div className="mt-8 sm:mt-14 lg:mt-20 w-full max-w-xl lg:max-w-3xl mx-auto">
+   355→            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 lg:gap-x-10 lg:gap-y-4">
+   356→              {[
+   357→                t("hero.trust1"),
+   358→                t("hero.trust2"),
+   359→                t("hero.trust3"),
+   360→                t("hero.trust4"),
+   361→              ].map((txt, i) => (
+   362→                <div key={i} className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 justify-center sm:justify-start">
+   363→                  <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+   364→                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+   365→                  </div>
+   366→                  <span className="text-xs sm:text-sm lg:text-base text-gray-300 font-medium">{txt}</span>
+   367→                </div>
+   368→              ))}
+   369→            </div>
+   370→            <div className="mt-4 pt-4 sm:mt-8 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-14">
+   371→              <div className="flex items-center gap-1.5 sm:gap-2">
+   372→                <div className="flex -space-x-1">
+   373→                  {[...Array(5)].map((_, i) => (
+   374→                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-yellow-400 fill-yellow-400" />
+   375→                  ))}
+   376→                </div>
+   377→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trust5Stars")}</span>
+   378→              </div>
+   379→              <div className="flex items-center gap-1.5 sm:gap-2">
+   380→                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustProjects")}</span>
+   381→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustProjectsLabel")}</span>
+   382→              </div>
+   383→              <div className="flex items-center gap-1.5 sm:gap-2">
+   384→                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustYears")}</span>
+   385→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustYearsLabel")}</span>
+   386→              </div>
+   387→            </div>
+   388→          </div>
+   389→        </FadeUp>
+   390→      </motion.div>
+   391→      <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+   392→        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"><div className="w-1.5 h-3 rounded-full bg-white/40" /></div>
+   393→      </motion.div>
+   394→    </section>
+   395→  );
+   396→}
+   397→
+   398→/* ───────── 2. PROBLEM ───────── */
+   399→function ProblemSection() {
+   400→  const { t } = useLang();
+   401→  const pains = [t("problem.pain1"), t("problem.pain2"), t("problem.pain3")];
+   402→  const icons = [Eye, Shield, Target];
+   403→  return (
+   404→    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   405→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   406→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   407→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   408→        <FadeUp>
+   409→          <div className="text-center mb-16 lg:mb-20">
+   410→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("problem.tag")}</span>
+   411→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   412→              {t("problem.title1")} <span className="gradient-brand-text">{t("problem.titleHighlight")}</span>.
+   413→            </h2>
+   414→            <p className="text-gray-400 text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("problem.subtitle")}</p>
+   415→          </div>
+   416→        </FadeUp>
+   417→        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+   418→          {pains.map((txt, i) => (
+   419→            <FadeUp key={i} delay={i * 0.15}>
+   420→              <div className="relative group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full backdrop-blur-sm overflow-hidden">
+   421→                <video
+   422→                  autoPlay
+   423→                  muted
+   424→                  loop
+   425→                  playsInline
+   426→                  preload="none"
+   427→                  className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10"
+   428→                >
+   429→                  <source src="/card-bg.mp4" type="video/mp4" />
+   430→                </video>
+   431→                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-purple-pink flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
+   432→                  {(() => { const Ic = icons[i]; return <Ic className="w-6 h-6 lg:w-7 lg:h-7 text-white" />; })()}
+   433→                </div>
+   434→                <p className="text-gray-300 leading-relaxed text-base lg:text-lg relative z-10">{txt}</p>
+   435→              </div>
+   436→            </FadeUp>
+   437→          ))}
+   438→        </div>
+   439→        <FadeUp delay={0.4}>
+   440→          <div className="mt-12 text-center">
+   441→            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{t("problem.soundFamiliar")}</p>
+   442→            <p className="text-gray-400 text-base lg:text-lg">{t("problem.goodNews")} <span className="text-brand-bright-blue font-semibold">{t("problem.fixable")}</span></p>
+   443→          </div>
+   444→        </FadeUp>
+   445→      </div>
+   446→    </section>
+   447→  );
+   448→}
+   449→
+   450→/* ───────── 3. TRANSFORMATION ───────── */
+   451→function TransformationSection() {
+   452→  const { t } = useLang();
+   453→  const realProjects = [
+   454→    { src: "/images/real-leon-tires.jpg", name: "Leon Tires & Body Services LLC" },
+   455→    { src: "/images/real-pelones-framing.jpg", name: "Los Pelones Framing LLC" },
+   456→    { src: "/images/real-cabrera-flooring.jpg", name: "Cabrera Flooring LLC" },
+   457→  ];
+   458→  return (
+   459→    <section id="transformations" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   460→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
+   461→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   462→      {/* Dopaminic looping video background */}
+   463→      <div className="absolute inset-0 z-[1]">
+   464→        <video
+   465→          autoPlay
+   466→          muted
+   467→          loop
+   468→          playsInline
+   469→          preload="none"
+   470→          className="absolute inset-0 w-full h-full object-cover opacity-20"
+   471→        >
+   472→          <source src="/transform-bg.mp4" type="video/mp4" />
+   473→        </video>
+   474→      </div>
+   475→      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px] z-[2]" />
+   476→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   477→        <FadeUp>
+   478→          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+   479→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("transform.tag")}</span>
+   480→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   481→              {t("transform.from")} <span className="text-gray-500">{t("transform.invisible")}</span> {t("transform.to")} <span className="gradient-brand-text">{t("transform.impossible")}</span>
+   482→            </h2>
+   483→            <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("transform.subtitle")}</p>
+   484→          </div>
+   485→        </FadeUp>
+   486→
+   487→        {/* Interactive Before/After Slider — Real project */}
+   488→        <ScaleIn delay={0.1}>
+   489→          <div className="mb-10">
+   490→            <BeforeAfterSlider
+   491→              beforeSrc="/images/before-brothers-painting.png"
+   492→              afterSrc="/images/after-brothers-painting.png"
+   493→              beforeAlt="Van before wrap - plain white"
+   494→              afterAlt="Van after wrap - Brothers Painting Services LLC"
+   495→            />
+   496→            <p className="text-center text-sm text-gray-500 mt-4">{t("transform.realProject")}</p>
+   497→          </div>
+   498→        </ScaleIn>
+   499→        <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
+   500→          {realProjects.map((item, i) => (
+   501→            <FadeUp key={i} delay={i * 0.1}>
+   502→              <div className="project-card relative rounded-xl overflow-hidden border border-white/5 group">
+   503→                <div className="relative aspect-[4/3]">
+   504→                  <Image src={item.src} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+   505→                </div>
+   506→                <div className="p-3 lg:p-4 bg-white/[0.02]">
+   507→                  <p className="text-xs sm:text-sm font-bold text-white/80 group-hover:text-white transition-colors text-center">{item.name}</p>
+   508→                </div>
+   509→              </div>
+   510→            </FadeUp>
+   511→          ))}
+   512→        </div>
+   513→      </div>
+   514→    </section>
+   515→  );
+   516→}
+   517→
+   518→/* ───────── 4. WHO WE HELP ───────── */
+   519→function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
+   520→  const { t } = useLang();
+   521→  return (
+   522→    <section id="who-we-help" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   523→      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
+   524→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   525→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   526→        <FadeUp>
+   527→          <div className="text-center mb-16 lg:mb-20">
+   528→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("who.tag")}</span>
+   529→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   530→              {t("who.title1")} <span className="gradient-brand-text">{t("who.titleHighlight")}</span>
+   531→            </h2>
+   532→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("who.subtitle")}</p>
+   533→          </div>
+   534→        </FadeUp>
+   535→        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+   536→          {INDUSTRIES_DATA.map((ind, i) => (
+   537→            <FadeUp key={i} delay={i * 0.05}>
+   538→              <div className="group p-4 lg:p-6 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-brand-purple/20 transition-all duration-300 text-center h-full">
+   539→                <div className="w-12 h-12 lg:w-14 lg:h-14 mx-auto rounded-xl gradient-blue-purple flex items-center justify-center mb-3 lg:mb-4 group-hover:scale-110 transition-transform duration-300">
+   540→                  <ind.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+   541→                </div>
+   542→                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(ind.labelKey)}</h3>
+   543→                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed hidden sm:block">{t(ind.descKey)}</p>
+   544→              </div>
+   545→            </FadeUp>
+   546→          ))}
+   547→        </div>
+   548→        <FadeUp delay={0.5}>
+   549→          <div className="mt-12 text-center">
+   550→            <p className="text-gray-400 mb-4"><Store className="w-4 h-4 inline mr-1" /> {t("who.also")}</p>
+   551→            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   552→              {t("who.seeCta")} <ArrowRight className="w-4 h-4" />
+   553→            </button>
+   554→          </div>
+   555→        </FadeUp>
+   556→      </div>
+   557→    </section>
+   558→  );
+   559→}
+   560→
+   561→/* ───────── 5. VISIBILITY SYSTEM ───────── */
+   562→function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
+   563→  const { t } = useLang();
+   564→  return (
+   565→    <section id="visibility-system" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   566→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   567→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   568→      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-brand-magenta/10 rounded-full blur-[150px]" />
+   569→      <div className="absolute bottom-1/3 left-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[150px]" />
+   570→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   571→        <FadeUp>
+   572→          <div className="text-center mb-16 lg:mb-20">
+   573→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("vis.tag")}</span>
+   574→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   575→              {t("vis.title1")} <span className="gradient-brand-text">{t("vis.titleHighlight")}</span>
+   576→            </h2>
+   577→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("vis.subtitle")}</p>
+   578→          </div>
+   579→        </FadeUp>
+   580→        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+   581→          {VISIBILITY_DATA.map((item, i) => (
+   582→            <FadeUp key={i} delay={i * 0.08}>
+   583→              <div className="group relative p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full overflow-hidden">
+   584→                <video
+   585→                  autoPlay
+   586→                  muted
+   587→                  loop
+   588→                  playsInline
+   589→                  preload="none"
+   590→                  className="absolute inset-0 w-full h-full object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-500 -z-10"
+   591→                >
+   592→                  <source src="/vis-card-bg.mp4" type="video/mp4" />
+   593→                </video>
+   594→                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
+   595→                  <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+   596→                </div>
+   597→                <h3 className="text-white font-bold text-base lg:text-lg mb-2 relative z-10">{t(item.titleKey)}</h3>
+   598→                <p className="text-gray-400 text-sm lg:text-base leading-relaxed relative z-10">{t(item.descKey)}</p>
+   599→              </div>
+   600→            </FadeUp>
+   601→          ))}
+   602→        </div>
+   603→        <FadeUp delay={0.5}>
+   604→          <div className="mt-12 p-6 rounded-2xl border border-brand-purple/20 bg-brand-purple/5 text-center">
+   605→            <p className="text-white text-lg font-semibold mb-2">{t("vis.everything")} <span className="gradient-brand-text">{t("vis.professional")}</span>.</p>
+   606→            <button onClick={onQuote} className="mt-4 cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   607→              {t("vis.customCta")} <ArrowRight className="w-4 h-4" />
+   608→            </button>
+   609→          </div>
+   610→        </FadeUp>
+   611→      </div>
+   612→    </section>
+   613→  );
+   614→}
+   615→
+   616→/* ───────── 6. FEATURED PROJECTS ───────── */
+   617→function FeaturedProjectsSection() {
+   618→  const { t } = useLang();
+   619→  return (
+   620→    <section id="projects" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   621→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
+   622→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   623→      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   624→        <FadeUp>
+   625→          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+   626→            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 lg:mb-6 leading-tight">
+   627→              {t("projects.headline")}
+   628→            </h2>
+   629→            <p className="text-sm sm:text-base text-gray-500 max-w-xl mx-auto">{t("projects.subline")}</p>
+   630→          </div>
+   631→        </FadeUp>
+   632→        <FadeIn delay={0.2}>
+   633→          <div className="relative pl-12 pr-12 lg:pl-16 lg:pr-16">
+   634→            <Carousel opts={{ align: "start", loop: true }} className="w-full">
+   635→              <CarouselContent className="-ml-4">
+   636→                {PROJECTS_DATA.map((project, i) => (
+   637→                  <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
+   638→                    <div className="project-card group rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] cursor-pointer">
+   639→                      <div className="relative aspect-[4/3] overflow-hidden">
+   640→                        <Image src={project.src} alt={project.altEn} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+   641→                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+   642→                        <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
+   643→                          <span className="text-xs sm:text-sm font-bold text-white">{project.label}</span>
+   644→                        </div>
+   645→                      </div>
+   646→                    </div>
+   647→                  </CarouselItem>
+   648→                ))}
+   649→              </CarouselContent>
+   650→              <CarouselPrevious className="left-0 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white" />
+   651→              <CarouselNext className="right-0 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white" />
+   652→            </Carousel>
+   653→          </div>
+   654→        </FadeIn>
+   655→      </div>
+   656→    </section>
+   657→  );
+   658→}
+   659→
+   660→/* ───────── 7. TRUST ───────── */
+   661→function TrustSection() {
+   662→  const { t, lang } = useLang();
+   663→
+   664→  const realReviews = [
+   665→    {
+   666→      name: "River Vibes",
+   667→      text: lang === "es"
+   668→        ? "No puedo decir lo suficiente sobre este negocio. Mi hija se gradúa de UNCW en 4 días y el negocio que tenía 2 meses de aviso bordó la bata del lado equivocado... Este lugar vino al rescate y bordó una nueva bata en solo unas horas, ¡el bordado se ve mejor que el original! Solo le cobraron $8. ¡Gracias por hacer perfecto el día de graduación de mi hija!"
+   669→        : "I can't say enough about this business. My daughter is graduating in 4 days from UNCW and the business that had a 2 month notice embroidered on the wrong side... This place came in clutch and embroidered a new coat in just a few hours and the stitching looks better than the original one! They only charged her $8! Thank you soooo very much for making her graduation day memories perfect!",
+   670→      stars: 5,
+   671→      time: lang === "es" ? "hace 2 años" : "2 years ago",
+   672→    },
+   673→    {
+   674→      name: "Jose Avendaño",
+   675→      text: "Son los más profesionales, los recomiendo 100%.",
+   676→      stars: 5,
+   677→      time: lang === "es" ? "hace 1 mes" : "a month ago",
+   678→    },
+   679→    {
+   680→      name: "Laura Main Photography",
+   681→      text: lang === "es"
+   682→        ? "Productos realmente bonitos y una familia encantadora. ¡Negocio local y familiar, hay que apoyarlos! ¡Muy feliz con el servicio y productos! ¡Rápido también!"
+   683→        : "Really nice products and such a lovely family. Local and mom and pop shop, gotta support them! Very happy with the service and products! Fast turn around too!",
+   684→      stars: 5,
+   685→      time: lang === "es" ? "hace 1 mes" : "a month ago",
+   686→    },
+   687→    {
+   688→      name: "Christopher Sperry",
+   689→      text: lang === "es"
+   690→        ? "Imagine Design Studio hizo un trabajo excepcional creando camisas de empresa y materiales de stand para nuestro pequeño negocio. Los diseños se veían geniales, la calidad era excelente, y fueron fáciles de trabajar durante todo el proceso. ¡Definitivamente los usaremos de nuevo!"
+   691→        : "Imagine Design Studio did an outstanding job creating company shirts and booth materials for our small business. The designs looked great, the quality was excellent, and they were easy to work with throughout the process. We will absolutely be using them again.",
+   692→      stars: 5,
+   693→      time: lang === "es" ? "hace 2 meses" : "2 months ago",
+   694→    },
+   695→  ];
+   696→
+   697→  return (
+   698→    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   699→      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
+   700→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   701→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   702→        <FadeUp>
+   703→          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
+   704→            {METRICS_DATA.map((m, i) => (
+   705→              <ScaleIn key={i} delay={i * 0.1}>
+   706→                <div className="text-center p-6 lg:p-8 rounded-xl border border-white/5 bg-white/[0.02]">
+   707→                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black gradient-brand-text mb-1">{m.value}</div>
+   708→                  <div className="text-gray-400 text-sm lg:text-base">{t(m.labelKey)}</div>
+   709→                </div>
+   710→              </ScaleIn>
+   711→            ))}
+   712→          </div>
+   713→        </FadeUp>
+   714→        <FadeUp delay={0.3}>
+   715→          <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
+   716→            {realReviews.map((review, i) => (
+   717→              <FadeUp key={i} delay={i * 0.12}>
+   718→                <div className="p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] h-full flex flex-col">
+   719→                  <div className="flex gap-1 mb-4">{Array.from({ length: review.stars }).map((_, si) => <Star key={si} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
+   720→                  <Quote className="w-8 h-8 text-brand-purple/30 mb-3" />
+   721→                  <p className="text-gray-300 leading-relaxed flex-1 mb-4 text-sm lg:text-base">&ldquo;{review.text}&rdquo;</p>
+   722→                  <div className="flex items-center justify-between">
+   723→                    <div>
+   724→                      <p className="text-white font-semibold text-sm">{review.name}</p>
+   725→                      <p className="text-gray-500 text-xs">{review.time}</p>
+   726→                    </div>
+   727→                    <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+   728→                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+   729→                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+   730→                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+   731→                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+   732→                    </svg>
+   733→                  </div>
+   734→                </div>
+   735→              </FadeUp>
+   736→            ))}
+   737→          </div>
+   738→        </FadeUp>
+   739→        <FadeUp delay={0.5}>
+   740→          <div className="mt-12 text-center">
+   741→            <p className="text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
+   742→          </div>
+   743→        </FadeUp>
+   744→      </div>
+   745→    </section>
+   746→  );
+   747→}
+   748→
+   749→/* ───────── 8. PROCESS ───────── */
+   750→function ProcessSection({ onQuote }: { onQuote: () => void }) {
+   751→  const { t } = useLang();
+   752→  return (
+   753→    <section id="process" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   754→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   755→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   756→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   757→        <FadeUp>
+   758→          <div className="text-center mb-16 lg:mb-20">
+   759→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("process.tag")}</span>
+   760→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   761→              {t("process.title1")} <span className="gradient-brand-text">{t("process.titleHighlight")}</span>.
+   762→            </h2>
+   763→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("process.subtitle")}</p>
+   764→          </div>
+   765→        </FadeUp>
+   766→        <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-6 relative">
+   767→          <div className="absolute top-12 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue via-brand-purple to-brand-hot-pink opacity-30" />
+   768→          {PROCESS_DATA.map((step, i) => (
+   769→            <FadeUp key={i} delay={i * 0.1}>
+   770→              <div className="relative text-center group">
+   771→                <div className="relative z-10 w-24 h-24 lg:w-28 lg:h-28 mx-auto rounded-2xl border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center mb-4 lg:mb-5 group-hover:border-brand-purple/40 group-hover:bg-brand-purple/10 transition-all duration-300">
+   772→                  <span className="text-2xl lg:text-3xl font-black gradient-brand-text mb-1">{step.num}</span>
+   773→                  <step.icon className="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 group-hover:text-white transition-colors" />
+   774→                </div>
+   775→                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(step.titleKey)}</h3>
+   776→                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed">{t(step.descKey)}</p>
+   777→              </div>
+   778→            </FadeUp>
+   779→          ))}
+   780→        </div>
+   781→        <div className="md:hidden space-y-4">
+   782→          {PROCESS_DATA.map((step, i) => (
+   783→            <FadeUp key={i} delay={i * 0.1}>
+   784→              <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+   785→                <div className="w-14 h-14 flex-shrink-0 rounded-xl gradient-brand flex items-center justify-center">
+   786→                  <span className="text-lg font-black text-white">{step.num}</span>
+   787→                </div>
+   788→                <div>
+   789→                  <h3 className="text-white font-bold text-sm mb-1">{t(step.titleKey)}</h3>
+   790→                  <p className="text-gray-400 text-xs leading-relaxed">{t(step.descKey)}</p>
+   791→                </div>
+   792→              </div>
+   793→            </FadeUp>
+   794→          ))}
+   795→        </div>
+   796→        <FadeUp delay={0.5}>
+   797→          <div className="mt-12 text-center">
+   798→            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   799→              {t("process.cta")} <ArrowRight className="w-4 h-4" />
+   800→            </button>
+   801→          </div>
+   802→        </FadeUp>
+   803→      </div>
+   804→    </section>
+   805→  );
+   806→}
+   807→
+   808→/* ───────── 9. FINAL CTA ───────── */
+   809→function FinalCTASection({ onQuote }: { onQuote: () => void }) {
+   810→  const { t } = useLang();
+   811→  return (
+   812→    <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
+   813→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#080818] to-background" />
+   814→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   815→      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-purple/15 rounded-full blur-[200px]" />
+   816→      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-hot-pink/10 rounded-full blur-[150px]" />
+   817→      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+   818→        <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
+   819→        <FadeUp delay={0.1}>
+   820→          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   821→            {t("final.title1")} <span className="gradient-brand-text">{t("final.titleHighlight")}</span> {t("final.title2")}
+   822→          </h2>
+   823→        </FadeUp>
+   824→        <FadeUp delay={0.2}>
+   825→          <p className="text-lg sm:text-xl lg:text-2xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-4 lg:mb-6 leading-relaxed">{t("final.subtitle")}</p>
+   826→        </FadeUp>
+   827→        <FadeUp delay={0.3}>
+   828→          <p className="text-white text-xl lg:text-2xl font-bold mb-10 lg:mb-14">{t("final.build")} <span className="gradient-brand-text">{t("final.unstoppable")}</span>.</p>
+   829→        </FadeUp>
+   830→        <FadeUp delay={0.4}>
+   831→          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-6 mb-8">
+   832→            <button onClick={onQuote} className="cta-primary text-white font-bold px-10 lg:px-12 py-4 lg:py-5 rounded-xl text-lg lg:text-xl tracking-wide flex items-center gap-2 min-w-[280px] lg:min-w-[320px] justify-center animate-pulse-glow">
+   833→              {t("final.cta")} <ArrowRight className="w-5 h-5" />
+   834→            </button>
+   835→            <a href="tel:+19105474314" className="flex items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm lg:text-base font-semibold">
+   836→              <Phone className="w-4 h-4" /> (910) 547-4314
+   837→            </a>
+   838→          </div>
+   839→        </FadeUp>
+   840→        <FadeUp delay={0.5}>
+   841→          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-gray-500 text-sm lg:text-base">
+   842→            <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {t("final.fast")}</span>
+   843→            <span className="text-white/10">|</span>
+   844→            <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> {t("final.quality")}</span>
+   845→            <span className="text-white/10">|</span>
+   846→            <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {t("final.wilmington")}</span>
+   847→          </div>
+   848→        </FadeUp>
+   849→      </div>
+   850→    </section>
+   851→  );
+   852→}
+   853→
+   854→/* ───────── GOOGLE MAPS ───────── */
+   855→function MapSection() {
+   856→  const { t, lang } = useLang();
+   857→  return (
+   858→    <section className="relative py-16 md:py-20 overflow-hidden">
+   859→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#050510]" />
+   860→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   861→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   862→        <FadeUp>
+   863→          <div className="flex items-center justify-center gap-3 mb-8">
+   864→            <MapPin className="w-6 h-6 text-brand-purple" />
+   865→            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white">
+   866→              {lang === "es" ? "Encuéntranos en Wilmington, NC" : "Find Us in Wilmington, NC"}
+   867→            </h2>
+   868→          </div>
+   869→        </FadeUp>
+   870→        <FadeUp delay={0.2}>
+   871→          <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+   872→            <iframe
+   873→              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3247.5!2d-77.947!3d34.226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89afa3e5c2c2c0a1%3A0x0!2s4608+Cedar+Ave%2C+Wilmington%2C+NC+28403!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+   874→              width="100%"
+   875→              height="400"
+   876→              style={{ border: 0 }}
+   877→              allowFullScreen
+   878→              loading="lazy"
+   879→              referrerPolicy="no-referrer-when-downgrade"
+   880→              title="Imagine Studio Design Location"
+   881→              className="w-full"
+   882→            />
+   883→          </div>
+   884→        </FadeUp>
+   885→        <FadeUp delay={0.3}>
+   886→          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-400">
+   887→            <a href="https://www.google.com/maps/place/4608+Cedar+Ave,+Wilmington,+NC+28403" target="_blank" rel="noopener noreferrer" className="hover:text-brand-purple transition-colors flex items-center gap-2">
+   888→              <MapPin className="w-4 h-4" />
+   889→              4608 Cedar Ave, Wilmington, NC 28403
+   890→            </a>
+   891→            <a href="tel:+19105474314" className="hover:text-brand-purple transition-colors flex items-center gap-2">
+   892→              <Phone className="w-4 h-4" />
+   893→              (910) 547-4314
+   894→            </a>
+   895→          </div>
+   896→        </FadeUp>
+   897→      </div>
+   898→    </section>
+   899→  );
+   900→}
+   901→
+   902→/* ───────── FOOTER ───────── */
+   903→function Footer() {
+   904→  const { t } = useLang();
+   905→  return (
+   906→    <footer className="relative border-t border-white/5 bg-[#050510]">
+   907→      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+   908→        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+   909→          <div className="flex items-center gap-4">
+   910→            <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="h-8 w-auto object-contain opacity-70" />
+   911→          </div>
+   912→          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
+   913→            <a href="tel:+19105474314" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Phone className="w-3 h-3" /> (910) 547-4314</a>
+   914→            <a href="mailto:gtimaginedesign@gmail.com" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Mail className="w-3 h-3" /> gtimaginedesign@gmail.com</a>
+   915→            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {t("footer.location")}</span>
+   916→          </div>
+   917→        </div>
+   918→        <div className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-600">
+   919→          © {new Date().getFullYear()} {t("footer.rights")}
+   920→        </div>
+   921→      </div>
+   922→    </footer>
+   923→  );
+   924→}
+   925→
+   926→/* ───────── MAIN PAGE ───────── */
+   927→export default function Home() {
+   928→  const [quoteOpen, setQuoteOpen] = useState(false);
+   929→  return (
+   930→    <main className="min-h-screen bg-background">
+   931→      <Nav onQuote={() => setQuoteOpen(true)} />
+   932→      <LangToggle />
+   933→      <HeroSection onQuote={() => setQuoteOpen(true)} />
+   934→      <GalleryCarousel />
+   935→      <ProblemSection />
+   936→      <TransformationSection />
+   937→      <WhoWeHelpSection onQuote={() => setQuoteOpen(true)} />
+   938→      <VisibilitySystemSection onQuote={() => setQuoteOpen(true)} />
+   939→      <FeaturedProjectsSection />
+   940→      <TrustSection />
+   941→      <ProcessSection onQuote={() => setQuoteOpen(true)} />
+   942→      <FinalCTASection onQuote={() => setQuoteOpen(true)} />
+   943→      <MapSection />
+   944→      <Footer />
+   945→      <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
+   946→      <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
+   947→      <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
+   948→    </main>
+   949→  );
+   950→}
+   951→
