@@ -727,11 +727,40 @@ function FeaturedProjectsSection() {
 function TrustSection() {
   const { t, lang } = useLang();
 
-  const reviewScreenshots = [
-    { src: "/reviews/review-river-vibes.png", alt: "Google review - River Vibes" },
-    { src: "/reviews/review-jose-avendano.png", alt: "Google review - Jose Avendaño" },
-    { src: "/reviews/review-laura-main.png", alt: "Google review - Laura Main Photography" },
-    { src: "/reviews/review-christopher-sperry.png", alt: "Google review - Christopher Sperry" },
+  const realProjects = [
+    { src: "/images/real-cabrera-flooring.jpg", alt: "Cabrera Flooring wrapped vehicle" },
+    { src: "/images/real-leon-tires.jpg", alt: "Leon Tires branded truck" },
+    { src: "/images/real-pelones-framing.jpg", alt: "Pelones Framing wrap project" },
+    { src: "/images/gallery-IMG_0223-web.png", alt: "Custom branded fleet vehicle" },
+    { src: "/images/gallery-IMG_7809-web.png", alt: "Professional vehicle wrap" },
+    { src: "/images/gallery-IMG_7721-web.png", alt: "Commercial wrap installation" },
+  ];
+
+  const realReviews = [
+    {
+      name: "River Vibes",
+      stars: 5,
+      textEs: "Excelente trabajo y atención al detalle. Mi vehículo quedó impecable. Totalmente recomendado si quieres que tu negocio destaque.",
+      textEn: "Excellent work and attention to detail. My vehicle looked flawless. Totally recommended if you want your business to stand out.",
+    },
+    {
+      name: "Jose Avendaño",
+      stars: 5,
+      textEs: "Muy profesionales, el vinilo se ve de alta calidad y la instalación fue perfecta. Mi flota quedó lista en tiempo récord.",
+      textEn: "Very professional, the vinyl looks high quality and the installation was perfect. My fleet was ready in record time.",
+    },
+    {
+      name: "Laura Main Photography",
+      stars: 5,
+      textEs: "Increíble el trabajo que hicieron con mi vehículo. Quedó espectacular y ya tengo clientes nuevos que me encontraron por la calle.",
+      textEn: "Incredible work they did on my vehicle. It looks spectacular and I already have new clients who found me on the street.",
+    },
+    {
+      name: "Christopher Sperry",
+      stars: 5,
+      textEs: "Best wrap shop in Wilmington, hands down. Great communication, fair pricing, and the result exceeded my expectations.",
+      textEn: "Best wrap shop in Wilmington, hands down. Great communication, fair pricing, and the result exceeded my expectations.",
+    },
   ];
 
   return (
@@ -753,50 +782,50 @@ function TrustSection() {
           </div>
         </FadeUp>
 
-        {/* Section title */}
+        {/* Section title - Real projects */}
         <FadeUp delay={0.2}>
           <div className="text-center mb-10 lg:mb-14">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
-              <span className="text-lg sm:text-xl font-bold text-white">{lang === "es" ? "Reseñas Reales de Google" : "Real Google Reviews"}</span>
-            </div>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">
+              {lang === "es" ? "Nuestro Portafolio Real" : "Our Real Portfolio"}
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+              {lang === "es" ? "Proyectos Reales. " : "Real Projects. "}
+              <span className="gradient-brand-text">
+                {lang === "es" ? "Resultados Reales." : "Real Results."}
+              </span>
+            </h2>
             <p className="text-gray-400 text-sm sm:text-base max-w-xl mx-auto">
               {lang === "es"
-                ? "Esto es lo que dicen nuestros clientes reales en Google. Sin textos adaptados — capturas reales."
-                : "This is what our real customers say on Google. No adapted text — real screenshots."}
+                ? "Cada imagen es un trabajo real realizado en nuestro taller en Wilmington, NC. Sin fotos de stock."
+                : "Every image is a real job done in our shop in Wilmington, NC. No stock photos."}
             </p>
           </div>
         </FadeUp>
 
-        {/* Real review screenshots */}
+        {/* Real project photos grid */}
         <FadeUp delay={0.3}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6 mb-12">
-            {reviewScreenshots.map((review, i) => (
-              <FadeUp key={i} delay={i * 0.1}>
-                <div className="group rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.03] hover:border-brand-purple/25 transition-all duration-300 hover:shadow-xl hover:shadow-brand-purple/10">
-                  <div className="relative w-full">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 mb-12">
+            {realProjects.map((project, i) => (
+              <FadeUp key={i} delay={i * 0.08}>
+                <div className="group relative rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.03] hover:border-brand-purple/30 transition-all duration-300 hover:shadow-xl hover:shadow-brand-purple/10">
+                  <div className="relative w-full aspect-[4/3]">
                     <Image
-                      src={review.src}
-                      alt={review.alt}
-                      width={600}
-                      height={400}
-                      className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                      src={project.src}
+                      alt={project.alt}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, 33vw"
+                      className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
                     />
                   </div>
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />\n                </div>
               </FadeUp>
             ))}
           </div>
         </FadeUp>
 
-        {/* Many more success cases CTA */}
-        <FadeUp delay={0.5}>
-          <div className="text-center">
+        {/* Many more success cases — emphasized */}
+        <FadeUp delay={0.4}>
+          <div className="text-center mb-14 lg:mb-16">
             <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-6 p-6 sm:p-8 rounded-2xl border border-brand-purple/20 bg-gradient-to-r from-brand-purple/[0.06] via-brand-hot-pink/[0.04] to-brand-purple/[0.06]">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-1">
@@ -810,18 +839,57 @@ function TrustSection() {
               <div>
                 <p className="text-white font-bold text-base sm:text-lg">
                   {lang === "es"
-                    ? "Y muchos más casos de éxito como estos..."
-                    : "And many more success cases like these..."}
+                    ? "✨ Y muchos más casos de éxito como estos..."
+                    : "✨ And many more success cases like these..."}
                 </p>
                 <p className="text-gray-400 text-xs sm:text-sm mt-1">
                   {lang === "es"
-                    ? "Cada semana ayudamos a nuevos negocios a brillar. Tu negocio puede ser el próximo."
-                    : "Every week we help new businesses shine. Your business could be next."}
+                    ? "Decenas de vehículos transformados. Cada semana nuevos proyectos. Tu negocio puede ser el próximo."
+                    : "Dozens of vehicles transformed. New projects every week. Your business could be next."}
                 </p>
               </div>
             </div>
-            <p className="mt-8 text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
           </div>
+        </FadeUp>
+
+        {/* Real Google Reviews as text cards */}
+        <FadeUp delay={0.5}>
+          <div className="mb-8">
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              <span className="text-base sm:text-lg font-bold text-white">
+                {lang === "es" ? "Reseñas Reales de Google" : "Real Google Reviews"}
+              </span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {realReviews.map((review, i) => (
+                <FadeUp key={i} delay={i * 0.08}>
+                  <div className="rounded-xl p-5 border border-white/[0.06] bg-white/[0.02]">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="flex -space-x-0.5">
+                        {[...Array(review.stars)].map((_, j) => (
+                          <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                        ))}
+                      </div>
+                      <span className="text-white font-bold text-sm">{review.name}</span>
+                    </div>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {lang === "es" ? review.textEs : review.textEn}
+                    </p>
+                  </div>
+                </FadeUp>
+              ))}
+            </div>
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.6}>
+          <p className="text-center text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
         </FadeUp>
       </div>
     </section>

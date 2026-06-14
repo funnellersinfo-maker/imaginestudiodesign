@@ -1,0 +1,1033 @@
+     1→"use client";
+     2→
+     3→import { useState, useRef, useEffect, useCallback } from "react";
+     4→import Image from "next/image";
+     5→import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+     6→import {
+     7→  Phone,
+     8→  ChevronRight,
+     9→  ArrowRight,
+    10→  CheckCircle2,
+    11→  Shield,
+    12→  Eye,
+    13→  Zap,
+    14→  Truck,
+    15→  HardHat,
+    16→  Wrench,
+    17→  TreePine,
+    18→  PaintBucket,
+    19→  GlassWater,
+    20→  Plug,
+    21→  Snowflake,
+    22→  Building2,
+    23→  Home as HomeIcon,
+    24→  Store,
+    25→  Target,
+    26→  Clock,
+    27→  Palette,
+    28→  Layers,
+    29→  Users,
+    30→  Star,
+    31→  Quote,
+    32→  MapPin,
+    33→  Menu,
+    34→  X,
+    35→  Mail,
+    36→} from "lucide-react";
+    37→import {
+    38→  Carousel,
+    39→  CarouselContent,
+    40→  CarouselItem,
+    41→  CarouselPrevious,
+    42→  CarouselNext,
+    43→} from "@/components/ui/carousel";
+    44→import { useLang } from "@/lib/i18n";
+    45→import QuoteFormModal from "@/components/quote-form-modal";
+    46→import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
+    47→import LangToggle from "@/components/lang-toggle";
+    48→import BeforeAfterSlider from "@/components/before-after-slider";
+    49→import GalleryCarousel from "@/components/gallery-carousel";
+    50→
+    51→/* ───────── ANIMATION HELPERS ───────── */
+    52→function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    53→  const ref = useRef(null);
+    54→  const inView = useInView(ref, { once: true, margin: "-60px" });
+    55→  return (
+    56→    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+    57→      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>
+    58→  );
+    59→}
+    60→function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    61→  const ref = useRef(null);
+    62→  const inView = useInView(ref, { once: true, margin: "-40px" });
+    63→  return (
+    64→    <motion.div ref={ref} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+    65→      transition={{ duration: 0.8, delay, ease: "easeOut" }} className={className}>{children}</motion.div>
+    66→  );
+    67→}
+    68→function ScaleIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    69→  const ref = useRef(null);
+    70→  const inView = useInView(ref, { once: true, margin: "-40px" });
+    71→  return (
+    72→    <motion.div ref={ref} initial={{ opacity: 0, scale: 0.9 }} animate={inView ? { opacity: 1, scale: 1 } : {}}
+    73→      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>
+    74→  );
+    75→}
+    76→
+    77→/* ───────── DATA (uses t() inside components) ───────── */
+    78→const PROJECTS_DATA = [
+    79→  { src: "/images/carousel/empire-metal.jpg", altEn: "Empire Metal vehicle wrap", altEs: "Vinilo Empire Metal", label: "Empire Metal" },
+    80→  { src: "/images/carousel/leon-tires.jpg", altEn: "Leon Tires & Body Services fleet branding", altEs: "Marca de flota Leon Tires", label: "Leon Tires & Body Services" },
+    81→  { src: "/images/carousel/lecheras.jpg", altEn: "Lecheras branded vehicle", altEs: "Vehículo Lecheras", label: "Lecheras" },
+    82→  { src: "/images/carousel/sunrise.jpg", altEn: "Sunrise vehicle wrap", altEs: "Vinilo Sunrise", label: "Sunrise" },
+    83→  { src: "/images/carousel/four-seasons.jpg", altEn: "Four Seasons Landscapes LLC wrap", altEs: "Vinilo Four Seasons Landscapes", label: "Four Seasons Landscapes LLC" },
+    84→  { src: "/images/carousel/rico-landscaping.jpg", altEn: "Rico Landscaping branded truck", altEs: "Camión Rico Landscaping", label: "Rico Landscaping" },
+    85→  { src: "/images/carousel/empire-metal-works.jpg", altEn: "Empire Metal Works LLC truck", altEs: "Camión Empire Metal Works", label: "Empire Metal Works LLC" },
+    86→];
+    87→
+    88→const INDUSTRIES_DATA = [
+    89→  { icon: HardHat, labelKey: "ind.contractors", descKey: "ind.contractorsDesc" },
+    90→  { icon: HomeIcon, labelKey: "ind.roofing", descKey: "ind.roofingDesc" },
+    91→  { icon: Snowflake, labelKey: "ind.hvac", descKey: "ind.hvacDesc" },
+    92→  { icon: Wrench, labelKey: "ind.plumbing", descKey: "ind.plumbingDesc" },
+    93→  { icon: Plug, labelKey: "ind.electrical", descKey: "ind.electricalDesc" },
+    94→  { icon: TreePine, labelKey: "ind.landscaping", descKey: "ind.landscapingDesc" },
+    95→  { icon: PaintBucket, labelKey: "ind.painting", descKey: "ind.paintingDesc" },
+    96→  { icon: TreePine, labelKey: "ind.tree", descKey: "ind.treeDesc" },
+    97→  { icon: GlassWater, labelKey: "ind.concrete", descKey: "ind.concreteDesc" },
+    98→  { icon: Building2, labelKey: "ind.construction", descKey: "ind.constructionDesc" },
+    99→];
+   100→
+   101→const PROCESS_DATA = [
+   102→  { num: "01", titleKey: "process.step1", descKey: "process.step1Desc", icon: Phone },
+   103→  { num: "02", titleKey: "process.step2", descKey: "process.step2Desc", icon: Palette },
+   104→  { num: "03", titleKey: "process.step3", descKey: "process.step3Desc", icon: Layers },
+   105→  { num: "04", titleKey: "process.step4", descKey: "process.step4Desc", icon: Truck },
+   106→  { num: "05", titleKey: "process.step5", descKey: "process.step5Desc", icon: Eye },
+   107→];
+   108→
+   109→const METRICS_DATA = [
+   110→  { value: "500+", labelKey: "trust.projects" },
+   111→  { value: "98%", labelKey: "trust.satisfaction" },
+   112→  { value: "10+", labelKey: "trust.experience" },
+   113→  { value: "24h", labelKey: "trust.turnaround" },
+   114→];
+   115→
+   116→const VISIBILITY_DATA = [
+   117→  { icon: Layers, titleKey: "vis.wraps", descKey: "vis.wrapsDesc" },
+   118→  { icon: Eye, titleKey: "vis.signage", descKey: "vis.signageDesc" },
+   119→  { icon: Users, titleKey: "vis.apparel", descKey: "vis.apparelDesc" },
+   120→  { icon: Target, titleKey: "vis.promo", descKey: "vis.promoDesc" },
+   121→  { icon: Palette, titleKey: "vis.brandIdentity", descKey: "vis.brandIdentityDesc" },
+   122→  { icon: Zap, titleKey: "vis.digital", descKey: "vis.digitalDesc" },
+   123→];
+   124→
+   125→/* ───────── NAV ───────── */
+   126→function Nav({ onQuote }: { onQuote: () => void }) {
+   127→  const [open, setOpen] = useState(false);
+   128→  const { t } = useLang();
+   129→  return (
+   130→    <nav className="fixed top-0 left-0 right-0 z-40 glass-strong">
+   131→      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   132→        <div className="flex items-center justify-between h-16 lg:h-20">
+   133→          <a href="#" className="flex items-center gap-3 flex-shrink-0">
+   134→            <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 lg:h-12 w-auto object-contain" priority />
+   135→          </a>
+   136→          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+   137→            <a href="#transformations" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.transformations")}</a>
+   138→            <a href="#who-we-help" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.industries")}</a>
+   139→            <a href="#projects" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.projects")}</a>
+   140→            <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.process")}</a>
+   141→          </div>
+   142→          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+   143→            <a href="tel:+19105474314" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
+   144→              <Phone className="w-4 h-4" />(910) 547-4314
+   145→            </a>
+   146→            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("nav.getQuote")}</button>
+   147→          </div>
+   148→          <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
+   149→            {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+   150→          </button>
+   151→        </div>
+   152→        {open && (
+   153→          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden pb-6 pt-2 border-t border-white/5">
+   154→            <div className="flex flex-col gap-4">
+   155→              <a href="#transformations" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.transformations")}</a>
+   156→              <a href="#who-we-help" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.industries")}</a>
+   157→              <a href="#projects" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.projects")}</a>
+   158→              <a href="#process" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.process")}</a>
+   159→              <div className="section-divider" />
+   160→              <a href="tel:+19105474314" className="flex items-center gap-2 text-emerald-400 py-2"><Phone className="w-4 h-4" /> (910) 547-4314</a>
+   161→              <button onClick={() => { setOpen(false); onQuote(); }} className="cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide w-full">{t("nav.getFreeQuote")}</button>
+   162→            </div>
+   163→          </motion.div>
+   164→        )}
+   165→      </div>
+   166→    </nav>
+   167→  );
+   168→}
+   169→
+   170→/* ───────── 1. HERO ───────── */
+   171→function HeroSection({ onQuote }: { onQuote: () => void }) {
+   172→  const sectionRef = useRef<HTMLElement>(null);
+   173→  const { scrollY } = useScroll();
+   174→  const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
+   175→  const { t } = useLang();
+   176→
+   177→  const headlines = [
+   178→    { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
+   179→    { line1: t("hero.h2.line1"), line2: t("hero.h2.line2"), line3: t("hero.h2.line3") },
+   180→    { line1: t("hero.h3.line1"), line2: t("hero.h3.line2"), line3: t("hero.h3.line3") },
+   181→    { line1: t("hero.h4.line1"), line2: t("hero.h4.line2"), line3: t("hero.h4.line3") },
+   182→  ];
+   183→
+   184→  const [idx, setIdx] = useState(0);
+   185→
+   186→  const scheduleNext = useCallback(() => {
+   187→    const delay = 9000 + Math.random() * 3000;
+   188→    return setTimeout(() => setIdx((i) => (i + 1) % headlines.length), delay);
+   189→  }, [headlines.length]);
+   190→
+   191→  useEffect(() => {
+   192→    const id = scheduleNext();
+   193→    return () => clearTimeout(id);
+   194→  }, [idx, scheduleNext]);
+   195→
+   196→  const h = headlines[idx];
+   197→  const key = `${idx}-${h.line1}`;
+   198→
+   199→  return (
+   200→    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+   201→      {/* Dark base gradient */}
+   202→      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
+   203→
+   204→      {/* Floating Hero Elements — Vehicle Wrap Design Theme */}
+   205→      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
+   206→
+   207→        {/* 1. VINYL ROLL — Large, top-left area */}
+   208→        <motion.div
+   209→          animate={{
+   210→            y: [0, -20, 8, -12, 0],
+   211→            x: [0, 10, -4, 8, 0],
+   212→            rotate: [0, 5, -3, 2, 0],
+   213→          }}
+   214→          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+   215→          className="absolute top-[10%] left-[1%] sm:left-[4%] lg:left-[6%]"
+   216→        >
+   217→          <div className="relative">
+   218→            <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-brand-blue/40 via-brand-purple/30 to-brand-hot-pink/25 blur-2xl" />
+   219→            <div className="relative w-[76px] h-[76px] sm:w-[100px] sm:h-[100px] lg:w-[130px] lg:h-[130px] rounded-2xl lg:rounded-3xl border border-brand-purple/30 bg-brand-purple/[0.12] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-purple/20">
+   220→              <svg viewBox="0 0 100 100" className="w-11 h-11 sm:w-14 sm:h-14 lg:w-[78px] lg:h-[78px]" fill="none">
+   221→                <defs>
+   222→                  <linearGradient id="roll-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+   223→                    <stop offset="0%" stopColor="#2D7FE0" />
+   224→                    <stop offset="50%" stopColor="#6A3DFF" />
+   225→                    <stop offset="100%" stopColor="#E71D8C" />
+   226→                  </linearGradient>
+   227→                  <filter id="roll-glow">
+   228→                    <feGaussianBlur stdDeviation="3" result="blur" />
+   229→                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+   230→                  </filter>
+   231→                </defs>
+   232→                <circle cx="42" cy="50" r="28" fill="none" stroke="url(#roll-grad)" strokeWidth="3.5" opacity="1" filter="url(#roll-glow)" />
+   233→                <circle cx="42" cy="50" r="18" fill="none" stroke="url(#roll-grad)" strokeWidth="1.5" opacity="0.6" />
+   234→                <circle cx="42" cy="50" r="6" fill="url(#roll-grad)" opacity="0.9" />
+   235→                <path d="M70 50 Q78 50 82 44 L92 28 Q94 24 90 23 L75 30 Q68 34 66 42 Z" fill="url(#roll-grad)" opacity="0.75" />
+   236→                <path d="M72 42 L86 30" stroke="white" strokeWidth="2" opacity="0.6" strokeLinecap="round" />
+   237→                <path d="M70 46 L82 36" stroke="white" strokeWidth="1.5" opacity="0.4" strokeLinecap="round" />
+   238→              </svg>
+   239→            </div>
+   240→          </div>
+   241→        </motion.div>
+   242→
+   243→        {/* 2. COLOR PALETTE — Medium, right side upper area */}
+   244→        <motion.div
+   245→          animate={{
+   246→            y: [0, 14, -6, 16, 0],
+   247→            x: [0, -12, 4, -8, 0],
+   248→            rotate: [0, -6, 3, -2, 0],
+   249→            scale: [1, 1.06, 0.97, 1.03, 1],
+   250→          }}
+   251→          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+   252→          className="absolute top-[20%] right-[1%] sm:right-[4%] lg:right-[6%]"
+   253→        >
+   254→          <div className="relative">
+   255→            <div className="absolute -inset-4 rounded-2xl bg-gradient-to-br from-brand-hot-pink/35 via-brand-purple/30 to-brand-blue/25 blur-xl" />
+   256→            <div className="relative w-[60px] h-[60px] sm:w-[76px] sm:h-[76px] lg:w-[96px] lg:h-[96px] rounded-xl lg:rounded-2xl border border-brand-hot-pink/25 bg-brand-hot-pink/[0.10] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-hot-pink/20">
+   257→              <svg viewBox="0 0 100 100" className="w-9 h-9 sm:w-11 sm:h-11 lg:w-14 lg:h-14" fill="none">
+   258→                <defs>
+   259→                  <filter id="pal-glow">
+   260→                    <feGaussianBlur stdDeviation="3" result="blur" />
+   261→                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+   262→                  </filter>
+   263→                </defs>
+   264→                <path d="M50 10 C25 10 8 28 8 52 C8 78 25 95 50 95 C60 95 65 88 62 80 C59 73 66 68 73 72 C80 76 90 70 90 52 C90 28 75 10 50 10Z" fill="white/[0.10]" stroke="url(#roll-grad)" strokeWidth="2.5" opacity="1" filter="url(#pal-glow)" />
+   265→                <circle cx="30" cy="38" r="7" fill="#1D68B3" opacity="1" />
+   266→                <circle cx="50" cy="28" r="7" fill="#6A3DFF" opacity="1" />
+   267→                <circle cx="70" cy="38" r="7" fill="#E71D8C" opacity="1" />
+   268→                <circle cx="25" cy="58" r="6" fill="#FBBF24" opacity="0.9" />
+   269→                <circle cx="45" cy="52" r="6" fill="#34D399" opacity="0.9" />
+   270→                <ellipse cx="72" cy="62" rx="6" ry="7" fill="#0a0a1a" stroke="white/[0.15]" strokeWidth="1" />
+   271→              </svg>
+   272→            </div>
+   273→          </div>
+   274→        </motion.div>
+   275→
+   276→        {/* 3. SQUEEGEE / APPLICATION TOOL — Small, bottom-left area */}
+   277→        <motion.div
+   278→          animate={{
+   279→            y: [0, -16, 10, -8, 0],
+   280→            rotate: [0, 8, -5, 3, 0],
+   281→          }}
+   282→          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+   283→          className="absolute top-[56%] left-[2%] sm:left-[5%] lg:left-[8%]"
+   284→        >
+   285→          <div className="relative">
+   286→            <div className="absolute -inset-3 rounded-xl bg-gradient-to-br from-brand-blue/30 via-brand-purple/25 to-brand-hot-pink/20 blur-lg" />
+   287→            <div className="relative w-[52px] h-[52px] sm:w-[66px] sm:h-[66px] lg:w-[80px] lg:h-[80px] rounded-lg lg:rounded-xl border border-brand-blue/25 bg-brand-blue/[0.10] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-blue/15">
+   288→              <svg viewBox="0 0 100 100" className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" fill="none">
+   289→                <defs>
+   290→                  <linearGradient id="sq-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+   291→                    <stop offset="0%" stopColor="#2D7FE0" />
+   292→                    <stop offset="100%" stopColor="#6A3DFF" />
+   293→                  </linearGradient>
+   294→                </defs>
+   295→                <rect x="42" y="8" width="16" height="40" rx="4" fill="url(#sq-grad)" opacity="1" />
+   296→                <rect x="44" y="10" width="12" height="36" rx="3" fill="white/[0.15]" />
+   297→                <rect x="30" y="48" width="40" height="8" rx="2" fill="url(#sq-grad)" opacity="1" />
+   298→                <rect x="32" y="56" width="36" height="14" rx="3" fill="white/[0.10]" stroke="url(#sq-grad)" strokeWidth="2" opacity="0.9" />
+   299→                <line x1="35" y1="78" x2="30" y2="90" stroke="#6A3DFF" strokeWidth="1.5" opacity="0.6" strokeLinecap="round" />
+   300→                <line x1="50" y1="78" x2="50" y2="92" stroke="#E71D8C" strokeWidth="1.5" opacity="0.5" strokeLinecap="round" />
+   301→                <line x1="65" y1="78" x2="70" y2="90" stroke="#2D7FE0" strokeWidth="1.5" opacity="0.6" strokeLinecap="round" />
+   302→              </svg>
+   303→            </div>
+   304→          </div>
+   305→        </motion.div>
+   306→
+   307→        {/* 4. WRAPPED VAN — Large, bottom-right area */}
+   308→        <motion.div
+   309→          animate={{
+   310→            y: [0, 16, -10, 12, 0],
+   311→            x: [0, -10, 6, -8, 0],
+   312→            rotate: [0, -3, 4, -1, 0],
+   313→          }}
+   314→          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+   315→          className="absolute top-[50%] right-[0%] sm:right-[3%] lg:right-[5%]"
+   316→        >
+   317→          <div className="relative">
+   318→            <div className="absolute -inset-5 rounded-3xl bg-gradient-to-br from-brand-hot-pink/35 via-brand-purple/35 to-brand-blue/30 blur-2xl" />
+   319→            <div className="relative w-[84px] h-[84px] sm:w-[110px] sm:h-[110px] lg:w-[140px] lg:h-[140px] rounded-2xl lg:rounded-3xl border border-brand-purple/30 bg-brand-purple/[0.10] backdrop-blur-sm flex items-center justify-center shadow-xl shadow-brand-purple/20">
+   320→              <svg viewBox="0 0 160 100" className="w-14 h-14 sm:w-16 sm:h-16 lg:w-22 lg:h-14" fill="none">
+   321→                <defs>
+   322→                  <linearGradient id="van-body" x1="0%" y1="0%" x2="100%" y2="100%">
+   323→                    <stop offset="0%" stopColor="#1D68B3" />
+   324→                    <stop offset="100%" stopColor="#6A3DFF" />
+   325→                  </linearGradient>
+   326→                  <linearGradient id="van-stripe" x1="0%" y1="0%" x2="100%" y2="0%">
+   327→                    <stop offset="0%" stopColor="#6A3DFF" />
+   328→                    <stop offset="50%" stopColor="#C62285" />
+   329→                    <stop offset="100%" stopColor="#E71D8C" />
+   330→                  </linearGradient>
+   331→                  <filter id="van-glow">
+   332→                    <feGaussianBlur stdDeviation="3" result="blur" />
+   333→                    <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+   334→                  </filter>
+   335→                </defs>
+   336→                <path d="M16 48 L16 32 Q16 22 26 20 L80 16 Q90 15 96 22 L112 32 Q120 36 125 42 L132 48 Q136 52 130 56 L128 58 Q118 64 106 64 L26 64 Q18 64 16 56Z" fill="url(#van-body)" opacity="0.85" filter="url(#van-glow)" />
+   337→                <path d="M16 38 Q40 32 70 34 Q100 36 125 44" stroke="url(#van-stripe)" strokeWidth="3.5" opacity="1" strokeLinecap="round" fill="none" />
+   338→                <path d="M20 44 Q50 38 80 40 Q110 42 130 50" stroke="url(#van-stripe)" strokeWidth="2.5" opacity="0.7" strokeLinecap="round" fill="none" />
+   339→                <rect x="28" y="30" width="18" height="14" rx="2" fill="white/[0.2]" />
+   340→                <rect x="52" y="28" width="18" height="16" rx="2" fill="white/[0.2]" />
+   341→                <rect x="76" y="28" width="18" height="16" rx="2" fill="white/[0.2]" />
+   342→                <circle cx="36" cy="70" r="9" fill="#0a0a1a" stroke="url(#van-body)" strokeWidth="2.5" opacity="1" />
+   343→                <circle cx="36" cy="70" r="4" fill="url(#van-body)" opacity="0.8" />
+   344→                <circle cx="116" cy="70" r="9" fill="#0a0a1a" stroke="url(#van-body)" strokeWidth="2.5" opacity="1" />
+   345→                <circle cx="116" cy="70" r="4" fill="url(#van-body)" opacity="0.8" />
+   346→                <circle cx="100" cy="38" r="5" fill="url(#van-stripe)" opacity="0.9" />
+   347→              </svg>
+   348→            </div>
+   349→          </div>
+   350→        </motion.div>
+   351→
+   352→        {/* Sparkle particles — bigger on mobile */}
+   353→        <motion.div animate={{ opacity: [0.4, 1, 0.4], scale: [0.8, 1.4, 0.8] }} transition={{ duration: 3, repeat: Infinity, delay: 0 }} className="absolute top-[18%] left-[20%]">
+   354→          <div className="w-2 h-2 rounded-full bg-brand-purple/60" />
+   355→        </motion.div>
+   356→        <motion.div animate={{ opacity: [0.3, 0.9, 0.3], scale: [0.6, 1.3, 0.6] }} transition={{ duration: 4, repeat: Infinity, delay: 1.2 }} className="absolute top-[35%] right-[18%]">
+   357→          <div className="w-1.5 h-1.5 rounded-full bg-brand-hot-pink/60" />
+   358→        </motion.div>
+   359→        <motion.div animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.7, 1.5, 0.7] }} transition={{ duration: 3.5, repeat: Infinity, delay: 2.4 }} className="absolute top-[65%] left-[25%]">
+   360→          <div className="w-2 h-2 rounded-full bg-brand-bright-blue/60" />
+   361→        </motion.div>
+   362→        <motion.div animate={{ opacity: [0.2, 0.7, 0.2], scale: [0.5, 1.2, 0.5] }} transition={{ duration: 5, repeat: Infinity, delay: 0.8 }} className="absolute top-[45%] right-[25%]">
+   363→          <div className="w-1.5 h-1.5 rounded-full bg-brand-hot-pink/50" />
+   364→        </motion.div>
+   365→        <motion.div animate={{ opacity: [0.3, 0.8, 0.3], scale: [0.6, 1.4, 0.6] }} transition={{ duration: 4.5, repeat: Infinity, delay: 3.2 }} className="absolute top-[75%] right-[35%]">
+   366→          <div className="w-1.5 h-1.5 rounded-full bg-brand-purple/50" />
+   367→        </motion.div>
+   368→      </div>
+   369→
+   370→      <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
+   371→        {/* Badge */}
+   372→        <FadeUp delay={0.1}>
+   373→          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mt-8 sm:mt-0 mb-6 lg:mb-20">
+   374→            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-brand-hot-pink flex-shrink-0" />
+   375→            <span className="text-[9px] sm:text-sm text-gray-300 text-center leading-tight whitespace-nowrap">{t("hero.badge")}</span>
+   376→          </div>
+   377→        </FadeUp>
+   378→
+   379→        {/* Rotating Headlines */}
+   380→        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[11rem] mb-8 lg:mb-20">
+   381→          <AnimatePresence mode="wait">
+   382→            <motion.h1
+   383→              key={key}
+   384→              initial={{ opacity: 0, y: 16 }}
+   385→              animate={{ opacity: 1, y: 0 }}
+   386→              exit={{ opacity: 0, y: -16 }}
+   387→              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+   388→              className="absolute inset-0 flex flex-col items-center justify-center"
+   389→            >
+   390→              {/* Mobile/tablet: 3 separate lines */}
+   391→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+   392→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
+   393→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line3}</span>
+   394→              {/* Desktop: 2 lines only */}
+   395→              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+   396→              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
+   397→            </motion.h1>
+   398→          </AnimatePresence>
+   399→        </div>
+   400→
+   401→        {/* Subtitle */}
+   402→        <FadeUp delay={0.4}>
+   403→          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-16 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
+   404→        </FadeUp>
+   405→
+   406→        {/* CTA Buttons */}
+   407→        <FadeUp delay={0.6}>
+   408→          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-6 mb-8 lg:mb-4">
+   409→            <button onClick={onQuote} className="cta-primary text-white font-bold px-5 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-xs sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[180px] sm:min-w-[240px] lg:min-w-[300px] justify-center whitespace-nowrap">
+   410→              {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+   411→            </button>
+   412→            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
+   413→              {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+   414→            </a>
+   415→          </div>
+   416→        </FadeUp>
+   417→
+   418→        {/* Social Proof */}
+   419→        <FadeUp delay={0.8}>
+   420→          <div className="mt-8 sm:mt-14 lg:mt-20 w-full max-w-xl lg:max-w-3xl mx-auto">
+   421→            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 lg:gap-x-10 lg:gap-y-4">
+   422→              {[
+   423→                t("hero.trust1"),
+   424→                t("hero.trust2"),
+   425→                t("hero.trust3"),
+   426→                t("hero.trust4"),
+   427→              ].map((txt, i) => (
+   428→                <div key={i} className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 justify-center sm:justify-start">
+   429→                  <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+   430→                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+   431→                  </div>
+   432→                  <span className="text-xs sm:text-sm lg:text-base text-gray-300 font-medium">{txt}</span>
+   433→                </div>
+   434→              ))}
+   435→            </div>
+   436→            <div className="mt-4 pt-4 sm:mt-8 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-14">
+   437→              <div className="flex items-center gap-1.5 sm:gap-2">
+   438→                <div className="flex -space-x-1">
+   439→                  {[...Array(5)].map((_, i) => (
+   440→                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-yellow-400 fill-yellow-400" />
+   441→                  ))}
+   442→                </div>
+   443→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trust5Stars")}</span>
+   444→              </div>
+   445→              <div className="flex items-center gap-1.5 sm:gap-2">
+   446→                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustProjects")}</span>
+   447→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustProjectsLabel")}</span>
+   448→              </div>
+   449→              <div className="flex items-center gap-1.5 sm:gap-2">
+   450→                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustYears")}</span>
+   451→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustYearsLabel")}</span>
+   452→              </div>
+   453→            </div>
+   454→          </div>
+   455→        </FadeUp>
+   456→      </motion.div>
+   457→      <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+   458→        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"><div className="w-1.5 h-3 rounded-full bg-white/40" /></div>
+   459→      </motion.div>
+   460→    </section>
+   461→  );
+   462→}
+   463→
+   464→/* ───────── 2. PROBLEM ───────── */
+   465→function ProblemSection() {
+   466→  const { t } = useLang();
+   467→  const pains = [t("problem.pain1"), t("problem.pain2"), t("problem.pain3")];
+   468→  const icons = [Eye, Shield, Target];
+   469→  return (
+   470→    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   471→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   472→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   473→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   474→        <FadeUp>
+   475→          <div className="text-center mb-16 lg:mb-20">
+   476→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("problem.tag")}</span>
+   477→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   478→              {t("problem.title1")} <span className="gradient-brand-text">{t("problem.titleHighlight")}</span>.
+   479→            </h2>
+   480→            <p className="text-gray-400 text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("problem.subtitle")}</p>
+   481→          </div>
+   482→        </FadeUp>
+   483→        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+   484→          {pains.map((txt, i) => (
+   485→            <FadeUp key={i} delay={i * 0.15}>
+   486→              <div className="relative group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full backdrop-blur-sm overflow-hidden">
+   487→                <video
+   488→                  autoPlay
+   489→                  muted
+   490→                  loop
+   491→                  playsInline
+   492→                  preload="none"
+   493→                  className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10"
+   494→                >
+   495→                  <source src="/card-bg.mp4" type="video/mp4" />
+   496→                </video>
+   497→                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-purple-pink flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
+   498→                  {(() => { const Ic = icons[i]; return <Ic className="w-6 h-6 lg:w-7 lg:h-7 text-white" />; })()}
+   499→                </div>
+   500→                <p className="text-gray-300 leading-relaxed text-base lg:text-lg relative z-10">{txt}</p>
+   501→              </div>
+   502→            </FadeUp>
+   503→          ))}
+   504→        </div>
+   505→        <FadeUp delay={0.4}>
+   506→          <div className="mt-12 text-center">
+   507→            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{t("problem.soundFamiliar")}</p>
+   508→            <p className="text-gray-400 text-base lg:text-lg">{t("problem.goodNews")} <span className="text-brand-bright-blue font-semibold">{t("problem.fixable")}</span></p>
+   509→          </div>
+   510→        </FadeUp>
+   511→      </div>
+   512→    </section>
+   513→  );
+   514→}
+   515→
+   516→/* ───────── 3. TRANSFORMATION ───────── */
+   517→function TransformationSection() {
+   518→  const { t } = useLang();
+   519→  const realProjects = [
+   520→    { src: "/images/real-leon-tires.jpg", name: "Leon Tires & Body Services LLC" },
+   521→    { src: "/images/real-pelones-framing.jpg", name: "Los Pelones Framing LLC" },
+   522→    { src: "/images/real-cabrera-flooring.jpg", name: "Cabrera Flooring LLC" },
+   523→  ];
+   524→  return (
+   525→    <section id="transformations" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   526→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
+   527→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   528→      {/* Dopaminic looping video background */}
+   529→      <div className="absolute inset-0 z-[1]">
+   530→        <video
+   531→          autoPlay
+   532→          muted
+   533→          loop
+   534→          playsInline
+   535→          preload="none"
+   536→          className="absolute inset-0 w-full h-full object-cover opacity-20"
+   537→        >
+   538→          <source src="/transform-bg.mp4" type="video/mp4" />
+   539→        </video>
+   540→      </div>
+   541→      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px] z-[2]" />
+   542→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   543→        <FadeUp>
+   544→          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+   545→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("transform.tag")}</span>
+   546→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   547→              {t("transform.from")} <span className="text-gray-500">{t("transform.invisible")}</span> {t("transform.to")} <span className="gradient-brand-text">{t("transform.impossible")}</span>
+   548→            </h2>
+   549→            <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("transform.subtitle")}</p>
+   550→          </div>
+   551→        </FadeUp>
+   552→
+   553→        {/* Interactive Before/After Slider — Real project */}
+   554→        <ScaleIn delay={0.1}>
+   555→          <div className="mb-10">
+   556→            <BeforeAfterSlider
+   557→              beforeSrc="/images/before-brothers-painting.png"
+   558→              afterSrc="/images/after-brothers-painting.png"
+   559→              beforeAlt="Van before wrap - plain white"
+   560→              afterAlt="Van after wrap - Brothers Painting Services LLC"
+   561→            />
+   562→            <p className="text-center text-sm text-gray-500 mt-4">{t("transform.realProject")}</p>
+   563→          </div>
+   564→        </ScaleIn>
+   565→        <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
+   566→          {realProjects.map((item, i) => (
+   567→            <FadeUp key={i} delay={i * 0.1}>
+   568→              <div className="project-card relative rounded-xl overflow-hidden border border-white/5 group">
+   569→                <div className="relative aspect-[4/3]">
+   570→                  <Image src={item.src} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+   571→                </div>
+   572→                <div className="p-3 lg:p-4 bg-white/[0.02]">
+   573→                  <p className="text-xs sm:text-sm font-bold text-white/80 group-hover:text-white transition-colors text-center">{item.name}</p>
+   574→                </div>
+   575→              </div>
+   576→            </FadeUp>
+   577→          ))}
+   578→        </div>
+   579→      </div>
+   580→    </section>
+   581→  );
+   582→}
+   583→
+   584→/* ───────── 4. WHO WE HELP ───────── */
+   585→function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
+   586→  const { t } = useLang();
+   587→  return (
+   588→    <section id="who-we-help" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   589→      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
+   590→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   591→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   592→        <FadeUp>
+   593→          <div className="text-center mb-16 lg:mb-20">
+   594→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("who.tag")}</span>
+   595→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   596→              {t("who.title1")} <span className="gradient-brand-text">{t("who.titleHighlight")}</span>
+   597→            </h2>
+   598→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("who.subtitle")}</p>
+   599→          </div>
+   600→        </FadeUp>
+   601→        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+   602→          {INDUSTRIES_DATA.map((ind, i) => (
+   603→            <FadeUp key={i} delay={i * 0.05}>
+   604→              <div className="group p-4 lg:p-6 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-brand-purple/20 transition-all duration-300 text-center h-full">
+   605→                <div className="w-12 h-12 lg:w-14 lg:h-14 mx-auto rounded-xl gradient-blue-purple flex items-center justify-center mb-3 lg:mb-4 group-hover:scale-110 transition-transform duration-300">
+   606→                  <ind.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+   607→                </div>
+   608→                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(ind.labelKey)}</h3>
+   609→                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed hidden sm:block">{t(ind.descKey)}</p>
+   610→              </div>
+   611→            </FadeUp>
+   612→          ))}
+   613→        </div>
+   614→        <FadeUp delay={0.5}>
+   615→          <div className="mt-12 text-center">
+   616→            <p className="text-gray-400 mb-4"><Store className="w-4 h-4 inline mr-1" /> {t("who.also")}</p>
+   617→            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   618→              {t("who.seeCta")} <ArrowRight className="w-4 h-4" />
+   619→            </button>
+   620→          </div>
+   621→        </FadeUp>
+   622→      </div>
+   623→    </section>
+   624→  );
+   625→}
+   626→
+   627→/* ───────── 5. VISIBILITY SYSTEM ───────── */
+   628→function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
+   629→  const { t } = useLang();
+   630→  return (
+   631→    <section id="visibility-system" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   632→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   633→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   634→      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-brand-magenta/10 rounded-full blur-[150px]" />
+   635→      <div className="absolute bottom-1/3 left-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[150px]" />
+   636→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   637→        <FadeUp>
+   638→          <div className="text-center mb-16 lg:mb-20">
+   639→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("vis.tag")}</span>
+   640→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   641→              {t("vis.title1")} <span className="gradient-brand-text">{t("vis.titleHighlight")}</span>
+   642→            </h2>
+   643→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("vis.subtitle")}</p>
+   644→          </div>
+   645→        </FadeUp>
+   646→        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+   647→          {VISIBILITY_DATA.map((item, i) => (
+   648→            <FadeUp key={i} delay={i * 0.08}>
+   649→              <div className="group relative p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full overflow-hidden">
+   650→                <video
+   651→                  autoPlay
+   652→                  muted
+   653→                  loop
+   654→                  playsInline
+   655→                  preload="none"
+   656→                  className="absolute inset-0 w-full h-full object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-500 -z-10"
+   657→                >
+   658→                  <source src="/vis-card-bg.mp4" type="video/mp4" />
+   659→                </video>
+   660→                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
+   661→                  <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+   662→                </div>
+   663→                <h3 className="text-white font-bold text-base lg:text-lg mb-2 relative z-10">{t(item.titleKey)}</h3>
+   664→                <p className="text-gray-400 text-sm lg:text-base leading-relaxed relative z-10">{t(item.descKey)}</p>
+   665→              </div>
+   666→            </FadeUp>
+   667→          ))}
+   668→        </div>
+   669→        <FadeUp delay={0.5}>
+   670→          <div className="mt-12 p-6 rounded-2xl border border-brand-purple/20 bg-brand-purple/5 text-center">
+   671→            <p className="text-white text-lg font-semibold mb-2">{t("vis.everything")} <span className="gradient-brand-text">{t("vis.professional")}</span>.</p>
+   672→            <button onClick={onQuote} className="mt-4 cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   673→              {t("vis.customCta")} <ArrowRight className="w-4 h-4" />
+   674→            </button>
+   675→          </div>
+   676→        </FadeUp>
+   677→      </div>
+   678→    </section>
+   679→  );
+   680→}
+   681→
+   682→/* ───────── 6. FEATURED PROJECTS ───────── */
+   683→function FeaturedProjectsSection() {
+   684→  const { t } = useLang();
+   685→  return (
+   686→    <section id="projects" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   687→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
+   688→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   689→      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   690→        <FadeUp>
+   691→          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+   692→            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 lg:mb-6 leading-tight">
+   693→              {t("projects.headline")}
+   694→            </h2>
+   695→            <p className="text-sm sm:text-base text-gray-500 max-w-xl mx-auto">{t("projects.subline")}</p>
+   696→          </div>
+   697→        </FadeUp>
+   698→        <FadeIn delay={0.2}>
+   699→          <div className="relative pl-12 pr-12 lg:pl-16 lg:pr-16">
+   700→            <Carousel opts={{ align: "start", loop: true }} className="w-full">
+   701→              <CarouselContent className="-ml-4">
+   702→                {PROJECTS_DATA.map((project, i) => (
+   703→                  <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
+   704→                    <div className="project-card group rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] cursor-pointer">
+   705→                      <div className="relative aspect-[4/3] overflow-hidden">
+   706→                        <Image src={project.src} alt={project.altEn} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+   707→                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+   708→                        <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
+   709→                          <span className="text-xs sm:text-sm font-bold text-white">{project.label}</span>
+   710→                        </div>
+   711→                      </div>
+   712→                    </div>
+   713→                  </CarouselItem>
+   714→                ))}
+   715→              </CarouselContent>
+   716→              <CarouselPrevious className="left-0 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white" />
+   717→              <CarouselNext className="right-0 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white" />
+   718→            </Carousel>
+   719→          </div>
+   720→        </FadeIn>
+   721→      </div>
+   722→    </section>
+   723→  );
+   724→}
+   725→
+   726→/* ───────── 7. TRUST / SOCIAL PROOF ───────── */
+   727→function TrustSection() {
+   728→  const { t, lang } = useLang();
+   729→
+   730→  const reviewScreenshots = [
+   731→    { src: "/reviews/review-river-vibes.png", alt: "Google review - River Vibes" },
+   732→    { src: "/reviews/review-jose-avendano.png", alt: "Google review - Jose Avendaño" },
+   733→    { src: "/reviews/review-laura-main.png", alt: "Google review - Laura Main Photography" },
+   734→    { src: "/reviews/review-christopher-sperry.png", alt: "Google review - Christopher Sperry" },
+   735→  ];
+   736→
+   737→  return (
+   738→    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   739→      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
+   740→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   741→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   742→        {/* Metrics bar */}
+   743→        <FadeUp>
+   744→          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
+   745→            {METRICS_DATA.map((m, i) => (
+   746→              <ScaleIn key={i} delay={i * 0.1}>
+   747→                <div className="text-center p-6 lg:p-8 rounded-xl border border-white/5 bg-white/[0.02]">
+   748→                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black gradient-brand-text mb-1">{m.value}</div>
+   749→                  <div className="text-gray-400 text-sm lg:text-base">{t(m.labelKey)}</div>
+   750→                </div>
+   751→              </ScaleIn>
+   752→            ))}
+   753→          </div>
+   754→        </FadeUp>
+   755→
+   756→        {/* Section title */}
+   757→        <FadeUp delay={0.2}>
+   758→          <div className="text-center mb-10 lg:mb-14">
+   759→            <div className="inline-flex items-center gap-2 mb-4">
+   760→              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+   761→                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+   762→                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+   763→                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+   764→                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+   765→              </svg>
+   766→              <span className="text-lg sm:text-xl font-bold text-white">{lang === "es" ? "Reseñas Reales de Google" : "Real Google Reviews"}</span>
+   767→            </div>
+   768→            <p className="text-gray-400 text-sm sm:text-base max-w-xl mx-auto">
+   769→              {lang === "es"
+   770→                ? "Esto es lo que dicen nuestros clientes reales en Google. Sin textos adaptados — capturas reales."
+   771→                : "This is what our real customers say on Google. No adapted text — real screenshots."}
+   772→            </p>
+   773→          </div>
+   774→        </FadeUp>
+   775→
+   776→        {/* Real review screenshots */}
+   777→        <FadeUp delay={0.3}>
+   778→          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6 mb-12">
+   779→            {reviewScreenshots.map((review, i) => (
+   780→              <FadeUp key={i} delay={i * 0.1}>
+   781→                <div className="group rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.03] hover:border-brand-purple/25 transition-all duration-300 hover:shadow-xl hover:shadow-brand-purple/10">
+   782→                  <div className="relative w-full">
+   783→                    <Image
+   784→                      src={review.src}
+   785→                      alt={review.alt}
+   786→                      width={600}
+   787→                      height={400}
+   788→                      className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-500"
+   789→                    />
+   790→                  </div>
+   791→                </div>
+   792→              </FadeUp>
+   793→            ))}
+   794→          </div>
+   795→        </FadeUp>
+   796→
+   797→        {/* Many more success cases CTA */}
+   798→        <FadeUp delay={0.5}>
+   799→          <div className="text-center">
+   800→            <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-6 p-6 sm:p-8 rounded-2xl border border-brand-purple/20 bg-gradient-to-r from-brand-purple/[0.06] via-brand-hot-pink/[0.04] to-brand-purple/[0.06]">
+   801→              <div className="flex items-center gap-2">
+   802→                <div className="flex -space-x-1">
+   803→                  {[...Array(5)].map((_, i) => (
+   804→                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+   805→                  ))}
+   806→                </div>
+   807→                <span className="text-white font-bold text-sm sm:text-base">{lang === "es" ? "4.9 Promedio" : "4.9 Average"}</span>
+   808→              </div>
+   809→              <div className="hidden sm:block w-px h-8 bg-white/10" />
+   810→              <div>
+   811→                <p className="text-white font-bold text-base sm:text-lg">
+   812→                  {lang === "es"
+   813→                    ? "Y muchos más casos de éxito como estos..."
+   814→                    : "And many more success cases like these..."}
+   815→                </p>
+   816→                <p className="text-gray-400 text-xs sm:text-sm mt-1">
+   817→                  {lang === "es"
+   818→                    ? "Cada semana ayudamos a nuevos negocios a brillar. Tu negocio puede ser el próximo."
+   819→                    : "Every week we help new businesses shine. Your business could be next."}
+   820→                </p>
+   821→              </div>
+   822→            </div>
+   823→            <p className="mt-8 text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
+   824→          </div>
+   825→        </FadeUp>
+   826→      </div>
+   827→    </section>
+   828→  );
+   829→}
+   830→
+   831→/* ───────── 8. PROCESS ───────── */
+   832→function ProcessSection({ onQuote }: { onQuote: () => void }) {
+   833→  const { t } = useLang();
+   834→  return (
+   835→    <section id="process" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   836→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   837→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   838→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   839→        <FadeUp>
+   840→          <div className="text-center mb-16 lg:mb-20">
+   841→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("process.tag")}</span>
+   842→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   843→              {t("process.title1")} <span className="gradient-brand-text">{t("process.titleHighlight")}</span>.
+   844→            </h2>
+   845→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("process.subtitle")}</p>
+   846→          </div>
+   847→        </FadeUp>
+   848→        <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-6 relative">
+   849→          <div className="absolute top-12 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue via-brand-purple to-brand-hot-pink opacity-30" />
+   850→          {PROCESS_DATA.map((step, i) => (
+   851→            <FadeUp key={i} delay={i * 0.1}>
+   852→              <div className="relative text-center group">
+   853→                <div className="relative z-10 w-24 h-24 lg:w-28 lg:h-28 mx-auto rounded-2xl border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center mb-4 lg:mb-5 group-hover:border-brand-purple/40 group-hover:bg-brand-purple/10 transition-all duration-300">
+   854→                  <span className="text-2xl lg:text-3xl font-black gradient-brand-text mb-1">{step.num}</span>
+   855→                  <step.icon className="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 group-hover:text-white transition-colors" />
+   856→                </div>
+   857→                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(step.titleKey)}</h3>
+   858→                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed">{t(step.descKey)}</p>
+   859→              </div>
+   860→            </FadeUp>
+   861→          ))}
+   862→        </div>
+   863→        <div className="md:hidden space-y-4">
+   864→          {PROCESS_DATA.map((step, i) => (
+   865→            <FadeUp key={i} delay={i * 0.1}>
+   866→              <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+   867→                <div className="w-14 h-14 flex-shrink-0 rounded-xl gradient-brand flex items-center justify-center">
+   868→                  <span className="text-lg font-black text-white">{step.num}</span>
+   869→                </div>
+   870→                <div>
+   871→                  <h3 className="text-white font-bold text-sm mb-1">{t(step.titleKey)}</h3>
+   872→                  <p className="text-gray-400 text-xs leading-relaxed">{t(step.descKey)}</p>
+   873→                </div>
+   874→              </div>
+   875→            </FadeUp>
+   876→          ))}
+   877→        </div>
+   878→        <FadeUp delay={0.5}>
+   879→          <div className="mt-12 text-center">
+   880→            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   881→              {t("process.cta")} <ArrowRight className="w-4 h-4" />
+   882→            </button>
+   883→          </div>
+   884→        </FadeUp>
+   885→      </div>
+   886→    </section>
+   887→  );
+   888→}
+   889→
+   890→/* ───────── 9. FINAL CTA ───────── */
+   891→function FinalCTASection({ onQuote }: { onQuote: () => void }) {
+   892→  const { t } = useLang();
+   893→  return (
+   894→    <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
+   895→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#080818] to-background" />
+   896→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   897→      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-purple/15 rounded-full blur-[200px]" />
+   898→      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-hot-pink/10 rounded-full blur-[150px]" />
+   899→      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+   900→        <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
+   901→        <FadeUp delay={0.1}>
+   902→          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   903→            {t("final.title1")} <span className="gradient-brand-text">{t("final.titleHighlight")}</span> {t("final.title2")}
+   904→          </h2>
+   905→        </FadeUp>
+   906→        <FadeUp delay={0.2}>
+   907→          <p className="text-lg sm:text-xl lg:text-2xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-4 lg:mb-6 leading-relaxed">{t("final.subtitle")}</p>
+   908→        </FadeUp>
+   909→        <FadeUp delay={0.3}>
+   910→          <p className="text-white text-xl lg:text-2xl font-bold mb-10 lg:mb-14">{t("final.build")} <span className="gradient-brand-text">{t("final.unstoppable")}</span>.</p>
+   911→        </FadeUp>
+   912→        <FadeUp delay={0.4}>
+   913→          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-6 mb-8">
+   914→            <button onClick={onQuote} className="cta-primary text-white font-bold px-10 lg:px-12 py-4 lg:py-5 rounded-xl text-lg lg:text-xl tracking-wide flex items-center gap-2 min-w-[280px] lg:min-w-[320px] justify-center animate-pulse-glow">
+   915→              {t("final.cta")} <ArrowRight className="w-5 h-5" />
+   916→            </button>
+   917→            <a href="tel:+19105474314" className="flex items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm lg:text-base font-semibold">
+   918→              <Phone className="w-4 h-4" /> (910) 547-4314
+   919→            </a>
+   920→          </div>
+   921→        </FadeUp>
+   922→        <FadeUp delay={0.5}>
+   923→          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-gray-500 text-sm lg:text-base">
+   924→            <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {t("final.fast")}</span>
+   925→            <span className="text-white/10">|</span>
+   926→            <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> {t("final.quality")}</span>
+   927→            <span className="text-white/10">|</span>
+   928→            <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {t("final.wilmington")}</span>
+   929→          </div>
+   930→        </FadeUp>
+   931→      </div>
+   932→    </section>
+   933→  );
+   934→}
+   935→
+   936→/* ───────── GOOGLE MAPS ───────── */
+   937→function MapSection() {
+   938→  const { t, lang } = useLang();
+   939→  return (
+   940→    <section className="relative py-16 md:py-20 overflow-hidden">
+   941→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#050510]" />
+   942→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   943→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   944→        <FadeUp>
+   945→          <div className="flex items-center justify-center gap-3 mb-8">
+   946→            <MapPin className="w-6 h-6 text-brand-purple" />
+   947→            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white">
+   948→              {lang === "es" ? "Encuéntranos en Wilmington, NC" : "Find Us in Wilmington, NC"}
+   949→            </h2>
+   950→          </div>
+   951→        </FadeUp>
+   952→        <FadeUp delay={0.2}>
+   953→          <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+   954→            <iframe
+   955→              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3247.5!2d-77.947!3d34.226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89afa3e5c2c2c0a1%3A0x0!2s4608+Cedar+Ave%2C+Wilmington%2C+NC+28403!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+   956→              width="100%"
+   957→              height="400"
+   958→              style={{ border: 0 }}
+   959→              allowFullScreen
+   960→              loading="lazy"
+   961→              referrerPolicy="no-referrer-when-downgrade"
+   962→              title="Imagine Studio Design Location"
+   963→              className="w-full"
+   964→            />
+   965→          </div>
+   966→        </FadeUp>
+   967→        <FadeUp delay={0.3}>
+   968→          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-400">
+   969→            <a href="https://www.google.com/maps/place/4608+Cedar+Ave,+Wilmington,+NC+28403" target="_blank" rel="noopener noreferrer" className="hover:text-brand-purple transition-colors flex items-center gap-2">
+   970→              <MapPin className="w-4 h-4" />
+   971→              4608 Cedar Ave, Wilmington, NC 28403
+   972→            </a>
+   973→            <a href="tel:+19105474314" className="hover:text-brand-purple transition-colors flex items-center gap-2">
+   974→              <Phone className="w-4 h-4" />
+   975→              (910) 547-4314
+   976→            </a>
+   977→          </div>
+   978→        </FadeUp>
+   979→      </div>
+   980→    </section>
+   981→  );
+   982→}
+   983→
+   984→/* ───────── FOOTER ───────── */
+   985→function Footer() {
+   986→  const { t } = useLang();
+   987→  return (
+   988→    <footer className="relative border-t border-white/5 bg-[#050510]">
+   989→      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+   990→        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+   991→          <div className="flex items-center gap-4">
+   992→            <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="h-8 w-auto object-contain opacity-70" />
+   993→          </div>
+   994→          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
+   995→            <a href="tel:+19105474314" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Phone className="w-3 h-3" /> (910) 547-4314</a>
+   996→            <a href="mailto:gtimaginedesign@gmail.com" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Mail className="w-3 h-3" /> gtimaginedesign@gmail.com</a>
+   997→            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {t("footer.location")}</span>
+   998→          </div>
+   999→        </div>
+  1000→        <div className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-600">
+  1001→          © {new Date().getFullYear()} {t("footer.rights")}
+  1002→        </div>
+  1003→      </div>
+  1004→    </footer>
+  1005→  );
+  1006→}
+  1007→
+  1008→/* ───────── MAIN PAGE ───────── */
+  1009→export default function Home() {
+  1010→  const [quoteOpen, setQuoteOpen] = useState(false);
+  1011→  return (
+  1012→    <main className="min-h-screen bg-background">
+  1013→      <Nav onQuote={() => setQuoteOpen(true)} />
+  1014→      <LangToggle />
+  1015→      <HeroSection onQuote={() => setQuoteOpen(true)} />
+  1016→      <GalleryCarousel />
+  1017→      <ProblemSection />
+  1018→      <TransformationSection />
+  1019→      <WhoWeHelpSection onQuote={() => setQuoteOpen(true)} />
+  1020→      <VisibilitySystemSection onQuote={() => setQuoteOpen(true)} />
+  1021→      <FeaturedProjectsSection />
+  1022→      <TrustSection />
+  1023→      <ProcessSection onQuote={() => setQuoteOpen(true)} />
+  1024→      <FinalCTASection onQuote={() => setQuoteOpen(true)} />
+  1025→      <MapSection />
+  1026→      <Footer />
+  1027→      <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
+  1028→      <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
+  1029→      <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
+  1030→    </main>
+  1031→  );
+  1032→}
+  1033→
