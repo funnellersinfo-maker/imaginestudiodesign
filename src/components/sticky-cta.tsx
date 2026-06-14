@@ -41,7 +41,7 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
               {t("sticky.cta")}
             </button>
             <a
-              href="tel:+19105550123"
+              href="tel:+19105474314"
               className="w-12 h-12 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0"
               aria-label="Call us"
             >
@@ -83,7 +83,7 @@ export function FloatingCTA({ onQuoteClick }: { onQuoteClick: () => void }) {
           className="hidden md:flex fixed bottom-6 right-6 z-50 flex-col gap-3"
         >
           <a
-            href="tel:+19105550123"
+            href="tel:+19105474314"
             className="w-14 h-14 rounded-full bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center hover:bg-emerald-600/30 transition-colors glow-brand-sm"
             aria-label="Call us"
           >

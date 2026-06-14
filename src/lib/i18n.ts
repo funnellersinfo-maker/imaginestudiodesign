@@ -191,7 +191,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "final.wilmington": "Wilmington, NC",
 
     // Footer
-    "footer.location": "Wilmington, North Carolina",
+    "footer.location": "4608 Cedar Ave, Wilmington, NC 28403",
     "footer.rights": "Imagine Studio Design. All rights reserved. Business Visibility Company.",
 
     // Quote Form
@@ -200,7 +200,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "quote.name": "Full Name *",
     "quote.namePlaceholder": "John Smith",
     "quote.phone": "Phone Number *",
-    "quote.phonePlaceholder": "(910) 555-0123",
+    "quote.phonePlaceholder": "(910) 547-4314",
     "quote.business": "Business Type *",
     "quote.businessPlaceholder": "Select your industry...",
     "quote.email": "Email (Optional)",
@@ -418,7 +418,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "final.wilmington": "Wilmington, NC",
 
     // Footer
-    "footer.location": "Wilmington, Carolina del Norte",
+    "footer.location": "4608 Cedar Ave, Wilmington, NC 28403",
     "footer.rights": "Imagine Studio Design. Todos los derechos reservados. Empresa de Visibilidad de Negocios.",
 
     // Quote Form
@@ -427,7 +427,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "quote.name": "Nombre Completo *",
     "quote.namePlaceholder": "Juan Pérez",
     "quote.phone": "Número de Teléfono *",
-    "quote.phonePlaceholder": "(910) 555-0123",
+    "quote.phonePlaceholder": "(910) 547-4314",
     "quote.business": "Tipo de Negocio *",
     "quote.businessPlaceholder": "Selecciona tu industria...",
     "quote.email": "Correo Electrónico (Opcional)",

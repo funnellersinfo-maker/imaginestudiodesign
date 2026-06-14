@@ -32,6 +32,7 @@ import {
   MapPin,
   Menu,
   X,
+  Mail,
 } from "lucide-react";
 import {
   Carousel,
@@ -139,8 +140,8 @@ function Nav({ onQuote }: { onQuote: () => void }) {
             <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.process")}</a>
           </div>
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
-            <a href="tel:+19105550123" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
-              <Phone className="w-4 h-4" />(910) 555-0123
+            <a href="tel:+19105474314" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
+              <Phone className="w-4 h-4" />(910) 547-4314
             </a>
             <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("nav.getQuote")}</button>
           </div>
@@ -156,7 +157,7 @@ function Nav({ onQuote }: { onQuote: () => void }) {
               <a href="#projects" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.projects")}</a>
               <a href="#process" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.process")}</a>
               <div className="section-divider" />
-              <a href="tel:+19105550123" className="flex items-center gap-2 text-emerald-400 py-2"><Phone className="w-4 h-4" /> (910) 555-0123</a>
+              <a href="tel:+19105474314" className="flex items-center gap-2 text-emerald-400 py-2"><Phone className="w-4 h-4" /> (910) 547-4314</a>
               <button onClick={() => { setOpen(false); onQuote(); }} className="cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide w-full">{t("nav.getFreeQuote")}</button>
             </div>
           </motion.div>
@@ -708,8 +709,8 @@ function FinalCTASection({ onQuote }: { onQuote: () => void }) {
             <button onClick={onQuote} className="cta-primary text-white font-bold px-10 lg:px-12 py-4 lg:py-5 rounded-xl text-lg lg:text-xl tracking-wide flex items-center gap-2 min-w-[280px] lg:min-w-[320px] justify-center animate-pulse-glow">
               {t("final.cta")} <ArrowRight className="w-5 h-5" />
             </button>
-            <a href="tel:+19105550123" className="flex items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm lg:text-base font-semibold">
-              <Phone className="w-4 h-4" /> (910) 555-0123
+            <a href="tel:+19105474314" className="flex items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm lg:text-base font-semibold">
+              <Phone className="w-4 h-4" /> (910) 547-4314
             </a>
           </div>
         </FadeUp>
@@ -737,8 +738,9 @@ function Footer() {
           <div className="flex items-center gap-4">
             <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="h-8 w-auto object-contain opacity-70" />
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
-            <a href="tel:+19105550123" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Phone className="w-3 h-3" /> (910) 555-0123</a>
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
+            <a href="tel:+19105474314" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Phone className="w-3 h-3" /> (910) 547-4314</a>
+            <a href="mailto:gtimaginedesign@gmail.com" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Mail className="w-3 h-3" /> gtimaginedesign@gmail.com</a>
             <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {t("footer.location")}</span>
           </div>
         </div>
