@@ -1,0 +1,779 @@
+     1→"use client";
+     2→
+     3→import { useState, useRef, useEffect, useCallback } from "react";
+     4→import Image from "next/image";
+     5→import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+     6→import {
+     7→  Phone,
+     8→  ChevronRight,
+     9→  ArrowRight,
+    10→  CheckCircle2,
+    11→  Shield,
+    12→  Eye,
+    13→  Zap,
+    14→  Truck,
+    15→  HardHat,
+    16→  Wrench,
+    17→  TreePine,
+    18→  PaintBucket,
+    19→  GlassWater,
+    20→  Plug,
+    21→  Snowflake,
+    22→  Building2,
+    23→  Home as HomeIcon,
+    24→  Store,
+    25→  Target,
+    26→  Clock,
+    27→  Palette,
+    28→  Layers,
+    29→  Users,
+    30→  Star,
+    31→  Quote,
+    32→  MapPin,
+    33→  Menu,
+    34→  X,
+    35→  Mail,
+    36→} from "lucide-react";
+    37→import {
+    38→  Carousel,
+    39→  CarouselContent,
+    40→  CarouselItem,
+    41→  CarouselPrevious,
+    42→  CarouselNext,
+    43→} from "@/components/ui/carousel";
+    44→import { useLang } from "@/lib/i18n";
+    45→import QuoteFormModal from "@/components/quote-form-modal";
+    46→import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
+    47→import LangToggle from "@/components/lang-toggle";
+    48→import BeforeAfterSlider from "@/components/before-after-slider";
+    49→import GalleryCarousel from "@/components/gallery-carousel";
+    50→
+    51→/* ───────── ANIMATION HELPERS ───────── */
+    52→function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    53→  const ref = useRef(null);
+    54→  const inView = useInView(ref, { once: true, margin: "-60px" });
+    55→  return (
+    56→    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+    57→      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>
+    58→  );
+    59→}
+    60→function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    61→  const ref = useRef(null);
+    62→  const inView = useInView(ref, { once: true, margin: "-40px" });
+    63→  return (
+    64→    <motion.div ref={ref} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+    65→      transition={{ duration: 0.8, delay, ease: "easeOut" }} className={className}>{children}</motion.div>
+    66→  );
+    67→}
+    68→function ScaleIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+    69→  const ref = useRef(null);
+    70→  const inView = useInView(ref, { once: true, margin: "-40px" });
+    71→  return (
+    72→    <motion.div ref={ref} initial={{ opacity: 0, scale: 0.9 }} animate={inView ? { opacity: 1, scale: 1 } : {}}
+    73→      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>{children}</motion.div>
+    74→  );
+    75→}
+    76→
+    77→/* ───────── DATA (uses t() inside components) ───────── */
+    78→const PROJECTS_DATA = [
+    79→  { src: "/images/carousel/empire-metal.jpg", altEn: "Empire Metal vehicle wrap", altEs: "Vinilo Empire Metal", label: "Empire Metal" },
+    80→  { src: "/images/carousel/leon-tires.jpg", altEn: "Leon Tires & Body Services fleet branding", altEs: "Marca de flota Leon Tires", label: "Leon Tires & Body Services" },
+    81→  { src: "/images/carousel/lecheras.jpg", altEn: "Lecheras branded vehicle", altEs: "Vehículo Lecheras", label: "Lecheras" },
+    82→  { src: "/images/carousel/sunrise.jpg", altEn: "Sunrise vehicle wrap", altEs: "Vinilo Sunrise", label: "Sunrise" },
+    83→  { src: "/images/carousel/four-seasons.jpg", altEn: "Four Seasons Landscapes LLC wrap", altEs: "Vinilo Four Seasons Landscapes", label: "Four Seasons Landscapes LLC" },
+    84→  { src: "/images/carousel/rico-landscaping.jpg", altEn: "Rico Landscaping branded truck", altEs: "Camión Rico Landscaping", label: "Rico Landscaping" },
+    85→  { src: "/images/carousel/empire-metal-works.jpg", altEn: "Empire Metal Works LLC truck", altEs: "Camión Empire Metal Works", label: "Empire Metal Works LLC" },
+    86→];
+    87→
+    88→const INDUSTRIES_DATA = [
+    89→  { icon: HardHat, labelKey: "ind.contractors", descKey: "ind.contractorsDesc" },
+    90→  { icon: HomeIcon, labelKey: "ind.roofing", descKey: "ind.roofingDesc" },
+    91→  { icon: Snowflake, labelKey: "ind.hvac", descKey: "ind.hvacDesc" },
+    92→  { icon: Wrench, labelKey: "ind.plumbing", descKey: "ind.plumbingDesc" },
+    93→  { icon: Plug, labelKey: "ind.electrical", descKey: "ind.electricalDesc" },
+    94→  { icon: TreePine, labelKey: "ind.landscaping", descKey: "ind.landscapingDesc" },
+    95→  { icon: PaintBucket, labelKey: "ind.painting", descKey: "ind.paintingDesc" },
+    96→  { icon: TreePine, labelKey: "ind.tree", descKey: "ind.treeDesc" },
+    97→  { icon: GlassWater, labelKey: "ind.concrete", descKey: "ind.concreteDesc" },
+    98→  { icon: Building2, labelKey: "ind.construction", descKey: "ind.constructionDesc" },
+    99→];
+   100→
+   101→const PROCESS_DATA = [
+   102→  { num: "01", titleKey: "process.step1", descKey: "process.step1Desc", icon: Phone },
+   103→  { num: "02", titleKey: "process.step2", descKey: "process.step2Desc", icon: Palette },
+   104→  { num: "03", titleKey: "process.step3", descKey: "process.step3Desc", icon: Layers },
+   105→  { num: "04", titleKey: "process.step4", descKey: "process.step4Desc", icon: Truck },
+   106→  { num: "05", titleKey: "process.step5", descKey: "process.step5Desc", icon: Eye },
+   107→];
+   108→
+   109→const METRICS_DATA = [
+   110→  { value: "500+", labelKey: "trust.projects" },
+   111→  { value: "98%", labelKey: "trust.satisfaction" },
+   112→  { value: "10+", labelKey: "trust.experience" },
+   113→  { value: "24h", labelKey: "trust.turnaround" },
+   114→];
+   115→
+   116→const VISIBILITY_DATA = [
+   117→  { icon: Layers, titleKey: "vis.wraps", descKey: "vis.wrapsDesc" },
+   118→  { icon: Eye, titleKey: "vis.signage", descKey: "vis.signageDesc" },
+   119→  { icon: Users, titleKey: "vis.apparel", descKey: "vis.apparelDesc" },
+   120→  { icon: Target, titleKey: "vis.promo", descKey: "vis.promoDesc" },
+   121→  { icon: Palette, titleKey: "vis.brandIdentity", descKey: "vis.brandIdentityDesc" },
+   122→  { icon: Zap, titleKey: "vis.digital", descKey: "vis.digitalDesc" },
+   123→];
+   124→
+   125→/* ───────── NAV ───────── */
+   126→function Nav({ onQuote }: { onQuote: () => void }) {
+   127→  const [open, setOpen] = useState(false);
+   128→  const { t } = useLang();
+   129→  return (
+   130→    <nav className="fixed top-0 left-0 right-0 z-40 glass-strong">
+   131→      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   132→        <div className="flex items-center justify-between h-16 lg:h-20">
+   133→          <a href="#" className="flex items-center gap-3 flex-shrink-0">
+   134→            <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 lg:h-12 w-auto object-contain" priority />
+   135→          </a>
+   136→          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+   137→            <a href="#transformations" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.transformations")}</a>
+   138→            <a href="#who-we-help" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.industries")}</a>
+   139→            <a href="#projects" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.projects")}</a>
+   140→            <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("nav.process")}</a>
+   141→          </div>
+   142→          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+   143→            <a href="tel:+19105474314" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
+   144→              <Phone className="w-4 h-4" />(910) 547-4314
+   145→            </a>
+   146→            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("nav.getQuote")}</button>
+   147→          </div>
+   148→          <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
+   149→            {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+   150→          </button>
+   151→        </div>
+   152→        {open && (
+   153→          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden pb-6 pt-2 border-t border-white/5">
+   154→            <div className="flex flex-col gap-4">
+   155→              <a href="#transformations" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.transformations")}</a>
+   156→              <a href="#who-we-help" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.industries")}</a>
+   157→              <a href="#projects" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.projects")}</a>
+   158→              <a href="#process" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("nav.process")}</a>
+   159→              <div className="section-divider" />
+   160→              <a href="tel:+19105474314" className="flex items-center gap-2 text-emerald-400 py-2"><Phone className="w-4 h-4" /> (910) 547-4314</a>
+   161→              <button onClick={() => { setOpen(false); onQuote(); }} className="cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide w-full">{t("nav.getFreeQuote")}</button>
+   162→            </div>
+   163→          </motion.div>
+   164→        )}
+   165→      </div>
+   166→    </nav>
+   167→  );
+   168→}
+   169→
+   170→/* ───────── 1. HERO ───────── */
+   171→function HeroSection({ onQuote }: { onQuote: () => void }) {
+   172→  const sectionRef = useRef<HTMLElement>(null);
+   173→  const { scrollY } = useScroll();
+   174→  const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
+   175→  const { t } = useLang();
+   176→
+   177→  const headlines = [
+   178→    { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
+   179→    { line1: t("hero.h2.line1"), line2: t("hero.h2.line2"), line3: t("hero.h2.line3") },
+   180→    { line1: t("hero.h3.line1"), line2: t("hero.h3.line2"), line3: t("hero.h3.line3") },
+   181→    { line1: t("hero.h4.line1"), line2: t("hero.h4.line2"), line3: t("hero.h4.line3") },
+   182→  ];
+   183→
+   184→  const [idx, setIdx] = useState(0);
+   185→
+   186→  const scheduleNext = useCallback(() => {
+   187→    const delay = 9000 + Math.random() * 3000;
+   188→    return setTimeout(() => setIdx((i) => (i + 1) % headlines.length), delay);
+   189→  }, [headlines.length]);
+   190→
+   191→  useEffect(() => {
+   192→    const id = scheduleNext();
+   193→    return () => clearTimeout(id);
+   194→  }, [idx, scheduleNext]);
+   195→
+   196→  const h = headlines[idx];
+   197→  const key = `${idx}-${h.line1}`;
+   198→
+   199→  return (
+   200→    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+   201→      {/* Dark base gradient */}
+   202→      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
+   203→
+   204→      {/* Looping video background — plays instantly, never stops */}
+   205→      <div className="absolute inset-0 z-[1]">
+   206→        <video
+   207→          autoPlay
+   208→          muted
+   209→          loop
+   210→          playsInline
+   211→          preload="auto"
+   212→          className="absolute inset-0 w-full h-full object-cover"
+   213→        >
+   214→          <source src="/hero-bg.mp4" type="video/mp4" />
+   215→        </video>
+   216→        <div className="absolute inset-0 bg-gradient-to-b from-[#050510]/50 via-[#0a0a1a]/30 to-[#0a0a1a]/80" />
+   217→        <div className="absolute inset-0 bg-gradient-to-r from-[#050510]/40 via-transparent to-[#050510]/40" />
+   218→      </div>
+   219→
+   220→      <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
+   221→        {/* Badge */}
+   222→        <FadeUp delay={0.1}>
+   223→          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mt-8 sm:mt-0 mb-6 lg:mb-20">
+   224→            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-brand-hot-pink flex-shrink-0" />
+   225→            <span className="text-[9px] sm:text-sm text-gray-300 text-center leading-tight whitespace-nowrap">{t("hero.badge")}</span>
+   226→          </div>
+   227→        </FadeUp>
+   228→
+   229→        {/* Rotating Headlines */}
+   230→        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[11rem] mb-8 lg:mb-20">
+   231→          <AnimatePresence mode="wait">
+   232→            <motion.h1
+   233→              key={key}
+   234→              initial={{ opacity: 0, y: 16 }}
+   235→              animate={{ opacity: 1, y: 0 }}
+   236→              exit={{ opacity: 0, y: -16 }}
+   237→              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+   238→              className="absolute inset-0 flex flex-col items-center justify-center"
+   239→            >
+   240→              {/* Mobile/tablet: 3 separate lines */}
+   241→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+   242→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
+   243→              <span className="lg:hidden text-[1.65rem] sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line3}</span>
+   244→              {/* Desktop: 2 lines only */}
+   245→              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] text-white drop-shadow-lg">{h.line1}</span>
+   246→              <span className="hidden lg:block lg:text-7xl font-black tracking-tight leading-[1.15] gradient-brand-text drop-shadow-lg">{h.line2}</span>
+   247→            </motion.h1>
+   248→          </AnimatePresence>
+   249→        </div>
+   250→
+   251→        {/* Subtitle */}
+   252→        <FadeUp delay={0.4}>
+   253→          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-16 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
+   254→        </FadeUp>
+   255→
+   256→        {/* CTA Buttons */}
+   257→        <FadeUp delay={0.6}>
+   258→          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-6 mb-8 lg:mb-4">
+   259→            <button onClick={onQuote} className="cta-primary text-white font-bold px-5 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-xs sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[180px] sm:min-w-[240px] lg:min-w-[300px] justify-center whitespace-nowrap">
+   260→              {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+   261→            </button>
+   262→            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
+   263→              {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+   264→            </a>
+   265→          </div>
+   266→        </FadeUp>
+   267→
+   268→        {/* Social Proof */}
+   269→        <FadeUp delay={0.8}>
+   270→          <div className="mt-8 sm:mt-14 lg:mt-20 w-full max-w-xl lg:max-w-3xl mx-auto">
+   271→            <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 lg:gap-x-10 lg:gap-y-4">
+   272→              {[
+   273→                t("hero.trust1"),
+   274→                t("hero.trust2"),
+   275→                t("hero.trust3"),
+   276→                t("hero.trust4"),
+   277→              ].map((txt, i) => (
+   278→                <div key={i} className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 justify-center sm:justify-start">
+   279→                  <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
+   280→                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+   281→                  </div>
+   282→                  <span className="text-xs sm:text-sm lg:text-base text-gray-300 font-medium">{txt}</span>
+   283→                </div>
+   284→              ))}
+   285→            </div>
+   286→            <div className="mt-4 pt-4 sm:mt-8 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-14">
+   287→              <div className="flex items-center gap-1.5 sm:gap-2">
+   288→                <div className="flex -space-x-1">
+   289→                  {[...Array(5)].map((_, i) => (
+   290→                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-yellow-400 fill-yellow-400" />
+   291→                  ))}
+   292→                </div>
+   293→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trust5Stars")}</span>
+   294→              </div>
+   295→              <div className="flex items-center gap-1.5 sm:gap-2">
+   296→                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustProjects")}</span>
+   297→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustProjectsLabel")}</span>
+   298→              </div>
+   299→              <div className="flex items-center gap-1.5 sm:gap-2">
+   300→                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("hero.trustYears")}</span>
+   301→                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("hero.trustYearsLabel")}</span>
+   302→              </div>
+   303→            </div>
+   304→          </div>
+   305→        </FadeUp>
+   306→      </motion.div>
+   307→      <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+   308→        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"><div className="w-1.5 h-3 rounded-full bg-white/40" /></div>
+   309→      </motion.div>
+   310→    </section>
+   311→  );
+   312→}
+   313→
+   314→/* ───────── 2. PROBLEM ───────── */
+   315→function ProblemSection() {
+   316→  const { t } = useLang();
+   317→  const pains = [t("problem.pain1"), t("problem.pain2"), t("problem.pain3")];
+   318→  const icons = [Eye, Shield, Target];
+   319→  return (
+   320→    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   321→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   322→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   323→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   324→        <FadeUp>
+   325→          <div className="text-center mb-16 lg:mb-20">
+   326→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("problem.tag")}</span>
+   327→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   328→              {t("problem.title1")} <span className="gradient-brand-text">{t("problem.titleHighlight")}</span>.
+   329→            </h2>
+   330→            <p className="text-gray-400 text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("problem.subtitle")}</p>
+   331→          </div>
+   332→        </FadeUp>
+   333→        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+   334→          {pains.map((txt, i) => (
+   335→            <FadeUp key={i} delay={i * 0.15}>
+   336→              <div className="relative group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full backdrop-blur-sm overflow-hidden">
+   337→                <video
+   338→                  autoPlay
+   339→                  muted
+   340→                  loop
+   341→                  playsInline
+   342→                  preload="metadata"
+   343→                  className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10"
+   344→                >
+   345→                  <source src="/card-bg.mp4" type="video/mp4" />
+   346→                </video>
+   347→                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-purple-pink flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
+   348→                  {(() => { const Ic = icons[i]; return <Ic className="w-6 h-6 lg:w-7 lg:h-7 text-white" />; })()}
+   349→                </div>
+   350→                <p className="text-gray-300 leading-relaxed text-base lg:text-lg relative z-10">{txt}</p>
+   351→              </div>
+   352→            </FadeUp>
+   353→          ))}
+   354→        </div>
+   355→        <FadeUp delay={0.4}>
+   356→          <div className="mt-12 text-center">
+   357→            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{t("problem.soundFamiliar")}</p>
+   358→            <p className="text-gray-400 text-base lg:text-lg">{t("problem.goodNews")} <span className="text-brand-bright-blue font-semibold">{t("problem.fixable")}</span></p>
+   359→          </div>
+   360→        </FadeUp>
+   361→      </div>
+   362→    </section>
+   363→  );
+   364→}
+   365→
+   366→/* ───────── 3. TRANSFORMATION ───────── */
+   367→function TransformationSection() {
+   368→  const { t } = useLang();
+   369→  const realProjects = [
+   370→    { src: "/images/real-leon-tires.jpg", name: "Leon Tires & Body Services LLC" },
+   371→    { src: "/images/real-pelones-framing.jpg", name: "Los Pelones Framing LLC" },
+   372→    { src: "/images/real-cabrera-flooring.jpg", name: "Cabrera Flooring LLC" },
+   373→  ];
+   374→  return (
+   375→    <section id="transformations" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   376→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
+   377→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   378→      {/* Dopaminic looping video background */}
+   379→      <div className="absolute inset-0 z-[1]">
+   380→        <video
+   381→          autoPlay
+   382→          muted
+   383→          loop
+   384→          playsInline
+   385→          preload="metadata"
+   386→          className="absolute inset-0 w-full h-full object-cover opacity-20"
+   387→        >
+   388→          <source src="/transform-bg.mp4" type="video/mp4" />
+   389→        </video>
+   390→      </div>
+   391→      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px] z-[2]" />
+   392→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   393→        <FadeUp>
+   394→          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+   395→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("transform.tag")}</span>
+   396→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   397→              {t("transform.from")} <span className="text-gray-500">{t("transform.invisible")}</span> {t("transform.to")} <span className="gradient-brand-text">{t("transform.impossible")}</span>
+   398→            </h2>
+   399→            <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("transform.subtitle")}</p>
+   400→          </div>
+   401→        </FadeUp>
+   402→
+   403→        {/* Interactive Before/After Slider — Real project */}
+   404→        <ScaleIn delay={0.1}>
+   405→          <div className="mb-10">
+   406→            <BeforeAfterSlider
+   407→              beforeSrc="/images/after-brothers-painting.png"
+   408→              afterSrc="/images/before-brothers-painting.png"
+   409→              beforeAlt="Van before wrap - plain white"
+   410→              afterAlt="Van after wrap - Brothers Painting Services LLC"
+   411→            />
+   412→            <p className="text-center text-sm text-gray-500 mt-4">{t("transform.realProject")}</p>
+   413→          </div>
+   414→        </ScaleIn>
+   415→        <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
+   416→          {realProjects.map((item, i) => (
+   417→            <FadeUp key={i} delay={i * 0.1}>
+   418→              <div className="project-card relative rounded-xl overflow-hidden border border-white/5 group">
+   419→                <div className="relative aspect-[4/3]">
+   420→                  <Image src={item.src} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+   421→                </div>
+   422→                <div className="p-3 lg:p-4 bg-white/[0.02]">
+   423→                  <p className="text-xs sm:text-sm font-bold text-white/80 group-hover:text-white transition-colors text-center">{item.name}</p>
+   424→                </div>
+   425→              </div>
+   426→            </FadeUp>
+   427→          ))}
+   428→        </div>
+   429→      </div>
+   430→    </section>
+   431→  );
+   432→}
+   433→
+   434→/* ───────── 4. WHO WE HELP ───────── */
+   435→function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
+   436→  const { t } = useLang();
+   437→  return (
+   438→    <section id="who-we-help" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   439→      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
+   440→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   441→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   442→        <FadeUp>
+   443→          <div className="text-center mb-16 lg:mb-20">
+   444→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("who.tag")}</span>
+   445→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   446→              {t("who.title1")} <span className="gradient-brand-text">{t("who.titleHighlight")}</span>
+   447→            </h2>
+   448→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("who.subtitle")}</p>
+   449→          </div>
+   450→        </FadeUp>
+   451→        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+   452→          {INDUSTRIES_DATA.map((ind, i) => (
+   453→            <FadeUp key={i} delay={i * 0.05}>
+   454→              <div className="group p-4 lg:p-6 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-brand-purple/20 transition-all duration-300 text-center h-full">
+   455→                <div className="w-12 h-12 lg:w-14 lg:h-14 mx-auto rounded-xl gradient-blue-purple flex items-center justify-center mb-3 lg:mb-4 group-hover:scale-110 transition-transform duration-300">
+   456→                  <ind.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+   457→                </div>
+   458→                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(ind.labelKey)}</h3>
+   459→                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed hidden sm:block">{t(ind.descKey)}</p>
+   460→              </div>
+   461→            </FadeUp>
+   462→          ))}
+   463→        </div>
+   464→        <FadeUp delay={0.5}>
+   465→          <div className="mt-12 text-center">
+   466→            <p className="text-gray-400 mb-4"><Store className="w-4 h-4 inline mr-1" /> {t("who.also")}</p>
+   467→            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   468→              {t("who.seeCta")} <ArrowRight className="w-4 h-4" />
+   469→            </button>
+   470→          </div>
+   471→        </FadeUp>
+   472→      </div>
+   473→    </section>
+   474→  );
+   475→}
+   476→
+   477→/* ───────── 5. VISIBILITY SYSTEM ───────── */
+   478→function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
+   479→  const { t } = useLang();
+   480→  return (
+   481→    <section id="visibility-system" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   482→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   483→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   484→      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-brand-magenta/10 rounded-full blur-[150px]" />
+   485→      <div className="absolute bottom-1/3 left-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[150px]" />
+   486→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   487→        <FadeUp>
+   488→          <div className="text-center mb-16 lg:mb-20">
+   489→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("vis.tag")}</span>
+   490→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   491→              {t("vis.title1")} <span className="gradient-brand-text">{t("vis.titleHighlight")}</span>
+   492→            </h2>
+   493→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("vis.subtitle")}</p>
+   494→          </div>
+   495→        </FadeUp>
+   496→        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+   497→          {VISIBILITY_DATA.map((item, i) => (
+   498→            <FadeUp key={i} delay={i * 0.08}>
+   499→              <div className="group relative p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full overflow-hidden">
+   500→                <video
+   501→                  autoPlay
+   502→                  muted
+   503→                  loop
+   504→                  playsInline
+   505→                  preload="metadata"
+   506→                  className="absolute inset-0 w-full h-full object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-500 -z-10"
+   507→                >
+   508→                  <source src="/vis-card-bg.mp4" type="video/mp4" />
+   509→                </video>
+   510→                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
+   511→                  <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+   512→                </div>
+   513→                <h3 className="text-white font-bold text-base lg:text-lg mb-2 relative z-10">{t(item.titleKey)}</h3>
+   514→                <p className="text-gray-400 text-sm lg:text-base leading-relaxed relative z-10">{t(item.descKey)}</p>
+   515→              </div>
+   516→            </FadeUp>
+   517→          ))}
+   518→        </div>
+   519→        <FadeUp delay={0.5}>
+   520→          <div className="mt-12 p-6 rounded-2xl border border-brand-purple/20 bg-brand-purple/5 text-center">
+   521→            <p className="text-white text-lg font-semibold mb-2">{t("vis.everything")} <span className="gradient-brand-text">{t("vis.professional")}</span>.</p>
+   522→            <button onClick={onQuote} className="mt-4 cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   523→              {t("vis.customCta")} <ArrowRight className="w-4 h-4" />
+   524→            </button>
+   525→          </div>
+   526→        </FadeUp>
+   527→      </div>
+   528→    </section>
+   529→  );
+   530→}
+   531→
+   532→/* ───────── 6. FEATURED PROJECTS ───────── */
+   533→function FeaturedProjectsSection() {
+   534→  const { t } = useLang();
+   535→  return (
+   536→    <section id="projects" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   537→      <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
+   538→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   539→      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   540→        <FadeUp>
+   541→          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+   542→            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 lg:mb-6 leading-tight">
+   543→              {t("projects.headline")}
+   544→            </h2>
+   545→            <p className="text-sm sm:text-base text-gray-500 max-w-xl mx-auto">{t("projects.subline")}</p>
+   546→          </div>
+   547→        </FadeUp>
+   548→        <FadeIn delay={0.2}>
+   549→          <div className="relative pl-12 pr-12 lg:pl-16 lg:pr-16">
+   550→            <Carousel opts={{ align: "start", loop: true }} className="w-full">
+   551→              <CarouselContent className="-ml-4">
+   552→                {PROJECTS_DATA.map((project, i) => (
+   553→                  <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
+   554→                    <div className="project-card group rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] cursor-pointer">
+   555→                      <div className="relative aspect-[4/3] overflow-hidden">
+   556→                        <Image src={project.src} alt={project.altEn} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+   557→                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+   558→                        <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
+   559→                          <span className="text-xs sm:text-sm font-bold text-white">{project.label}</span>
+   560→                        </div>
+   561→                      </div>
+   562→                    </div>
+   563→                  </CarouselItem>
+   564→                ))}
+   565→              </CarouselContent>
+   566→              <CarouselPrevious className="left-0 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white" />
+   567→              <CarouselNext className="right-0 bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white" />
+   568→            </Carousel>
+   569→          </div>
+   570→        </FadeIn>
+   571→      </div>
+   572→    </section>
+   573→  );
+   574→}
+   575→
+   576→/* ───────── 7. TRUST ───────── */
+   577→function TrustSection() {
+   578→  const { t } = useLang();
+   579→  return (
+   580→    <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   581→      <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
+   582→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   583→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   584→        <FadeUp>
+   585→          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
+   586→            {METRICS_DATA.map((m, i) => (
+   587→              <ScaleIn key={i} delay={i * 0.1}>
+   588→                <div className="text-center p-6 lg:p-8 rounded-xl border border-white/5 bg-white/[0.02]">
+   589→                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black gradient-brand-text mb-1">{m.value}</div>
+   590→                  <div className="text-gray-400 text-sm lg:text-base">{t(m.labelKey)}</div>
+   591→                </div>
+   592→              </ScaleIn>
+   593→            ))}
+   594→          </div>
+   595→        </FadeUp>
+   596→        <FadeUp delay={0.3}>
+   597→          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+   598→            {[
+   599→              { quoteKey: "trust.testimonial1", nameKey: "trust.testimonial1Name", bizKey: "trust.testimonial1Biz", stars: 5 },
+   600→              { quoteKey: "trust.testimonial2", nameKey: "trust.testimonial2Name", bizKey: "trust.testimonial2Biz", stars: 5 },
+   601→            ].map((item, i) => (
+   602→              <FadeUp key={i} delay={i * 0.15}>
+   603→                <div className="p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] h-full flex flex-col">
+   604→                  <div className="flex gap-1 mb-4">{Array.from({ length: item.stars }).map((_, si) => <Star key={si} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
+   605→                  <Quote className="w-8 h-8 text-brand-purple/30 mb-3" />
+   606→                  <p className="text-gray-300 leading-relaxed flex-1 mb-4">&ldquo;{t(item.quoteKey)}&rdquo;</p>
+   607→                  <div>
+   608→                    <p className="text-white font-semibold text-sm">{t(item.nameKey)}</p>
+   609→                    <p className="text-gray-500 text-xs">{t(item.bizKey)}</p>
+   610→                  </div>
+   611→                </div>
+   612→              </FadeUp>
+   613→            ))}
+   614→          </div>
+   615→        </FadeUp>
+   616→        <FadeUp delay={0.5}>
+   617→          <div className="mt-12 text-center">
+   618→            <p className="text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
+   619→          </div>
+   620→        </FadeUp>
+   621→      </div>
+   622→    </section>
+   623→  );
+   624→}
+   625→
+   626→/* ───────── 8. PROCESS ───────── */
+   627→function ProcessSection({ onQuote }: { onQuote: () => void }) {
+   628→  const { t } = useLang();
+   629→  return (
+   630→    <section id="process" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+   631→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
+   632→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   633→      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+   634→        <FadeUp>
+   635→          <div className="text-center mb-16 lg:mb-20">
+   636→            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("process.tag")}</span>
+   637→            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   638→              {t("process.title1")} <span className="gradient-brand-text">{t("process.titleHighlight")}</span>.
+   639→            </h2>
+   640→            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("process.subtitle")}</p>
+   641→          </div>
+   642→        </FadeUp>
+   643→        <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-6 relative">
+   644→          <div className="absolute top-12 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue via-brand-purple to-brand-hot-pink opacity-30" />
+   645→          {PROCESS_DATA.map((step, i) => (
+   646→            <FadeUp key={i} delay={i * 0.1}>
+   647→              <div className="relative text-center group">
+   648→                <div className="relative z-10 w-24 h-24 lg:w-28 lg:h-28 mx-auto rounded-2xl border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center mb-4 lg:mb-5 group-hover:border-brand-purple/40 group-hover:bg-brand-purple/10 transition-all duration-300">
+   649→                  <span className="text-2xl lg:text-3xl font-black gradient-brand-text mb-1">{step.num}</span>
+   650→                  <step.icon className="w-5 h-5 lg:w-6 lg:h-6 text-gray-400 group-hover:text-white transition-colors" />
+   651→                </div>
+   652→                <h3 className="text-white font-bold text-sm lg:text-base mb-1">{t(step.titleKey)}</h3>
+   653→                <p className="text-gray-500 text-xs lg:text-sm leading-relaxed">{t(step.descKey)}</p>
+   654→              </div>
+   655→            </FadeUp>
+   656→          ))}
+   657→        </div>
+   658→        <div className="md:hidden space-y-4">
+   659→          {PROCESS_DATA.map((step, i) => (
+   660→            <FadeUp key={i} delay={i * 0.1}>
+   661→              <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+   662→                <div className="w-14 h-14 flex-shrink-0 rounded-xl gradient-brand flex items-center justify-center">
+   663→                  <span className="text-lg font-black text-white">{step.num}</span>
+   664→                </div>
+   665→                <div>
+   666→                  <h3 className="text-white font-bold text-sm mb-1">{t(step.titleKey)}</h3>
+   667→                  <p className="text-gray-400 text-xs leading-relaxed">{t(step.descKey)}</p>
+   668→                </div>
+   669→              </div>
+   670→            </FadeUp>
+   671→          ))}
+   672→        </div>
+   673→        <FadeUp delay={0.5}>
+   674→          <div className="mt-12 text-center">
+   675→            <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
+   676→              {t("process.cta")} <ArrowRight className="w-4 h-4" />
+   677→            </button>
+   678→          </div>
+   679→        </FadeUp>
+   680→      </div>
+   681→    </section>
+   682→  );
+   683→}
+   684→
+   685→/* ───────── 9. FINAL CTA ───────── */
+   686→function FinalCTASection({ onQuote }: { onQuote: () => void }) {
+   687→  const { t } = useLang();
+   688→  return (
+   689→    <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
+   690→      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#080818] to-background" />
+   691→      <div className="absolute top-0 left-0 right-0 section-divider" />
+   692→      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-purple/15 rounded-full blur-[200px]" />
+   693→      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-hot-pink/10 rounded-full blur-[150px]" />
+   694→      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+   695→        <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
+   696→        <FadeUp delay={0.1}>
+   697→          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 lg:mb-8 leading-tight">
+   698→            {t("final.title1")} <span className="gradient-brand-text">{t("final.titleHighlight")}</span> {t("final.title2")}
+   699→          </h2>
+   700→        </FadeUp>
+   701→        <FadeUp delay={0.2}>
+   702→          <p className="text-lg sm:text-xl lg:text-2xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-4 lg:mb-6 leading-relaxed">{t("final.subtitle")}</p>
+   703→        </FadeUp>
+   704→        <FadeUp delay={0.3}>
+   705→          <p className="text-white text-xl lg:text-2xl font-bold mb-10 lg:mb-14">{t("final.build")} <span className="gradient-brand-text">{t("final.unstoppable")}</span>.</p>
+   706→        </FadeUp>
+   707→        <FadeUp delay={0.4}>
+   708→          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-6 mb-8">
+   709→            <button onClick={onQuote} className="cta-primary text-white font-bold px-10 lg:px-12 py-4 lg:py-5 rounded-xl text-lg lg:text-xl tracking-wide flex items-center gap-2 min-w-[280px] lg:min-w-[320px] justify-center animate-pulse-glow">
+   710→              {t("final.cta")} <ArrowRight className="w-5 h-5" />
+   711→            </button>
+   712→            <a href="tel:+19105474314" className="flex items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm lg:text-base font-semibold">
+   713→              <Phone className="w-4 h-4" /> (910) 547-4314
+   714→            </a>
+   715→          </div>
+   716→        </FadeUp>
+   717→        <FadeUp delay={0.5}>
+   718→          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-gray-500 text-sm lg:text-base">
+   719→            <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {t("final.fast")}</span>
+   720→            <span className="text-white/10">|</span>
+   721→            <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> {t("final.quality")}</span>
+   722→            <span className="text-white/10">|</span>
+   723→            <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {t("final.wilmington")}</span>
+   724→          </div>
+   725→        </FadeUp>
+   726→      </div>
+   727→    </section>
+   728→  );
+   729→}
+   730→
+   731→/* ───────── FOOTER ───────── */
+   732→function Footer() {
+   733→  const { t } = useLang();
+   734→  return (
+   735→    <footer className="relative border-t border-white/5 bg-[#050510]">
+   736→      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+   737→        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+   738→          <div className="flex items-center gap-4">
+   739→            <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="h-8 w-auto object-contain opacity-70" />
+   740→          </div>
+   741→          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
+   742→            <a href="tel:+19105474314" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Phone className="w-3 h-3" /> (910) 547-4314</a>
+   743→            <a href="mailto:gtimaginedesign@gmail.com" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Mail className="w-3 h-3" /> gtimaginedesign@gmail.com</a>
+   744→            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {t("footer.location")}</span>
+   745→          </div>
+   746→        </div>
+   747→        <div className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-600">
+   748→          © {new Date().getFullYear()} {t("footer.rights")}
+   749→        </div>
+   750→      </div>
+   751→    </footer>
+   752→  );
+   753→}
+   754→
+   755→/* ───────── MAIN PAGE ───────── */
+   756→export default function Home() {
+   757→  const [quoteOpen, setQuoteOpen] = useState(false);
+   758→  return (
+   759→    <main className="min-h-screen bg-background">
+   760→      <Nav onQuote={() => setQuoteOpen(true)} />
+   761→      <LangToggle />
+   762→      <HeroSection onQuote={() => setQuoteOpen(true)} />
+   763→      <GalleryCarousel />
+   764→      <ProblemSection />
+   765→      <TransformationSection />
+   766→      <WhoWeHelpSection onQuote={() => setQuoteOpen(true)} />
+   767→      <VisibilitySystemSection onQuote={() => setQuoteOpen(true)} />
+   768→      <FeaturedProjectsSection />
+   769→      <TrustSection />
+   770→      <ProcessSection onQuote={() => setQuoteOpen(true)} />
+   771→      <FinalCTASection onQuote={() => setQuoteOpen(true)} />
+   772→      <Footer />
+   773→      <StickyCTA onQuote={() => setQuoteOpen(true)} />
+   774→      <FloatingCTA onQuote={() => setQuoteOpen(true)} />
+   775→      <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
+   776→    </main>
+   777→  );
+   778→}
+   779→
