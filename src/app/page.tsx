@@ -495,12 +495,22 @@ function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {VISIBILITY_DATA.map((item, i) => (
             <FadeUp key={i} delay={i * 0.08}>
-              <div className="group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300">
+              <div className="group relative p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full overflow-hidden">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="absolute inset-0 w-full h-full object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-500 -z-10"
+                >
+                  <source src="/vis-card-bg.mp4" type="video/mp4" />
+                </video>
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
                   <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
                 </div>
-                <h3 className="text-white font-bold text-base lg:text-lg mb-2">{t(item.titleKey)}</h3>
-                <p className="text-gray-400 text-sm lg:text-base leading-relaxed">{t(item.descKey)}</p>
+                <h3 className="text-white font-bold text-base lg:text-lg mb-2 relative z-10">{t(item.titleKey)}</h3>
+                <p className="text-gray-400 text-sm lg:text-base leading-relaxed relative z-10">{t(item.descKey)}</p>
               </div>
             </FadeUp>
           ))}
