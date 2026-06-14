@@ -134,3 +134,23 @@ Stage Summary:
 - Fondo cinemático scroll-triggered en Hero (ya existía) + Problem Section (nuevo)
 - Problem section: video a pantalla completa con overlays, tarjetas con backdrop-blur
 - Verificado en desktop y móvil — todo funcional
+---
+Task ID: 3
+Agent: Main
+Task: Configure phone call button (tel:) and WhatsApp integration with personalized messages
+
+Work Log:
+- Verified phone buttons already use tel:+19105474314 for direct calling
+- Updated quote-form-modal.tsx: on submit saves lead to DB then redirects to wa.me with personalized message
+- Message is dynamically built in ES/EN based on current language with all form fields
+- Added WhatsApp SVG icon to sticky-cta.tsx
+- Desktop FloatingCTA: 3 buttons (Call tel:, WhatsApp wa.me, Quote modal)
+- Mobile StickyCTA: 4 buttons (Quote modal, WhatsApp, Call, Dismiss)
+- WhatsApp default message adapts to current language (ES/EN)
+
+Stage Summary:
+- Phone button: already working with tel:+19105474314 (direct call)
+- WhatsApp button: new, links to wa.me/19105474314 with pre-filled message
+- Quote form: saves to DB + opens WhatsApp with personalized lead info
+- Mobile bar now has: CTA + WhatsApp + Phone + Dismiss
+- Desktop floating: Phone + WhatsApp + Quote CTA

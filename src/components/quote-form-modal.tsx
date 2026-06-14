@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Phone, Building2, User, Mail, MessageSquare, CheckCircle2, Loader2 } from "lucide-react";
+import { Phone, Building2, User, Mail, MessageSquare, CheckCircle2, Loader2, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 
 const BIZ_KEYS = [
@@ -28,6 +28,30 @@ const BIZ_KEYS = [
   "biz.restaurant", "biz.retail", "biz.otherService", "biz.other",
 ];
 
+const WHATSAPP_NUMBER = "19105474314";
+
+function buildWhatsAppURL(data: { name: string; phone: string; businessType: string; email: string; message: string }, lang: "en" | "es"): string {
+  let text: string;
+  if (lang === "es") {
+    text = `👋 *¡Hola! Quiero una cotización para mi negocio.*
+
+👤 *Nombre:* ${data.name}
+📞 *Teléfono:* ${data.phone}
+🏢 *Tipo de negocio:* ${data.businessType}${data.email ? `\n📧 *Email:* ${data.email}` : ""}${data.message ? `\n💬 *Mensaje:* ${data.message}` : ""}
+
+📍 *Fuente:* Página web Imagine Studio Design`;
+  } else {
+    text = `👋 *Hi! I'd like a quote for my business.*
+
+👤 *Name:* ${data.name}
+📞 *Phone:* ${data.phone}
+🏢 *Business Type:* ${data.businessType}${data.email ? `\n📧 *Email:* ${data.email}` : ""}${data.message ? `\n💬 *Message:* ${data.message}` : ""}
+
+📍 *Source:* Imagine Studio Design Website`;
+  }
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+}
+
 interface QuoteFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -35,7 +59,7 @@ interface QuoteFormModalProps {
 }
 
 export default function QuoteFormModal({ open, onOpenChange, source = "website" }: QuoteFormModalProps) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [formData, setFormData] = useState({ name: "", phone: "", businessType: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -50,6 +74,7 @@ export default function QuoteFormModal({ open, onOpenChange, source = "website" 
     }
     setIsSubmitting(true);
     try {
+      // Save to database
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,7 +82,15 @@ export default function QuoteFormModal({ open, onOpenChange, source = "website" 
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || t("quote.error")); return; }
+
+      // Build WhatsApp URL with personalized message
+      const waURL = buildWhatsAppURL(formData, lang);
+
+      // Show success briefly, then redirect to WhatsApp
       setIsSuccess(true);
+      setTimeout(() => {
+        window.open(waURL, "_blank", "noopener,noreferrer");
+      }, 1000);
     } catch {
       setError(t("quote.networkError"));
     } finally {
@@ -78,12 +111,15 @@ export default function QuoteFormModal({ open, onOpenChange, source = "website" 
           <AnimatePresence mode="wait">
             {isSuccess ? (
               <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="p-8 text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full gradient-brand flex items-center justify-center">
-                  <CheckCircle2 className="w-10 h-10 text-white" />
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[#25D366]/20 flex items-center justify-center">
+                  <CheckCircle2 className="w-10 h-10 text-[#25D366]" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">{t("quote.success")}</h3>
-                <p className="text-gray-300 mb-6">{t("quote.successMsg")}</p>
-                <button onClick={handleReset} className="cta-primary text-white font-bold px-8 py-3 rounded-xl text-sm tracking-wide">{t("quote.close")}</button>
+                <h3 className="text-2xl font-bold text-white mb-2">{lang === "es" ? "¡Abriendo WhatsApp!" : "Opening WhatsApp!"}</h3>
+                <p className="text-gray-300 mb-6">{lang === "es" ? "Tu mensaje personalizado se está enviando..." : "Your personalized message is being sent..."}</p>
+                <div className="flex items-center justify-center gap-2 text-[#25D366] text-sm">
+                  <ArrowRight className="w-4 h-4 animate-pulse" />
+                  {lang === "es" ? "Redirigiendo a WhatsApp..." : "Redirecting to WhatsApp..."}
+                </div>
               </motion.div>
             ) : (
               <motion.div key="form" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
