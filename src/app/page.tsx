@@ -47,6 +47,8 @@ import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
 import LangToggle from "@/components/lang-toggle";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import GalleryCarousel from "@/components/gallery-carousel";
+import FloatingElements, { HERO_ELEMENTS, PROBLEM_ELEMENTS, TRANSFORM_ELEMENTS, VISIBILITY_ELEMENTS, FINAL_CTA_ELEMENTS } from "@/components/floating-elements";
+import { Navigation } from "lucide-react";
 
 /* ───────── ANIMATION HELPERS ───────── */
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -107,7 +109,7 @@ const PROCESS_DATA = [
 ];
 
 const METRICS_DATA = [
-  { value: "500+", labelKey: "trust.projects" },
+  { value: "1500+", labelKey: "trust.projects" },
   { value: "98%", labelKey: "trust.satisfaction" },
   { value: "10+", labelKey: "trust.experience" },
   { value: "24h", labelKey: "trust.turnaround" },
@@ -175,6 +177,8 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
 
   const headlines = [
+    { line1: t("hero.h5.line1"), line2: t("hero.h5.line2"), line3: t("hero.h5.line3") },
+    { line1: t("hero.h6.line1"), line2: t("hero.h6.line2"), line3: t("hero.h6.line3") },
     { line1: t("hero.h1.line1"), line2: t("hero.h1.line2"), line3: t("hero.h1.line3") },
     { line1: t("hero.h2.line1"), line2: t("hero.h2.line2"), line3: t("hero.h2.line3") },
     { line1: t("hero.h3.line1"), line2: t("hero.h3.line2"), line3: t("hero.h3.line3") },
@@ -201,21 +205,8 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Dark base gradient */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#050510] via-[#0a0a1a] to-background" />
 
-      {/* Looping video background — plays instantly, never stops */}
-      <div className="absolute inset-0 z-[1]">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/hero-bg.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050510]/50 via-[#0a0a1a]/30 to-[#0a0a1a]/80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050510]/40 via-transparent to-[#050510]/40" />
-      </div>
+      {/* Floating magical niche elements */}
+      <FloatingElements elements={HERO_ELEMENTS} />
 
       <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
         {/* Badge */}
@@ -320,6 +311,7 @@ function ProblemSection() {
     <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
+      <FloatingElements elements={PROBLEM_ELEMENTS} />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-16 lg:mb-20">
@@ -333,17 +325,7 @@ function ProblemSection() {
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {pains.map((txt, i) => (
             <FadeUp key={i} delay={i * 0.15}>
-              <div className="relative group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full backdrop-blur-sm overflow-hidden">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 -z-10"
-                >
-                  <source src="/card-bg.mp4" type="video/mp4" />
-                </video>
+              <div className="relative group p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full backdrop-blur-sm">
                 <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-purple-pink flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
                   {(() => { const Ic = icons[i]; return <Ic className="w-6 h-6 lg:w-7 lg:h-7 text-white" />; })()}
                 </div>
@@ -375,20 +357,7 @@ function TransformationSection() {
     <section id="transformations" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background to-[#080818]" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      {/* Dopaminic looping video background */}
-      <div className="absolute inset-0 z-[1]">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover opacity-20"
-        >
-          <source src="/transform-bg.mp4" type="video/mp4" />
-        </video>
-      </div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/10 rounded-full blur-[150px] z-[2]" />
+      <FloatingElements elements={TRANSFORM_ELEMENTS} />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
@@ -481,8 +450,7 @@ function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
     <section id="visibility-system" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-brand-magenta/10 rounded-full blur-[150px]" />
-      <div className="absolute bottom-1/3 left-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[150px]" />
+      <FloatingElements elements={VISIBILITY_ELEMENTS} />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-16 lg:mb-20">
@@ -496,17 +464,7 @@ function VisibilitySystemSection({ onQuote }: { onQuote: () => void }) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {VISIBILITY_DATA.map((item, i) => (
             <FadeUp key={i} delay={i * 0.08}>
-              <div className="group relative p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full overflow-hidden">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="absolute inset-0 w-full h-full object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-500 -z-10"
-                >
-                  <source src="/vis-card-bg.mp4" type="video/mp4" />
-                </video>
+              <div className="group relative p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full">
                 <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
                   <item.icon className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
                 </div>
@@ -575,47 +533,208 @@ function FeaturedProjectsSection() {
 
 /* ───────── 7. TRUST ───────── */
 function TrustSection() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const REVIEW_IMAGES = [
+    "/reviews/review-jose-avendano.png",
+    "/reviews/review-laura-main.png",
+    "/reviews/review-christopher-sperry.png",
+    "/reviews/review-aquamen-detailing.png",
+    "/reviews/review-river-vibes.png",
+    "/reviews/review-falco-bauer.png",
+    "/reviews/review-elsa-sutkevich.png",
+  ];
+  const OTHER_SERVICES = [
+    { src: "/images/svc-armengol-front.jpg", alt: "Armengol front" },
+    { src: "/images/svc-armengol-back.jpg", alt: "Armengol back" },
+    { src: "/images/svc-vazquez-front.jpg", alt: "Vazquez front" },
+    { src: "/images/svc-vazquez-back.jpg", alt: "Vazquez back" },
+    { src: "/images/svc-paz-front.jpg", alt: "PAZ front" },
+    { src: "/images/svc-cards-lucero.jpg", alt: "Cards Lucero" },
+    { src: "/images/svc-cerro-grande.jpg", alt: "Cerro Grande" },
+    { src: "/images/svc-empire-metal-apparel.jpg", alt: "Empire Metal Apparel" },
+  ];
   return (
     <section className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#080818] via-background to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Metrics bar */}
         <FadeUp>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
             {METRICS_DATA.map((m, i) => (
               <ScaleIn key={i} delay={i * 0.1}>
-                <div className="text-center p-6 lg:p-8 rounded-xl border border-white/5 bg-white/[0.02]">
-                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black gradient-brand-text mb-1">{m.value}</div>
-                  <div className="text-gray-400 text-sm lg:text-base">{t(m.labelKey)}</div>
+                <div className="text-center p-4 lg:p-6 rounded-xl border border-white/5 bg-white/[0.02]">
+                  <div className="text-2xl sm:text-3xl lg:text-4xl font-black gradient-brand-text mb-1">{m.value}</div>
+                  <div className="text-gray-400 text-xs lg:text-sm">{t(m.labelKey)}</div>
                 </div>
               </ScaleIn>
             ))}
           </div>
         </FadeUp>
-        <FadeUp delay={0.3}>
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-            {[
-              { quoteKey: "trust.testimonial1", nameKey: "trust.testimonial1Name", bizKey: "trust.testimonial1Biz", stars: 5 },
-              { quoteKey: "trust.testimonial2", nameKey: "trust.testimonial2Name", bizKey: "trust.testimonial2Biz", stars: 5 },
-            ].map((item, i) => (
-              <FadeUp key={i} delay={i * 0.15}>
-                <div className="p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] h-full flex flex-col">
-                  <div className="flex gap-1 mb-4">{Array.from({ length: item.stars }).map((_, si) => <Star key={si} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
-                  <Quote className="w-8 h-8 text-brand-purple/30 mb-3" />
-                  <p className="text-gray-300 leading-relaxed flex-1 mb-4">&ldquo;{t(item.quoteKey)}&rdquo;</p>
-                  <div>
-                    <p className="text-white font-semibold text-sm">{t(item.nameKey)}</p>
-                    <p className="text-gray-500 text-xs">{t(item.bizKey)}</p>
-                  </div>
-                </div>
-              </FadeUp>
+        {/* Google Reviews */}
+        <FadeUp delay={0.1}>
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-1.5 mb-3">
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}
+              <span className="text-white font-bold text-sm ml-1">4.8</span>
+              <span className="text-gray-400 text-sm">Google</span>
+            </div>
+          </div>
+        </FadeUp>
+        <FadeUp delay={0.2}>
+          <div className="space-y-4 mb-16 lg:mb-20">
+            {REVIEW_IMAGES.map((src, i) => (
+              <div key={i} className="rounded-xl overflow-hidden border border-white/5">
+                <Image src={src} alt={`Google Review ${i + 1}`} width={800} height={200} className="w-full h-auto" />
+              </div>
             ))}
           </div>
         </FadeUp>
-        <FadeUp delay={0.5}>
-          <div className="mt-12 text-center">
+        {/* Team/Family photo — full image on mobile, text below */}
+        <FadeUp delay={0.1}>
+          <div className="mb-16 lg:mb-20">
+            <div className="relative rounded-2xl overflow-hidden lg:aspect-[21/9]">
+              <Image
+                src="/images/team-family-booth.png"
+                alt="Imagine Studio Design team and family"
+                width={1200}
+                height={800}
+                className="w-full h-auto lg:absolute lg:inset-0 lg:w-full lg:h-full lg:object-cover"
+              />
+            </div>
+            <p className="text-white text-base sm:text-lg lg:text-xl font-semibold leading-relaxed text-center mt-4 px-4">
+              {t("trust.teamText")}
+            </p>
+          </div>
+        </FadeUp>
+        {/* Metrics strip */}
+        <FadeUp delay={0.2}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
+            <div className="flex items-center justify-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+              <div className="flex -space-x-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 lg:w-5 lg:h-5 text-yellow-400 fill-yellow-400" />
+                ))}
+              </div>
+              <span className="text-gray-300 text-sm lg:text-base font-medium">Google</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+              <span className="text-xl lg:text-2xl font-black gradient-brand-text">1500+</span>
+              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("trust.projects")}</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+              <span className="text-xl lg:text-2xl font-black gradient-brand-text">10+</span>
+              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("trust.experience")}</span>
+            </div>
+            <div className="flex items-center justify-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+              <span className="text-xl lg:text-2xl font-black gradient-brand-text">98%</span>
+              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("trust.satisfaction")}</span>
+            </div>
+          </div>
+        </FadeUp>
+        {/* Guarantee */}
+        <FadeUp delay={0.3}>
+          <div className="text-center">
             <p className="text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("trust.guarantee")}</p>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── INTERACTIVE MAP ───────── */
+function MapSection() {
+  const { t } = useLang();
+  const LAT = 34.2134;
+  const LNG = -77.8824;
+  const ADDRESS = "4608 Cedar Ave, Suite 105, Wilmington, NC 28403";
+
+  const handleDirections = () => {
+    if (!navigator.geolocation) {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${LAT},${LNG}`, "_blank");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      () => {
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${LAT},${LNG}`, "_blank");
+      },
+      () => {
+        alert(lang === "es" ? "Por favor activa tu GPS/ubicación para usar esta función." : "Please enable your GPS/Location to use this feature.");
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${LAT},${LNG}`, "_blank");
+      }
+    );
+  };
+
+  const { lang } = useLang();
+
+  return (
+    <section id="location" className="relative py-20 md:py-28 lg:py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0a1a] to-[#050510]" />
+      <div className="absolute top-0 left-0 right-0 section-divider" />
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeUp>
+          <div className="text-center mb-10 lg:mb-14">
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("map.tag")}</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">{t("map.title")}</h2>
+            <p className="text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">{t("map.subtitle")}</p>
+          </div>
+        </FadeUp>
+
+        {/* Written address card */}
+        <FadeUp delay={0.1}>
+          <div className="glass rounded-2xl p-6 lg:p-8 mb-8 max-w-2xl mx-auto">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl gradient-brand flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-white font-bold text-lg mb-1">{t("map.addressLabel")}</h3>
+                <p className="text-gray-300 text-base mb-4">{ADDRESS}</p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a href="tel:+19105474314" className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors font-medium text-sm">
+                    <Phone className="w-4 h-4" /> (910) 547-4314
+                  </a>
+                  <a href="mailto:gtimaginedesign@gmail.com" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors font-medium text-sm">
+                    <Mail className="w-4 h-4" /> gtimaginedesign@gmail.com
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </FadeUp>
+
+        {/* Interactive Map */}
+        <FadeUp delay={0.2}>
+          <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10">
+            <div className="relative w-full aspect-[4/3] md:aspect-[16/9]">
+              <iframe
+                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.5!2d${LNG}!3d${LAT}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDEyJzQ4LjIiTiA3N8KwNTInNTYuNiJX!5e0!3m2!1sen!2sus!4v1`}
+                width="100%"
+                height="100%"
+                style={{ border: 0, position: "absolute", inset: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Imagine Studio Design Location"
+              />
+            </div>
+            {/* Directions button overlay */}
+            <div className="p-4 lg:p-6 bg-[#0a0a1a] border-t border-white/5">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                  <Navigation className="w-4 h-4" />
+                  <span>{t("map.findUs")}</span>
+                </div>
+                <button
+                  onClick={handleDirections}
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl gradient-brand text-white font-bold text-sm tracking-wide hover:scale-[1.03] transition-transform"
+                >
+                  <Navigation className="w-4 h-4" />
+                  {t("map.getDirections")}
+                </button>
+              </div>
+            </div>
           </div>
         </FadeUp>
       </div>
@@ -689,8 +808,7 @@ function FinalCTASection({ onQuote }: { onQuote: () => void }) {
     <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-[#080818] to-background" />
       <div className="absolute top-0 left-0 right-0 section-divider" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-purple/15 rounded-full blur-[200px]" />
-      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-hot-pink/10 rounded-full blur-[150px]" />
+      <FloatingElements elements={FINAL_CTA_ELEMENTS} />
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
         <FadeUp delay={0.1}>
@@ -769,6 +887,7 @@ export default function Home() {
       <TrustSection />
       <ProcessSection onQuote={() => setQuoteOpen(true)} />
       <FinalCTASection onQuote={() => setQuoteOpen(true)} />
+      <MapSection />
       <Footer />
       <StickyCTA onQuote={() => setQuoteOpen(true)} />
       <FloatingCTA onQuote={() => setQuoteOpen(true)} />

@@ -88,7 +88,7 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
 
 /* Desktop floating CTA */
 export function FloatingCTA({ onQuoteClick }: { onQuoteClick: () => void }) {
-  const { lang } = useLang();
+  const { t, lang } = useLang();
   const [visible, setVisible] = useState(false);
 
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
