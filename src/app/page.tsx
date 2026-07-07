@@ -279,7 +279,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         </FadeUp>
 
         {/* Rotating Headlines */}
-        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[11rem] mb-8 lg:mb-20">
+        <div className="relative min-h-[9rem] sm:min-h-[11rem] md:min-h-[14rem] lg:min-h-[11rem] mb-6 sm:mb-10 lg:mb-14">
           <AnimatePresence mode="wait">
             <motion.h1
               key={key}
@@ -300,26 +300,9 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           </AnimatePresence>
         </div>
 
-        {/* Subtitle */}
-        <FadeUp delay={0.4}>
-          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-16 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
-        </FadeUp>
-
-        {/* CTA Buttons */}
-        <FadeUp delay={0.6}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 lg:gap-6 mb-8 lg:mb-4">
-            <button onClick={onQuote} className="cta-primary text-white font-bold px-5 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-4 rounded-xl text-xs sm:text-base lg:text-lg tracking-wide flex items-center gap-2 min-w-[180px] sm:min-w-[240px] lg:min-w-[300px] justify-center whitespace-nowrap">
-              {t("hero.cta")} <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            <a href="#transformations" className="group flex items-center gap-2 px-5 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm text-gray-300 hover:text-white hover:border-white/20 transition-all text-sm lg:text-base font-medium">
-              {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </FadeUp>
-
-        {/* Hero Carousel with shimmer border */}
+        {/* Hero Carousel with shimmer border — RIGHT AFTER HEADLINES */}
         <FadeUp delay={0.3}>
-          <div className="relative w-full max-w-[700px] mx-auto mb-10 sm:mb-14 lg:mb-16">
+          <div className="relative w-full max-w-[700px] mx-auto mb-6 sm:mb-8 lg:mb-10">
             <div className="shimmer-border rounded-2xl">
               <div className="shimmer-inner-dark rounded-[14px]">
                 <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-video rounded-[14px] overflow-hidden bg-white/5">
@@ -365,17 +348,8 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           </div>
         </FadeUp>
 
-        {/* CTA line above form */}
-        <FadeUp delay={0.45}>
-          <p className="text-sm sm:text-base text-gray-300 mb-4 max-w-[600px] mx-auto">
-            {lang === "es"
-              ? "💬 Cuéntanos tu proyecto y recibe una cotización gratis en minutos por WhatsApp"
-              : "💬 Tell us about your project and get a free quote in minutes via WhatsApp"}
-          </p>
-        </FadeUp>
-
-        {/* Inline Mini WhatsApp Form with shimmer glow */}
-        <FadeUp delay={0.5}>
+        {/* Inline Mini WhatsApp Form with shimmer glow — RIGHT BELOW CAROUSEL */}
+        <FadeUp delay={0.4}>
           <div className="w-full max-w-[600px] mx-auto mb-4 sm:mb-6 lg:mb-8">
             <div className="shimmer-border-glow rounded-2xl">
               <div className="shimmer-inner-dark rounded-[14px] p-4 sm:p-6">
@@ -434,10 +408,15 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         </FadeUp>
 
         {/* Or call text */}
-        <FadeUp delay={0.55}>
-          <p className="text-sm text-gray-400 mb-6 lg:mb-10">
+        <FadeUp delay={0.45}>
+          <p className="text-sm text-gray-400 mb-6 lg:mb-8">
             {t("hero.form.orCall")}
           </p>
+        </FadeUp>
+
+        {/* Subtitle */}
+        <FadeUp delay={0.5}>
+          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-12 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
         </FadeUp>
 
         {/* Social Proof */}
