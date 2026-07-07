@@ -37,10 +37,47 @@ const SLIDES = [
     altEn: "Detailed vehicle wrap craftsmanship",
     altEs: "Artesanía detallada de vinilo vehicular",
   },
+  {
+    src: "/images/gallery/IMG-20260203-WA0056.jpg",
+    altEn: "Custom vehicle wrap showcase",
+    altEs: "Muestra de vinilo vehicular personalizado",
+  },
+  {
+    src: "/images/gallery/IMG-20260423-WA0071.jpg",
+    altEn: "Branded commercial vehicle",
+    altEs: "Vehículo comercial con marca",
+  },
+  {
+    src: "/images/gallery/5c7d8526-4bf8-4bbf-b0bd-3518955db925.jpg",
+    altEn: "Professional fleet branding",
+    altEs: "Marca de flota profesional",
+  },
+  {
+    src: "/images/gallery/20211018_115311.jpg",
+    altEn: "Vehicle wrap transformation",
+    altEs: "Transformación con vinilo vehicular",
+  },
+  {
+    src: "/images/gallery/c7cfcce3-5233-44a6-85d0-bb0ec980e92b.jpg",
+    altEn: "Custom business vehicle wrap",
+    altEs: "Vinilo vehicular personalizado para negocios",
+  },
 ];
+
+// Fisher-Yates shuffle (se ejecuta una sola vez al montar el componente)
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 export default function GalleryCarousel() {
   const { lang, t } = useLang();
+  // Shuffle inicial: cada carga muestra las 11 imágenes en orden aleatorio distinto
+  const [slides] = useState(() => shuffle(SLIDES));
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
@@ -56,13 +93,13 @@ export default function GalleryCarousel() {
 
   const next = useCallback(() => {
     setDirection(1);
-    setCurrent((c) => (c + 1) % SLIDES.length);
-  }, []);
+    setCurrent((c) => (c + 1) % slides.length);
+  }, [slides.length]);
 
   const prev = useCallback(() => {
     setDirection(-1);
-    setCurrent((c) => (c - 1 + SLIDES.length) % SLIDES.length);
-  }, []);
+    setCurrent((c) => (c - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   // Auto-advance 9-12s random, pause on hover/touch
   useEffect(() => {
@@ -72,7 +109,7 @@ export default function GalleryCarousel() {
     return () => clearTimeout(timerRef.current);
   }, [current, isPaused, next]);
 
-  const slide = SLIDES[current];
+  const slide = slides[current];
   const alt = lang === "es" ? slide.altEs : slide.altEn;
 
   return (
@@ -120,8 +157,8 @@ export default function GalleryCarousel() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10 pointer-events-none" />
 
           {/* Counter dots */}
-          <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2">
-            {SLIDES.map((_, i) => (
+          <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center max-w-[90%]">
+            {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
@@ -138,7 +175,7 @@ export default function GalleryCarousel() {
           {/* Slide counter */}
           <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-20 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm border border-white/10">
             <span className="text-xs font-bold text-white/70">
-              {String(current + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
+              {String(current + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
             </span>
           </div>
 
