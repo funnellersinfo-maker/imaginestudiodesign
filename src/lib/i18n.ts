@@ -254,6 +254,13 @@ const translations: Record<Lang, Record<string, string>> = {
     // Sticky CTA
     "sticky.cta": "GET MY FREE QUOTE",
 
+    // Exit Intent Popup
+    "exit.title": "Wait! Don't Leave Yet",
+    "exit.subtitle": "Get a free quote for your vehicle wrap in seconds. We reply fast on WhatsApp.",
+    "exit.trust": "Replies within 24 hours · 1,500+ projects completed",
+    "exit.cta": "GET MY FREE QUOTE NOW",
+    "exit.dismiss": "No thanks, I'll come back later",
+
     // Errors
     "quote.error": "Failed to submit your request. Please try again or call us directly.",
     "quote.networkError": "Network error. Please check your connection.",
@@ -501,6 +508,13 @@ const translations: Record<Lang, Record<string, string>> = {
 
     // Sticky CTA
     "sticky.cta": "MI COTIZACIÓN GRATIS",
+
+    // Exit Intent Popup
+    "exit.title": "¡Espera! No Te Vayas Todavía",
+    "exit.subtitle": "Obtén una cotización gratis para tu vinilo vehicular en segundos. Respondemos rápido por WhatsApp.",
+    "exit.trust": "Respuesta en 24 horas · 1,500+ proyectos completados",
+    "exit.cta": "QUIERO MI COTIZACIÓN GRATIS",
+    "exit.dismiss": "No gracias, volveré después",
 
     // Errors
     "quote.error": "Error al enviar tu solicitud. Por favor intenta de nuevo o llámanos directamente.",

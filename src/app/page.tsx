@@ -45,6 +45,7 @@ import {
 import { useLang } from "@/lib/i18n";
 import QuoteFormModal from "@/components/quote-form-modal";
 import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
+import ExitIntentPopup from "@/components/exit-intent-popup";
 import LangToggle from "@/components/lang-toggle";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import GalleryCarousel from "@/components/gallery-carousel";
@@ -1013,6 +1014,7 @@ export default function Home() {
       <Footer />
       <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
       <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
+      <ExitIntentPopup onQuote={() => setQuoteOpen(true)} />
       <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
     </main>
   );
