@@ -214,6 +214,8 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       : `👋 Hi! I'd like a quote.\n👤 Name: ${form.name || "..."}\n🏢 Business: ${form.businessType || "..."}\n💬 ${form.message || "..."}`
   )}`;
 
+  const isFormValid = form.name.trim() !== "" && form.businessType !== "" && form.message.trim() !== "";
+
   // Preload first 2 carousel images
   useEffect(() => {
     HERO_CAROUSEL_IMAGES.slice(0, 2).forEach((src) => {
@@ -354,6 +356,10 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         {/* Inline Mini WhatsApp Form with shimmer glow — RIGHT BELOW SUBTITLE */}
         <FadeUp delay={0.4}>
           <div className="w-full max-w-[600px] mx-auto mb-4 sm:mb-6 lg:mb-8">
+            {/* CTA line — explicación en 2 segundos */}
+            <p className="text-center text-xs sm:text-sm font-bold text-white mb-3 leading-snug drop-shadow-md">
+              {t("hero.form.cta")}
+            </p>
             <div className="shimmer-border-glow rounded-2xl">
               <div className="shimmer-inner-dark rounded-[14px] p-4 sm:p-6">
                 {/* Name */}
@@ -393,14 +399,22 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                   />
                 </div>
 
-                {/* WhatsApp Button */}
+                {/* WhatsApp Button — disabled hasta que todos los campos estén llenos */}
                 <a
-                  href={waLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={isFormValid ? waLink : undefined}
+                  target={isFormValid ? "_blank" : undefined}
+                  rel={isFormValid ? "noopener noreferrer" : undefined}
+                  aria-disabled={!isFormValid}
                   /* 🔒 META PIXEL LEAD — DO NOT DELETE */
-                  onClick={() => { try { (window as any).fbq("track", "Lead", { content_name: "Hero Mini Form" }); } catch {} }}
-                  className="w-full flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#22c55e] active:bg-[#1da851] text-white font-bold rounded-xl py-3.5 sm:py-4 text-sm sm:text-base lg:text-lg tracking-wide transition-colors no-underline"
+                  onClick={(e) => {
+                    if (!isFormValid) { e.preventDefault(); return; }
+                    try { (window as any).fbq("track", "Lead", { content_name: "Hero Mini Form" }); } catch {}
+                  }}
+                  className={`w-full flex items-center justify-center gap-2.5 text-white font-bold rounded-xl py-3.5 sm:py-4 text-sm sm:text-base lg:text-lg tracking-wide transition-all no-underline ${
+                    isFormValid
+                      ? "bg-[#25D366] hover:bg-[#22c55e] active:bg-[#1da851] cursor-pointer"
+                      : "bg-[#25D366]/40 cursor-not-allowed opacity-60"
+                  }`}
                 >
                   <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                   {t("hero.form.send")}
