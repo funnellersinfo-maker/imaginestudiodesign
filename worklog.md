@@ -481,3 +481,29 @@ Stage Summary:
   Línea 2: "te respondemos por WhatsApp."
 - CTA en EN se mantiene en 1 línea: "Free quote in 60 seconds — we'll reply on WhatsApp."
 - Técnica usada: \n en el string + whitespace-pre-line en el <p> (zero-basura, sin <br/> hardcodeado)
+
+---
+Task ID: 12
+Agent: Main (GLM 5.2)
+Task: Quitar guion "-" del CTA en ES del mini form
+
+Work Log:
+- Editado i18n.ts: removido el "—" del string ES de hero.form.cta
+  Antes: "Cotización gratis en 60 segundos —\nte respondemos por WhatsApp."
+  Después: "Cotización gratis en 60 segundos\nTe respondemos por WhatsApp."
+  (también capitalicé la T de "Te" porque ahora inicia línea/oración)
+- EN se mantiene sin cambios (con guion "—", en 1 línea)
+- Lint: 0 errores
+- Build: 135,926 bytes, 87 archivos
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://7cde22c8.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser:
+  - ES: hasGuion=false, offsetHeight=39px (2 líneas) ✅
+  - EN: hasGuion=true, en 1 línea (sin cambios) ✅
+  - ZERO page errors, ZERO console errors
+- Git commit 23c08cd pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- CTA del mini form en ES ahora se muestra SIN guion:
+  Línea 1: "Cotización gratis en 60 segundos"
+  Línea 2: "Te respondemos por WhatsApp."
+- CTA en EN se mantiene con guion "—" en 1 línea
