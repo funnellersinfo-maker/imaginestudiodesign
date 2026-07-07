@@ -712,13 +712,11 @@ function FeaturedProjectsSection() {
 function TrustSection() {
   const { t, lang } = useLang();
   const REVIEW_IMAGES = [
-    "/reviews/review-jose-avendano.png",
-    "/reviews/review-laura-main.png",
-    "/reviews/review-christopher-sperry.png",
-    "/reviews/review-aquamen-detailing.png",
-    "/reviews/review-river-vibes.png",
-    "/reviews/review-falco-bauer.png",
-    "/reviews/review-elsa-sutkevich.png",
+    { src: "/images/reviews/f92beccc-7b6d-4a81-b4da-fc7aeb7dc0cf.jpg", alt: "Google review from River Vibes praising quick graduation lab coat embroidery fix", w: 1080, h: 1433 },
+    { src: "/images/reviews/cfc6823b-e282-4728-b5f8-46303650b57b.jpg", alt: "Google review from Jose Avendaño (Local Guide) recommending the service 100%", w: 1079, h: 1062 },
+    { src: "/images/reviews/0e5d2cac-3128-4f0f-8b5f-d69ee4e9c5ad.jpg", alt: "Google review from Christopher Sperry praising corporate shirts and stand materials", w: 636, h: 1280 },
+    { src: "/images/reviews/0a7143ef-48a3-42ae-82f6-55bafa2448bb.jpg", alt: "Google review from Falco Bauer (Local Guide) praising quick t-shirt printing and professionalism", w: 1080, h: 577 },
+    { src: "/images/reviews/d9581e25-79bf-4b55-bacc-1090ac09c993.jpg", alt: "Google review from Elsa Sutkevich (Local Guide) praising Genny as creative and professional", w: 1080, h: 468 },
   ];
   const OTHER_SERVICES = [
     { src: "/images/svc-armengol-front.jpg", alt: "Armengol front" },
@@ -760,9 +758,9 @@ function TrustSection() {
         </FadeUp>
         <FadeUp delay={0.2}>
           <div className="space-y-4 mb-16 lg:mb-20">
-            {REVIEW_IMAGES.map((src, i) => (
-              <div key={i} className="rounded-xl overflow-hidden border border-white/5">
-                <Image src={src} alt={`Google Review ${i + 1}`} width={800} height={200} loading="lazy" className="w-full h-auto" />
+            {REVIEW_IMAGES.map((review, i) => (
+              <div key={i} className="rounded-xl overflow-hidden border border-white/5 bg-white/[0.02]">
+                <Image src={review.src} alt={review.alt} width={review.w} height={review.h} loading="lazy" className="w-full h-auto" />
               </div>
             ))}
           </div>
