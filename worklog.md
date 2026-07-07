@@ -682,3 +682,71 @@ Stage Summary:
 - VLM (glm-4.6v) usado para análisis preciso — los labels ahora son específicos y descriptivos
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit 95210f6 pushed a GitHub
+
+---
+Task ID: 17
+Agent: Main (GLM 5.2)
+Task: 5 nuevos testimonios ordenados por tamaño (mayor a menor) + alt texts VLM
+
+Work Log:
+- Verificadas 5 nuevas imágenes de testimonios subidas por el usuario en /upload/:
+  f92beccc-7b6d-4a81-b4da-fc7aeb7dc0cf.jpg (187KB, 1080x1433)
+  0a7143ef-48a3-42ae-82f6-55bafa2448bb.jpg (57KB, 1080x577)
+  0e5d2cac-3128-4f0f-8b5f-d69ee4e9c5ad.jpg (132KB, 636x1280)
+  cfc6823b-e282-4728-b5f8-46303650b57b.jpg (168KB, 1079x1062)
+  d9581e25-79bf-4b55-bacc-1090ac09c993.jpg (50KB, 1080x468)
+- Calculada el área (w×h) de cada imagen para ordenar de mayor a menor:
+  1. f92beccc: 1,547,640 px² (MÁS GRANDE)
+  2. cfc6823b: 1,145,898 px²
+  3. 0e5d2cac: 814,080 px²
+  4. 0a7143ef: 623,160 px²
+  5. d9581e25: 505,440 px² (MÁS PEQUEÑA)
+- Descubrimiento importante: la carpeta /public/reviews/ NO existía — las 7 reviews viejas
+  referenciadas en el código eran imágenes 404 en producción. Las 5 nuevas arreglan esto.
+- Creada carpeta /public/images/reviews/ (separada de /reviews/ viejo)
+- Copiadas y optimizadas con sharp (max 1080px width, quality 82, mozjpeg, progressive):
+  - 0a7143ef: 57KB → 40KB (-29.4%)
+  - 0e5d2cac: 133KB → 108KB (-18.9%)
+  - cfc6823b: 168KB → 139KB (-17.6%)
+  - d9581e25: 51KB → 36KB (-28.7%)
+  - f92beccc: 188KB → 135KB (-28.1%)
+  - TOTAL: 472KB
+- Usé VLM (glm-4.6v) para analizar cada testimonio:
+  1. f92beccc: River Vibes (Google) — graduation lab coat embroidery fix, "sweet" and "accommodating"
+  2. cfc6823b: Jose Avendaño (Google Local Guide) — highly professional, recommends 100%
+  3. 0e5d2cac: Christopher Sperry (Google) — exceptional corporate shirts/stand materials, great designs
+  4. 0a7143ef: Falco Bauer (Google Local Guide) — quick t-shirt printing, friendly, professional
+  5. d9581e25: Elsa Sutkevich (Google Local Guide) — Genny creative/professional, highly recommends
+- Cambiado REVIEW_IMAGES de array de strings a array de objetos {src, alt, w, h}:
+  - Cada imagen ahora tiene sus dimensiones reales (w, h) → sin layout shift
+  - Alt texts descriptivos con nombre del reviewer y contenido del testimonio
+  - Ordenadas de MAYOR a MENOR tamaño (área)
+- Actualizado el <Image> en el map:
+  - Antes: <Image src={src} alt={`Google Review ${i+1}`} width={800} height={200} ...>
+  - Después: <Image src={review.src} alt={review.alt} width={review.w} height={review.h} ...>
+- Agregado bg-white/[0.02] al contenedor de cada review para mejor estética
+- Lint: 0 errores
+- Build: 137,936 bytes, 98 archivos (antes 93, +5 por las nuevas reviews)
+- Deploy a Cloudflare Pages: exitoso, 22 archivos nuevos subidos, deployment URL https://4a5a39d3.imaginestudiodesign.pages.dev
+- Verificación post-deploy: HTTP 200, 5/5 nuevas reviews en HTML live, 0/7 viejas referencias, 5/5 alt texts con nombres de reviewers
+- Agent Browser verification:
+  - 5 review images encontradas con sus dimensiones naturales correctas
+  - Orden respetado: f92beccc (1°) → cfc6823b (2°) → 0e5d2cac (3°) → 0a7143ef (4°) → d9581e25 (5°)
+  - Cada imagen mantiene aspect ratio natural (sin distorsión ni recortes)
+  - Displayed width consistente (356px) con height variable según aspect ratio
+  - ZERO page errors, ZERO console errors
+- Git commit 8271aa6 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- 5 nuevos testimonios reales de Google reemplazan a las 7 reviews viejas (que eran 404)
+- Ordenados de MAYOR a MENOR tamaño (área en px²):
+  1. River Vibes (1080×1433) — vertical, el más grande
+  2. Jose Avendaño (1079×1062) — cuadrado
+  3. Christopher Sperry (636×1280) — vertical angosto
+  4. Falco Bauer (1080×577) — horizontal
+  5. Elsa Sutkevich (1080×468) — horizontal, el más pequeño
+- Cada imagen mantiene su aspect ratio natural (sin recortes ni distorsión)
+- Alt texts descriptivos con nombre del reviewer y contenido (generados con VLM)
+- Sin layout shift: cada Image tiene width/height reales
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 8271aa6 pushed a GitHub
