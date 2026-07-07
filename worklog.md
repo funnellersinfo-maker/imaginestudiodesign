@@ -637,3 +637,48 @@ Stage Summary:
 - Las 8 imágenes se muestran en el carousel shadcn con loop:true y align:start
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit d7e925d pushed a GitHub
+
+---
+Task ID: 16
+Agent: Main (GLM 5.2)
+Task: Labels del carrusel de Projects ahora describen el contenido real de cada imagen (VLM)
+
+Work Log:
+- Identificado el "mini carrusel más abajo, antesito de la social proof":
+  Es el FeaturedProjectsSection (carrusel #3) que usa PROJECTS_DATA — está justo antes del TrustSection (que tiene la social proof)
+- Los labels genéricos que puse en Task 15 ("Wrap Project", "Commercial Wrap", etc.) eran INCORRECTOS porque asumí que eran vehicle wraps sin ver las imágenes
+- Usé VLM (z-ai vision CLI, model glm-4.6v) para analizar las 8 imágenes:
+  1. 20220207_154015.jpg → "A navy hoodie with 'Vazquez Remodeling LLC' (26 years experience) and a house logo"
+  2. 20220207_154152.jpg → "Two business cards for Vazquez Remodeling, offering roofing, siding, framing, gutters (commercial/residential) with free estimates"
+  3. IMG-20260306-WA0016.jpg → "A white hoodie with 'Empire Metal Works LLC Roofing' branding sits on a table"
+  4. IMG-20260306-WA0019.jpg → "A mannequin wears a gray hoodie with 'JB Seamless Gutter and Gutter Protection' branding"
+  5. IMG-20260306-WA0020.jpg → "A mannequin wears a hoodie with 'Empire Metal Works LLC Roofing' branding"
+  6. IMG-20260306-WA0024.jpg → "A white hoodie with 'JB Seamless Gutter and Gutter Protection' branding sits on a table"
+  7. IMG-20260423-WA0066.jpg → "Black trucker hats with 'Empire Metal' branding and a colorful warrior logo"
+  8. IMG-20260423-WA0070.jpg → "Hats and shirts branded with 'Antonio PRO Painting LLC' for a painting business"
+- Descubrimiento: TODAS las 8 imágenes son apparel/branding (hoodies, gorras, tarjetas), NO vehicle wraps
+- Reemplazado PROJECTS_DATA completamente con labels + altEn + altEs descriptivos del contenido real:
+  - "Vazquez Remodeling Hoodie" / "Hoodie Vazquez Remodeling"
+  - "Vazquez Remodeling Cards" / "Tarjetas Vazquez Remodeling"
+  - "Empire Metal Works Hoodie" / "Hoodie Empire Metal Works"
+  - "JB Seamless Gutter Hoodie" / "Hoodie JB Seamless Gutter"
+  - "Empire Metal Works Apparel" / "Ropa Empire Metal Works"
+  - "JB Seamless Gutter Apparel" / "Ropa JB Seamless Gutter"
+  - "Empire Metal Hats" / "Gorras Empire Metal"
+  - "Antonio PRO Painting Apparel" / "Ropa Antonio PRO Painting"
+- Lint: 0 errores
+- Build: 137,907 bytes
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://a7ca8a4e.imaginestudiodesign.pages.dev
+- Verificación post-deploy: HTTP 200, 8/8 labels nuevos en HTML live, 0/8 labels viejos en carrusel
+  (el "Fleet Branding" que aparece 1 vez es del Hero Social Proof y VisibilitySystemSection, NO del carrusel)
+- Agent Browser verification: scrolleó a #projects, obtuvo los 8 labels nuevos visibles en orden
+  ZERO page errors, ZERO console errors
+- Git commit 95210f6 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Labels del carrusel de Featured Projects ahora describen el contenido real de cada imagen
+- Las 8 imágenes son apparel/branding (hoodies, gorras, tarjetas) de negocios reales:
+  Vazquez Remodeling, Empire Metal Works, JB Seamless Gutter, Antonio PRO Painting
+- VLM (glm-4.6v) usado para análisis preciso — los labels ahora son específicos y descriptivos
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 95210f6 pushed a GitHub
