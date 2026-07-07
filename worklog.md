@@ -586,3 +586,54 @@ Stage Summary:
 - Tablet y desktop sin cambios
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit a8ba0f5 pushed a GitHub
+
+---
+Task ID: 15
+Agent: Main (GLM 5.2)
+Task: Último carrusel (Featured Projects) — reemplazar con 8 imágenes nuevas exactas
+
+Work Log:
+- Identificados los 3 carruseles de la página:
+  1. Hero Carousel (línea 303, dentro de HeroSection) — usa HERO_CAROUSEL_IMAGES
+  2. GalleryCarousel (línea 1057, componente separado) — usa SLIDES con shuffle (acaba de recibir 5 nuevas en Task 13)
+  3. Projects Carousel (línea 684, dentro de FeaturedProjectsSection) — usa PROJECTS_DATA con /images/carousel/*
+  El "último carrusel bien bien abajo" es el #3 (Projects Carousel), en la sección Featured Projects
+- Verificadas 8 nuevas imágenes subidas por el usuario en /upload/:
+  20220207_154015.jpg (3.7MB), 20220207_154152.jpg (3.5MB),
+  IMG-20260306-WA0016.jpg (121KB), IMG-20260306-WA0019.jpg (102KB),
+  IMG-20260306-WA0020.jpg (104KB), IMG-20260306-WA0024.jpg (129KB),
+  IMG-20260423-WA0066.jpg (130KB), IMG-20260423-WA0070.jpg (187KB)
+- Creada carpeta /public/images/projects/ (nueva, separada de /public/images/carousel/ que se va a borrar)
+- Copiadas y optimizadas con sharp (max 1200px, quality 80):
+  - 20220207_154015.jpg: 3772KB → 245KB (-93.5%)
+  - 20220207_154152.jpg: 3561KB → 238KB (-93.3%)
+  - IMG-20260306-WA0016.jpg: kept original
+  - IMG-20260306-WA0019.jpg: kept original
+  - IMG-20260306-WA0020.jpg: kept original
+  - IMG-20260306-WA0024.jpg: kept original
+  - IMG-20260423-WA0066.jpg: 130KB → 67KB (-48.9%)
+  - IMG-20260423-WA0070.jpg: 187KB → 97KB (-48.3%)
+  - TOTAL: 1.2MB
+- Verificado que /images/carousel/* SOLO se usa en PROJECTS_DATA (7 imágenes, líneas 87-93)
+- Reemplazado PROJECTS_DATA completamente:
+  - 7 imágenes viejas (empire-metal, leon-tires, lecheras, sunrise, four-seasons, rico-landscaping, empire-metal-works) ELIMINADAS
+  - 8 imágenes nuevas agregadas con alt texts EN/ES genéricos y labels genéricos
+- Borrada carpeta /public/images/carousel/ (zero-basura policy, 7 imágenes viejas eliminadas)
+- Audit: 0 referencias huérfanas a /images/carousel/ en src/ ✓
+- Lint: 0 errores
+- Build: 137,539 bytes, 93 archivos (antes 92: -7 viejas +8 nuevas = +1 archivo)
+- Deploy a Cloudflare Pages: exitoso, 25 archivos nuevos subidos (68 ya existían), deployment URL https://10d42681.imaginestudiodesign.pages.dev
+- Verificación post-deploy: HTTP 200, 8/8 nuevas imágenes referenciadas en HTML live, 0/7 viejas referenciadas, Meta Pixel intacto, Hero order correcto
+- Agent Browser verification:
+  - Scrolleó a #projects section, contó 8 imágenes
+  - Las 8 srcs son EXACTAMENTE las nuevas en orden: 20220207_154015, 20220207_154152, IMG-20260306-WA0016, IMG-20260306-WA0019, IMG-20260306-WA0020, IMG-20260306-WA0024, IMG-20260423-WA0066, IMG-20260423-WA0070
+  - ZERO page errors, ZERO console errors
+- Git commit d7e925d pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Último carrusel (Featured Projects, sección #6 bien abajo) ahora muestra EXACTAMENTE las 8 imágenes nuevas
+- 7 imágenes viejas eliminadas completamente (carpeta /public/images/carousel/ borrada)
+- 8 imágenes nuevas optimizadas: 1.2MB total
+- Las 8 imágenes se muestran en el carousel shadcn con loop:true y align:start
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit d7e925d pushed a GitHub
