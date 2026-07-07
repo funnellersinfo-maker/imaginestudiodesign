@@ -974,3 +974,64 @@ Stage Summary:
 - Ahora consistente con el proof social del mini form ("4.8 · 1,500+ projects · 10+ years")
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit ea65283 pushed a GitHub
+
+---
+Task ID: 23
+Agent: Main (GLM 5.2)
+Task: ExitIntentPopup (3 min inactividad + mouse top) + elimina 4 videos huérfanos
+
+Work Log:
+- Investigación de videos: el usuario dijo "no veo videos por ninguna parte"
+- Verificado: 0 referencias a video/mp4 en page.tsx ni en componentes
+- Los 4 archivos .mp4 en public/ eran basura huérfana que nunca se usaron
+- Borrados 4 videos huérfanos:
+  - public/card-bg.mp4 (3.3 MB)
+  - public/hero-bg.mp4 (1.9 MB)
+  - public/transform-bg.mp4 (8.5 MB)
+  - public/vis-card-bg.mp4 (1.4 MB)
+  - Total liberado: ~15 MB
+  - public/ bajó de ~26 MB a 9.5 MB
+
+- Creado nuevo componente src/components/exit-intent-popup.tsx:
+  - Trigger 1: 3 minutos de inactividad (INACTIVITY_MS = 3*60*1000)
+    - mousemove, scroll, keydown, touchstart resetean el timer
+  - Trigger 2: mouse sale por el top de la ventana (exit-intent estándar)
+    - handleMouseOut verifica: e.relatedTarget === null && e.clientY <= 8
+    - relatedTarget null = mouse sale de la ventana (no va a otro elemento)
+  - Solo se activa en DESKTOP (window.matchMedia('(min-width: 768px)').matches)
+  - Solo se muestra UNA vez por sesión (sessionStorage key 'isd-exit-popup-shown')
+  - CTA del popup abre el QuoteFormModal (onQuote prop)
+  - Cleanup completo de listeners al desmontar
+  - Diseño: glass-strong, gradient-brand icon (Sparkles), trust badge, dismiss link
+  - Bilingüe EN/ES
+
+- Agregadas 5 traducciones nuevas en i18n.ts (EN y ES):
+  - exit.title: 'Wait! Don't Leave Yet' / '¡Espera! No Te Vayas Todavía'
+  - exit.subtitle: 'Get a free quote for your vehicle wrap in seconds. We reply fast on WhatsApp.' / 'Obtén una cotización gratis para tu vinilo vehicular en segundos. Respondemos rápido por WhatsApp.'
+  - exit.trust: 'Replies within 24 hours · 1,500+ projects completed' / 'Respuesta en 24 horas · 1,500+ proyectos completados'
+  - exit.cta: 'GET MY FREE QUOTE NOW' / 'QUIERO MI COTIZACIÓN GRATIS'
+  - exit.dismiss: 'No thanks, I'll come back later' / 'No gracias, volveré después'
+
+- Integrado en page.tsx:
+  - Import ExitIntentPopup from "@/components/exit-intent-popup"
+  - <ExitIntentPopup onQuote={() => setQuoteOpen(true)} /> entre FloatingCTA y QuoteFormModal
+
+- Lint: 0 errores
+- Build: 140,422 bytes, 82 archivos (antes 98: -4 videos + 1 popup component = -16 net, pero realmente -4 videos +1 componente = 82)
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://2302f9a2.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser:
+  - Mobile (390x844): matchesDesktop=false → popup no se activa (correcto)
+  - Desktop (1920x1080): matchesDesktop=true → exit-intent dispatch → popup appeared
+    - hasPopupText=true, hasCloseBtn=true, popupVisible=true
+    - Console: [ExitIntentPopup] triggered by exit-intent-top
+    - ZERO page errors
+- Git commit e3aa803 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- ExitIntentPopup funcional: se activa en desktop con 3 min de inactividad o mouse saliendo por el top
+- Popup abre el QuoteFormModal grande al hacer click en el CTA
+- Solo se muestra una vez por sesión (no molesta al usuario)
+- Solo en desktop (mobile no tiene mouse, no tiene sentido exit-intent)
+- 4 videos huérfanos eliminados (~15 MB liberados)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit e3aa803 pushed a GitHub
