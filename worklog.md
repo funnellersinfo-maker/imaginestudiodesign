@@ -507,3 +507,56 @@ Stage Summary:
   Línea 1: "Cotización gratis en 60 segundos"
   Línea 2: "Te respondemos por WhatsApp."
 - CTA en EN se mantiene con guion "—" en 1 línea
+
+---
+Task ID: 13
+Agent: Main (GLM 5.2)
+Task: Carrusel #2 (GalleryCarousel) — agregar 5 imágenes nuevas + shuffle aleatorio
+
+Work Log:
+- Verificadas 5 nuevas imágenes subidas por el usuario en /upload/:
+  IMG-20260203-WA0056.jpg (147KB), IMG-20260423-WA0071.jpg (165KB),
+  5c7d8526-4bf8-4bbf-b0bd-3518955db925.jpg (235KB), 20211018_115311.jpg (10MB),
+  c7cfcce3-5233-44a6-85d0-bb0ec980e92b.jpg (171KB)
+- Creada carpeta /public/images/gallery/ (separada de /public/images/ raíz)
+- Copiadas las 5 imágenes y optimizadas con sharp (max 1600px, quality 78):
+  - 20211018_115311.jpg: 10306KB → 395KB (-96.2%)
+  - 5c7d8526-4bf8-4bbf-b0bd-3518955db925.jpg: 235KB → 149KB (-36.7%)
+  - IMG-20260203-WA0056.jpg: kept original
+  - IMG-20260423-WA0071.jpg: 166KB → 158KB (-4.5%)
+  - c7cfcce3-5233-44a6-85d0-bb0ec980e92b.jpg: 171KB → 112KB (-34.7%)
+  - TOTAL carpeta: 972KB
+- Identificado el carrusel #2: src/components/gallery-carousel.tsx
+  (es el componente separado que se renderiza en la sección "Featured Projects",
+  más abajo del mini form del Hero)
+- Actualizado SLIDES array: 6 originales + 5 nuevas = 11 slides totales
+  Cada slide tiene src, altEn, altEs
+- Agregada function shuffle<T>(arr: T[]): T[] (Fisher-Yates) al final del archivo
+- Cambiado const [current] por const [slides] = useState(() => shuffle(SLIDES))
+  Esto hace que el shuffle se ejecute UNA sola vez al montar el componente
+- Actualizadas todas las refs de SLIDES a slides en:
+  - next: (c) => (c + 1) % slides.length
+  - prev: (c) => (c - 1 + slides.length) % slides.length
+  - slide = slides[current] (antes SLIDES[current])
+  - dots: slides.map (antes SLIDES.map)
+  - counter: slides.length (antes SLIDES.length)
+  - dependency arrays: [slides.length] en next y prev
+- Agregado flex-wrap justify-center max-w-[90%] a los counter dots (11 dots pueden no caber en mobile)
+- Lint: 0 errores
+- Build: 136,727 bytes, 92 archivos (antes 87, +5 por las nuevas imágenes)
+- Deploy a Cloudflare Pages: exitoso, 22 archivos nuevos subidos, deployment URL https://62531e8b.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser (3 cargas distintas):
+  Carga 1: primera imagen = c7cfcce3-5233-44a6-85d0-bb0ec980e92b.jpg (nueva)
+  Carga 2: primera imagen = gallery-20230908_183945-web.jpg (original)
+  Carga 3: primera imagen = gallery-20230908_183945-web.jpg (coincidencia)
+  → Confirma que el shuffle funciona (diferentes órdenes en cada carga)
+- ZERO page errors, ZERO console errors
+- Git commit 07503fc pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Carrusel #2 (GalleryCarousel) ahora tiene 11 imágenes: 6 originales + 5 nuevas
+- Las 11 imágenes se muestran en orden ALEATORIO en cada carga de página (Fisher-Yates shuffle)
+- El auto-advance (9-12s random) ya era aleatorio, ahora el orden inicial también
+- Imágenes optimizadas: 5 nuevas pesan solo 972KB total
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 07503fc pushed a GitHub
