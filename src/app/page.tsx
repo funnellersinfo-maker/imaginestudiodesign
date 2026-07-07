@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
 import {
   Phone,
+  ChevronLeft,
   ChevronRight,
   ArrowRight,
   CheckCircle2,
@@ -33,6 +34,8 @@ import {
   Menu,
   X,
   Mail,
+  User,
+  MessageSquare,
 } from "lucide-react";
 import {
   Carousel,
@@ -48,6 +51,9 @@ import LangToggle from "@/components/lang-toggle";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import GalleryCarousel from "@/components/gallery-carousel";
 import FloatingElements, { HERO_ELEMENTS, PROBLEM_ELEMENTS, TRANSFORM_ELEMENTS, VISIBILITY_ELEMENTS, FINAL_CTA_ELEMENTS } from "@/components/floating-elements";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Navigation } from "lucide-react";
 
 /* ───────── ANIMATION HELPERS ───────── */
@@ -124,6 +130,30 @@ const VISIBILITY_DATA = [
   { icon: Zap, titleKey: "vis.digital", descKey: "vis.digitalDesc" },
 ];
 
+const HERO_CAROUSEL_IMAGES = [
+  "/images/carousel/leon-tires.jpg",
+  "/images/carousel/sunrise.jpg",
+  "/images/carousel/empire-metal.jpg",
+  "/images/carousel/four-seasons.jpg",
+  "/images/carousel/rico-landscaping.jpg",
+  "/images/carousel/lecheras.jpg",
+  "/images/carousel/empire-metal-works.jpg",
+];
+
+const BIZ_KEYS = [
+  "biz.contractor", "biz.roofing", "biz.hvac", "biz.plumbing", "biz.electrical",
+  "biz.landscaping", "biz.painting", "biz.tree", "biz.concrete",
+  "biz.restaurant", "biz.retail", "biz.otherService", "biz.other",
+];
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  );
+}
+
 /* ───────── NAV ───────── */
 function Nav({ onQuote }: { onQuote: () => void }) {
   const [open, setOpen] = useState(false);
@@ -174,7 +204,38 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
-  const { t } = useLang();
+  const { t, lang } = useLang();
+
+  const [carouselIdx, setCarouselIdx] = useState(0);
+  const [form, setForm] = useState({ name: "", businessType: "", message: "" });
+
+  const WHATSAPP_NUMBER = "19105474314";
+  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    lang === "es"
+      ? `👋 ¡Hola! Quiero una cotización.\n👤 Nombre: ${form.name || "..."}\n🏢 Negocio: ${form.businessType || "..."}\n💬 ${form.message || "..."}`
+      : `👋 Hi! I'd like a quote.\n👤 Name: ${form.name || "..."}\n🏢 Business: ${form.businessType || "..."}\n💬 ${form.message || "..."}`
+  )}`;
+
+  // Preload first 2 carousel images
+  useEffect(() => {
+    HERO_CAROUSEL_IMAGES.slice(0, 2).forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
+  // Preload next image on advance
+  useEffect(() => {
+    const nextIdx = (carouselIdx + 1) % HERO_CAROUSEL_IMAGES.length;
+    const img = new window.Image();
+    img.src = HERO_CAROUSEL_IMAGES[nextIdx];
+  }, [carouselIdx]);
+
+  // Hero carousel auto-advance
+  useEffect(() => {
+    const delay = 8000 + Math.random() * 4000;
+    const id = setTimeout(() => setCarouselIdx((i) => (i + 1) % HERO_CAROUSEL_IMAGES.length), delay);
+    return () => clearTimeout(id);
+  }, [carouselIdx]);
 
   const headlines = [
     { line1: t("hero.h5.line1"), line2: t("hero.h5.line2"), line3: t("hero.h5.line3") },
@@ -254,6 +315,129 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
               {t("hero.see")} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
+        </FadeUp>
+
+        {/* Hero Carousel with shimmer border */}
+        <FadeUp delay={0.3}>
+          <div className="relative w-full max-w-[700px] mx-auto mb-10 sm:mb-14 lg:mb-16">
+            <div className="shimmer-border rounded-2xl">
+              <div className="shimmer-inner-dark rounded-[14px]">
+                <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-video rounded-[14px] overflow-hidden bg-white/5">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={carouselIdx}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      className="absolute inset-0"
+                    >
+                      <Image src={HERO_CAROUSEL_IMAGES[carouselIdx]} alt="Gallery" fill className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
+                    </motion.div>
+                  </AnimatePresence>
+                  <button
+                    onClick={() => setCarouselIdx((i) => (i - 1 + HERO_CAROUSEL_IMAGES.length) % HERO_CAROUSEL_IMAGES.length)}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                  <button
+                    onClick={() => setCarouselIdx((i) => (i + 1) % HERO_CAROUSEL_IMAGES.length)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 mt-3">
+              {HERO_CAROUSEL_IMAGES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCarouselIdx(i)}
+                  className={`w-2 h-2 rounded-full transition-all ${i === carouselIdx ? "bg-brand-hot-pink w-6" : "bg-white/30 hover:bg-white/50"}`}
+                  aria-label={`Go to image ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </FadeUp>
+
+        {/* CTA line above form */}
+        <FadeUp delay={0.45}>
+          <p className="text-sm sm:text-base text-gray-300 mb-4 max-w-[600px] mx-auto">
+            {lang === "es"
+              ? "💬 Cuéntanos tu proyecto y recibe una cotización gratis en minutos por WhatsApp"
+              : "💬 Tell us about your project and get a free quote in minutes via WhatsApp"}
+          </p>
+        </FadeUp>
+
+        {/* Inline Mini WhatsApp Form with shimmer glow */}
+        <FadeUp delay={0.5}>
+          <div className="w-full max-w-[600px] mx-auto mb-4 sm:mb-6 lg:mb-8">
+            <div className="shimmer-border-glow rounded-2xl">
+              <div className="shimmer-inner-dark rounded-[14px] p-4 sm:p-6">
+                {/* Name */}
+                <div className="relative mb-3">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-gray-500" />
+                  <Input
+                    value={form.name}
+                    onChange={(e) => { setForm((f) => ({ ...f, name: e.target.value })); }}
+                    placeholder={t("hero.form.name")}
+                    className="pl-10 bg-white/5 text-white placeholder:text-gray-500 rounded-xl h-11 text-sm border-white/10 focus:border-brand-hot-pink/50"
+                  />
+                </div>
+
+                {/* Business Type */}
+                <div className="relative mb-3">
+                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10 text-gray-500" />
+                  <Select value={form.businessType} onValueChange={(v) => { setForm((f) => ({ ...f, businessType: v })); }}>
+                    <SelectTrigger className="pl-10 bg-white/5 text-white rounded-xl h-11 text-sm border-white/10 focus:border-brand-hot-pink/50">
+                      <SelectValue placeholder={t("hero.form.business")} />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#111128] border-white/10 text-white max-h-60 overflow-y-auto">
+                      {BIZ_KEYS.map((key) => (
+                        <SelectItem key={key} value={key} className="text-gray-300 focus:text-white focus:bg-white/5">{t(key)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Message */}
+                <div className="relative mb-4">
+                  <MessageSquare className="absolute left-3 top-3 w-4 h-4 pointer-events-none text-gray-500" />
+                  <Textarea
+                    value={form.message}
+                    onChange={(e) => { setForm((f) => ({ ...f, message: e.target.value })); }}
+                    placeholder={t("hero.form.message")}
+                    className="pl-10 bg-white/5 text-white placeholder:text-gray-500 rounded-xl min-h-[100px] sm:min-h-[120px] text-sm resize-none border-white/10 focus:border-brand-hot-pink/50"
+                  />
+                </div>
+
+                {/* WhatsApp Button */}
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => { try { (window as any).fbq("track", "Lead", { content_name: "Hero Mini Form" }); } catch {} }}
+                  className="w-full flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#22c55e] active:bg-[#1da851] text-white font-bold rounded-xl py-3.5 sm:py-4 text-sm sm:text-base lg:text-lg tracking-wide transition-colors no-underline"
+                >
+                  <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  {t("hero.form.send")}
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </FadeUp>
+
+        {/* Or call text */}
+        <FadeUp delay={0.55}>
+          <p className="text-sm text-gray-400 mb-6 lg:mb-10">
+            {t("hero.form.orCall")}
+          </p>
         </FadeUp>
 
         {/* Social Proof */}

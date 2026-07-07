@@ -176,3 +176,32 @@ Stage Summary:
 - Meta Event Tester should now show: PageView + Lead (instead of just PageView + SubscribedButtonClick)
 - Deployed to https://imaginestudiodesign.pages.dev
 
+---
+Task ID: 4
+Agent: Main
+Task: Re-apply all reverted changes (shimmer halos, carousel, mini form, Meta Pixel, placeholders)
+
+Work Log:
+- Discovered page.tsx, globals.css, i18n.ts, and layout.tsx had all reverted to an earlier version
+- meta-pixel.tsx was completely deleted, shimmer CSS was gone, hero carousel/form were gone
+- Re-created /src/components/meta-pixel.tsx with full protective comments
+- Re-added MetaPixel import to layout.tsx with bilingual protective block comments
+- Re-added @property --halo-angle, rotate-halo, shimmer-glow, shimmer-border, shimmer-border-glow, shimmer-inner-dark to globals.css
+- Added hero.form translations to i18n.ts (EN: Name/Business/Tell us about your business, ES: Nombre/Negocio/Cuéntanos de tu negocio)
+- Added HERO_CAROUSEL_IMAGES, BIZ_KEYS, WhatsAppIcon to page.tsx
+- Added carouselIdx, form, waLink state + preload effects + auto-advance to HeroSection
+- Inserted hero carousel with shimmer-border halo between CTA buttons and social proof
+- Inserted mini WhatsApp form with shimmer-border-glow (double glow) below carousel
+- Added fbq Lead event on mini form WhatsApp click
+- Fixed template literal syntax error (extra closing paren)
+- Verified with agent-browser: all elements present, conic gradient rotating, fbq active, placeholders correct
+- Deployed to Cloudflare Pages
+
+Stage Summary:
+- All 5 changes restored and deployed: shimmer halos, carousel, mini form, Meta Pixel, Lead events
+- Hero carousel: 7 project images with rotating conic-gradient halo
+- Mini form: Name + Business dropdown + Message + WhatsApp button with intense double-glow halo
+- Placeholders: EN "Name"/"Business"/"Tell us about your business" | ES "Nombre"/"Negocio"/"Cuéntanos de tu negocio"
+- Meta Pixel fires PageView, Lead fires on all 4 conversion points
+- Deployed to https://imaginestudiodesign.pages.dev
+

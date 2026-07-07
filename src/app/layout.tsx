@@ -3,6 +3,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
+/* ╔════════════════════════════════════════════════════════╗
+   ║  🔒 META PIXEL IMPORT — NEVER REMOVE THIS LINE        ║
+   ║  🔒 NO ELIMINAR ESTA LÍNEA DE IMPORTACIÓN             ║
+   ║  Required for Meta Ads conversion tracking             ║
+   ╚════════════════════════════════════════════════════════╝ */
+import MetaPixel from "@/components/meta-pixel";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -72,6 +79,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      {/* ╔════════════════════════════════════════════════════════╗
+           ║  🔒 META PIXEL — NEVER REMOVE THIS COMPONENT        ║
+           ║  🔒 NO ELIMINAR ESTE COMPONENTE                     ║
+           ║  Critical for Meta Ads tracking & ROAS measurement   ║
+           ╚════════════════════════════════════════════════════════╝ */}
+      <MetaPixel />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

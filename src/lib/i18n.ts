@@ -243,6 +243,13 @@ const translations: Record<Lang, Record<string, string>> = {
     "biz.otherService": "Other Service Business",
     "biz.other": "Other",
 
+    // Hero Form
+    "hero.form.name": "Name",
+    "hero.form.business": "Business",
+    "hero.form.message": "Tell us about your business",
+    "hero.form.send": "SEND VIA WHATSAPP",
+    "hero.form.orCall": "or call (910) 547-4314",
+
     // Sticky CTA
     "sticky.cta": "GET MY FREE QUOTE",
 
@@ -482,6 +489,13 @@ const translations: Record<Lang, Record<string, string>> = {
     "biz.retail": "Tienda Minorista",
     "biz.otherService": "Otro Negocio de Servicios",
     "biz.other": "Otro",
+
+    // Hero Form
+    "hero.form.name": "Nombre",
+    "hero.form.business": "Negocio",
+    "hero.form.message": "Cuéntanos de tu negocio",
+    "hero.form.send": "ENVIAR POR WHATSAPP",
+    "hero.form.orCall": "o llama al (910) 547-4314",
 
     // Sticky CTA
     "sticky.cta": "MI COTIZACIÓN GRATIS",

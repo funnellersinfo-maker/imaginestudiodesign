@@ -282,3 +282,133 @@
   background: linear-gradient(90deg, rgba(106, 61, 255, 0.5), rgba(198, 34, 133, 0.5));
   z-index: 0;
 }
+
+/* ───── Magic Halo Borders ───── */
+
+@property --halo-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-halo {
+  0% { --halo-angle: 0deg; }
+  100% { --halo-angle: 360deg; }
+}
+
+@keyframes shimmer-glow {
+  0%, 100% {
+    opacity: 0.5;
+    filter: blur(18px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(28px);
+  }
+}
+
+/* Carousel shimmer border — elegant rotating gradient halo */
+.shimmer-border {
+  position: relative;
+  border-radius: 1rem;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--halo-angle),
+    #1D68B3,
+    #6A3DFF,
+    #C62285,
+    #E71D8C,
+    #C62285,
+    #6A3DFF,
+    #1D68B3
+  );
+  animation: rotate-halo 4s linear infinite;
+}
+
+.shimmer-border::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 1.25rem;
+  background: conic-gradient(
+    from var(--halo-angle),
+    #1D68B3,
+    #6A3DFF,
+    #C62285,
+    #E71D8C,
+    #C62285,
+    #6A3DFF,
+    #1D68B3
+  );
+  animation: rotate-halo 4s linear infinite;
+  filter: blur(16px);
+  opacity: 0.45;
+  z-index: -1;
+}
+
+/* Form shimmer-border-glow — intense dopaminic pulsing glow */
+.shimmer-border-glow {
+  position: relative;
+  border-radius: 1rem;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--halo-angle),
+    #2D7FE0,
+    #6A3DFF,
+    #E71D8C,
+    #FF6B9D,
+    #E71D8C,
+    #6A3DFF,
+    #2D7FE0
+  );
+  animation: rotate-halo 3s linear infinite;
+}
+
+.shimmer-border-glow::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 1.35rem;
+  background: conic-gradient(
+    from var(--halo-angle),
+    #2D7FE0,
+    #6A3DFF,
+    #E71D8C,
+    #FF6B9D,
+    #E71D8C,
+    #6A3DFF,
+    #2D7FE0
+  );
+  animation: rotate-halo 3s linear infinite;
+  filter: blur(22px);
+  opacity: 0.55;
+  z-index: -1;
+}
+
+.shimmer-border-glow::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 1.6rem;
+  background: conic-gradient(
+    from var(--halo-angle),
+    #2D7FE0,
+    #6A3DFF,
+    #E71D8C,
+    #FF6B9D,
+    #E71D8C,
+    #6A3DFF,
+    #2D7FE0
+  );
+  animation: rotate-halo 3s linear infinite, shimmer-glow 2.5s ease-in-out infinite;
+  filter: blur(35px);
+  opacity: 0.25;
+  z-index: -2;
+}
+
+/* Dark inner fill for both shimmer containers */
+.shimmer-inner-dark {
+  background: rgba(10, 10, 30, 0.92);
+  backdrop-filter: blur(8px);
+  border-radius: calc(1rem - 2px);
+}
