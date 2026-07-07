@@ -409,3 +409,47 @@ Stage Summary:
 - Imágenes optimizadas: 37MB → 2.0MB (no afecta velocidad de carga)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit dfc21f4 pushed a GitHub
+
+---
+Task ID: 10
+Agent: Main (GLM 5.2)
+Task: Mini form — botón disabled hasta llenar todo + CTA line explicativo
+
+Work Log:
+- Agregadas 2 nuevas traducciones en i18n.ts:
+  EN: "hero.form.cta": "Free quote in 60 seconds — we'll reply on WhatsApp."
+  ES: "hero.form.cta": "Cotización gratis en 60 segundos — te respondemos por WhatsApp."
+- Agregado const isFormValid en HeroSection:
+  isFormValid = form.name.trim() !== "" && form.businessType !== "" && form.message.trim() !== ""
+  (los 3 campos son obligatorios: name, businessType, message)
+- Agregado CTA line arriba del shimmer-border-glow:
+  <p className="text-center text-xs sm:text-sm font-bold text-white mb-3 leading-snug drop-shadow-md">
+    {t("hero.form.cta")}
+  </p>
+- Botón verde del mini form ahora es condicional:
+  - href={isFormValid ? waLink : undefined} (no navega si disabled)
+  - target/rel condicionales (no abre tab si disabled)
+  - aria-disabled={!isFormValid} (accesibilidad)
+  - onClick con early return si !isFormValid (no dispara fbq Lead)
+  - Estilo disabled: bg-[#25D366]/40 opacity-60 cursor-not-allowed
+  - Estilo enabled: bg-[#25D366] hover:bg-[#22c55e] active:bg-[#1da851] cursor-pointer
+  - Meta Pixel 🔒 protegido: solo dispara fbq('track','Lead') cuando el form es válido
+- Lint: 0 errores
+- Build: 135,926 bytes, 87 archivos
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://f2dce2d9.imaginestudiodesign.pages.dev
+- Verificación post-deploy: HTTP 200, aria-disabled="true" presente en HTML live, CTA text presente, Meta Pixel intacto, Hero order correcto (Carousel → Subtitle → CTA → MiniForm → OrCall → SocialProof)
+- Agent Browser verification:
+  - Title correcto, ZERO page errors, ZERO console errors
+  - Eval JS confirmó: botón arranca con aria-disabled=true, href=null (disabled)
+  - Test interactivo: llené name + message pero NO business type → botón SIGUE disabled (confirma que TODOS los campos son obligatorios)
+  - CTA text visible confirmado: "Free quote in 60 seconds — we'll reply on WhatsApp."
+- Git commit dc92cdb pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Botón verde del mini form YA NO funciona hasta que los 3 campos estén llenos (name, businessType, message)
+- CTA line pequeño arriba del form explica en 2 segundos qué es y para qué:
+  "Free quote in 60 seconds — we'll reply on WhatsApp." (EN)
+  "Cotización gratis en 60 segundos — te respondemos por WhatsApp." (ES)
+- Meta Pixel 🔒 protegido: el evento Lead SOLO se dispara cuando el form es válido (no hay leads falsos por clicks sin llenar)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit dc92cdb pushed a GitHub
