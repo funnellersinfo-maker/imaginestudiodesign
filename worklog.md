@@ -453,3 +453,31 @@ Stage Summary:
 - Meta Pixel 🔒 protegido: el evento Lead SOLO se dispara cuando el form es válido (no hay leads falsos por clicks sin llenar)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit dc92cdb pushed a GitHub
+
+---
+Task ID: 11
+Agent: Main (GLM 5.2)
+Task: CTA del mini form en ES se parte en 2 líneas (EN queda en 1 línea)
+
+Work Log:
+- Editado i18n.ts: agregado \n antes de "te respondemos" en el string ES de hero.form.cta
+  Antes: "Cotización gratis en 60 segundos — te respondemos por WhatsApp."
+  Después: "Cotización gratis en 60 segundos —\nte respondemos por WhatsApp."
+- Editado page.tsx: agregado clase whitespace-pre-line al <p> del CTA
+  Esto hace que el \n del string se renderice como salto de línea en el navegador
+- EN no tiene \n → se queda en 1 línea
+- Lint: 0 errores
+- Build: 135,926 bytes, 87 archivos
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://9796421d.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser:
+  - ES mode: offsetHeight=39px, lineHeight=19.25px → 39/19.25=2.02 → 2 líneas ✅
+  - EN mode: offsetHeight=19px, lineHeight=19.25px → 19/19.25=0.98 → 1 línea ✅
+  - ZERO page errors, ZERO console errors
+- Git commit 2ccc1bc pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- CTA del mini form en ES ahora se muestra en 2 líneas:
+  Línea 1: "Cotización gratis en 60 segundos —"
+  Línea 2: "te respondemos por WhatsApp."
+- CTA en EN se mantiene en 1 línea: "Free quote in 60 seconds — we'll reply on WhatsApp."
+- Técnica usada: \n en el string + whitespace-pre-line en el <p> (zero-basura, sin <br/> hardcodeado)
