@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   Phone,
   ChevronLeft,
@@ -202,8 +202,6 @@ function Nav({ onQuote }: { onQuote: () => void }) {
 /* ───────── 1. HERO ───────── */
 function HeroSection({ onQuote }: { onQuote: () => void }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { scrollY } = useScroll();
-  const contentOpacity = useTransform(scrollY, [0, 700], [1, 0]);
   const { t, lang } = useLang();
 
   const [carouselIdx, setCarouselIdx] = useState(0);
@@ -269,7 +267,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
       {/* Floating magical niche elements */}
       <FloatingElements elements={HERO_ELEMENTS} />
 
-      <motion.div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28" style={{ opacity: contentOpacity }}>
+      <div className="relative z-10 w-full max-w-5xl lg:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 md:pt-32 lg:pt-40 pb-20 md:pb-20 lg:pb-28">
         {/* Badge */}
         <FadeUp delay={0.1}>
           <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mt-8 sm:mt-0 mb-6 lg:mb-20">
@@ -458,7 +456,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             </div>
           </div>
         </FadeUp>
-      </motion.div>
+      </div>
       <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
         <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"><div className="w-1.5 h-3 rounded-full bg-white/40" /></div>
       </motion.div>
