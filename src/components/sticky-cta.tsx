@@ -30,6 +30,9 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
       : "👋 Hi! I'd like information about your design services for my business."
   )}`;
 
+  /* 🔒 META PIXEL LEAD — DO NOT DELETE */
+  const trackLeadWA = () => { try { (window as any).fbq("track", "Lead", { content_name: "Sticky WhatsApp" }); } catch {} };
+
   useEffect(() => {
     const handleScroll = () => {
       if (dismissed) return;
@@ -60,6 +63,7 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={trackLeadWA}
               className="w-12 h-12 rounded-xl bg-[#25D366]/20 border border-[#25D366]/30 flex items-center justify-center flex-shrink-0"
               aria-label="WhatsApp"
             >
@@ -97,6 +101,9 @@ export function FloatingCTA({ onQuoteClick }: { onQuoteClick: () => void }) {
       : "👋 Hi! I'd like information about your design services for my business."
   )}`;
 
+  /* 🔒 META PIXEL LEAD — DO NOT DELETE */
+  const trackLeadWA = () => { try { (window as any).fbq("track", "Lead", { content_name: "Floating WhatsApp" }); } catch {} };
+
   useEffect(() => {
     const handleScroll = () => {
       setVisible(window.scrollY > 600);
@@ -125,6 +132,7 @@ export function FloatingCTA({ onQuoteClick }: { onQuoteClick: () => void }) {
             href={waLink}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackLeadWA}
             className="w-14 h-14 rounded-full bg-[#25D366]/20 border border-[#25D366]/30 flex items-center justify-center hover:bg-[#25D366]/30 transition-colors"
             aria-label="WhatsApp"
           >

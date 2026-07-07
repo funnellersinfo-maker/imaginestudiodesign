@@ -76,6 +76,14 @@ export default function QuoteFormModal({ open, onOpenChange }: QuoteFormModalPro
     // Build WhatsApp URL with personalized message
     const waURL = buildWhatsAppURL(formData, lang);
 
+    /* ╔══════════════════════════════════════════════════════════════════╗
+       ║  🔒 META PIXEL LEAD EVENT — CRITICAL: DO NOT DELETE          ║
+       ║  This fires the standard Meta "Lead" event on form submit.    ║
+       ║  Required for Meta Ads conversion optimization (oCPM, CBO).   ║
+       ║  Without this, Meta cannot optimize campaigns for "Lead".    ║
+       ╚══════════════════════════════════════════════════════════════════╝ */
+    try { window.fbq("track", "Lead", { content_name: "Free Quote Form" }); } catch {}
+
     // Show success briefly, then redirect to WhatsApp
     setTimeout(() => {
       setIsSubmitting(false);

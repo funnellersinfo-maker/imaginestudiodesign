@@ -154,3 +154,25 @@ Stage Summary:
 - Quote form: saves to DB + opens WhatsApp with personalized lead info
 - Mobile bar now has: CTA + WhatsApp + Phone + Dismiss
 - Desktop floating: Phone + WhatsApp + Quote CTA
+---
+Task ID: 3
+Agent: Main
+Task: Add Meta Pixel Lead event to all conversion points
+
+Work Log:
+- Found ZERO fbq Lead calls anywhere in the codebase — that was the root cause
+- Added `fbq("track", "Lead", { content_name: "Free Quote Form" })` to QuoteFormModal handleSubmit (line 85)
+- Added `trackLeadWA` helper to StickyCTA with `fbq("track", "Lead", { content_name: "Sticky WhatsApp" })` on WhatsApp link click
+- Added `trackLeadWA` helper to FloatingCTA with `fbq("track", "Lead", { content_name: "Floating WhatsApp" })` on WhatsApp link click
+- All Lead calls wrapped in try/catch to never break UX if pixel fails to load
+- Each call has protective comment: "🔒 META PIXEL LEAD — DO NOT DELETE"
+- Build successful, deployed to Cloudflare Pages
+
+Stage Summary:
+- 3 conversion points now fire standard Meta Lead event:
+  1. QuoteFormModal submit → Lead { content_name: "Free Quote Form" }
+  2. StickyCTA WhatsApp click → Lead { content_name: "Sticky WhatsApp" }
+  3. FloatingCTA WhatsApp click → Lead { content_name: "Floating WhatsApp" }
+- Meta Event Tester should now show: PageView + Lead (instead of just PageView + SubscribedButtonClick)
+- Deployed to https://imaginestudiodesign.pages.dev
+
