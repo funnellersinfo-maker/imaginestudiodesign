@@ -793,3 +793,68 @@ Stage Summary:
 - Verificación interactiva confirmó: click → modal se abre, contenido visible, cero errores
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit febcc8d pushed a GitHub
+
+---
+Task ID: 19
+Agent: Main (GLM 5.2)
+Task: 3 quick wins CRO + Hero static + 6 imágenes movidas al GalleryCarousel
+
+Work Log:
+- Aplicadas 3 optimizaciones de conversión (CRO) sugeridas en análisis previo:
+
+Quick Win #1 — Proof social arriba del botón del mini form:
+- Agregado bloque con 5 estrellas ⭐ + '4.8' + '1,500+ projects' + '10+ years'
+- Posicionado justo arriba del botón verde de WhatsApp (dentro del shimmer-border-glow)
+- Reduce ansiedad del usuario antes de enviar el form
+- Verificado con Agent Browser: distance=0 (hermano anterior inmediato del botón), proofBottom=1105 < btnTop=1117 (12px separación)
+
+Quick Win #2 — CTA line con oferta + urgencia:
+- EN: 'Free quote + FREE design mockup · Reply within 24h or your wrap is 10% off'
+- ES: 'Cotización gratis + mockup de diseño GRATIS\nResponde en 24h o tu vinilo es 10% off'
+- Antes: 'Free quote in 60 seconds — we'll reply on WhatsApp' (sin urgencia ni oferta)
+- Ahora tiene: oferta específica (FREE mockup) + urgencia (24h) + consecuencia (10% off)
+- ES mantiene el \n y whitespace-pre-line para partir en 2 líneas
+
+Quick Win #3 — Hero simplificado + imágenes redistribuidas:
+- Carrusel #1 (Hero) convertido a imagen estática (solo 20240804_173141.jpg):
+  - Removido: carouselIdx state
+  - Removido: 3 useEffect (preload first 2, preload next, auto-advance)
+  - Removido: flechas prev/next (2 buttons con ChevronLeft/ChevronRight)
+  - Removido: dots de navegación (7 buttons)
+  - Removido: AnimatePresence + motion.div del carousel
+  - Removido: ChevronLeft, ChevronRight del import de lucide-react
+  - Removido: HERO_CAROUSEL_IMAGES array (7 entradas) → reemplazado por HERO_STATIC_IMAGE const (1 string)
+  - Image ahora tiene priority (carga inmediata, mejora LCP)
+  - Alt text mejorado: "Imagine Studio Design vehicle wrap showcase" (antes era "Gallery")
+- Carrusel #2 (GalleryCarousel) recibió las 6 imágenes movidas del Hero:
+  - 6 nuevas entradas en SLIDES con altEn/altEs descriptivos
+  - Total slides: 11 → 17 (6 originales gallery + 5 nuevas Task 13 + 6 del Hero)
+  - Todas se muestran aleatorias con Fisher-Yates shuffle existente
+
+Audit zero-basura:
+- 0 refs huérfanas a HERO_CAROUSEL_IMAGES
+- 0 refs huérfanas a carouselIdx
+- 0 refs huérfanas a ChevronLeft/ChevronRight
+- HERO_STATIC_IMAGE se usa 2 veces (const + uso en Image src)
+
+- Lint: 0 errores
+- Build: 140,489 bytes, 98 archivos
+- Deploy a Cloudflare Pages: exitoso, 18 archivos nuevos subidos, deployment URL https://188ea6a4.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser:
+  - Hero: arrows=0, dots=0, heroImgFound=true, src=20240804_173141.jpg ✓
+  - Proof social: encontrado arriba del botón (distance=0, proofBottom=1105 < btnTop=1117) ✓
+  - CTA: 'Free quote + FREE design mockup · Reply within 24h or your wrap is 10% off' visible ✓
+  - GalleryCarousel: 17 slides ✓
+  - Hero order: HeroImage → Subtitle → CTA → MiniForm → ProofSocial ✓
+  - ZERO page errors, ZERO console errors
+- Git commit 1e35022 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- 3 quick wins CRO aplicados para maximizar conversión de tráfico de Meta Ads:
+  1. Proof social (⭐4.8 · 1,500+ projects · 10+ years) arriba del botón del form
+  2. CTA con oferta + urgencia (FREE mockup + 24h + 10% off)
+  3. Hero simplificado: 1 imagen estática en vez de carrusel rotando (menos distracción)
+- 6 imágenes del Hero movidas al GalleryCarousel (ahora 17 slides aleatorias)
+- Zero-basura: 72 líneas eliminadas, 49 insertadas (net -23 líneas)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 1e35022 pushed a GitHub
