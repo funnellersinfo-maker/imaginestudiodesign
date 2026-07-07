@@ -497,7 +497,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.form.message": "Cuéntanos de tu negocio",
     "hero.form.send": "ENVIAR POR WHATSAPP",
     "hero.form.orCall": "o llama al (910) 547-4314",
-    "hero.form.cta": "Cotización gratis en 60 segundos —\nte respondemos por WhatsApp.",
+    "hero.form.cta": "Cotización gratis en 60 segundos\nTe respondemos por WhatsApp.",
 
     // Sticky CTA
     "sticky.cta": "MI COTIZACIÓN GRATIS",
