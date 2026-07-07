@@ -323,3 +323,37 @@ Stage Summary:
 - Commit local eed5f16 hecho, PENDIENTE push a origin/main (requiere PAT de GitHub)
 - Meta Pixel 🔒 intacto con los 4 puntos de conversión
 - Hero order verificado en producción: Carousel → Subtitle → MiniForm → OrCall → SocialProof
+
+---
+Task ID: 8
+Agent: Main (GLM 5.2)
+Task: Quitar translucidez al hacer scroll en el Hero (el form se borraba/desvanecía)
+
+Work Log:
+- Detectado el efecto de translucidez en HeroSection (lineas 205-206 y 272 de page.tsx):
+  - const { scrollY } = useScroll()
+  - const contentOpacity = useTransform(scrollY, [0, 700], [1, 0])
+  - <motion.div style={{ opacity: contentOpacity }}>
+  Esto hacia que TODO el contenido del Hero (carousel, subtitle, mini form, or call, social proof) se desvaneciera de opacity 1 a 0 al hacer scroll de 0 a 700px
+- Verificado que useScroll y useTransform NO se usan en ningún otro lugar del archivo
+- Aplicadas 4 ediciones atómicas con MultiEdit:
+  1. Import: removidos useScroll, useTransform del import de framer-motion (queda: motion, AnimatePresence, useInView)
+  2. Variables: removidas las lineas const { scrollY } = useScroll() y const contentOpacity = useTransform(...)
+  3. Opening tag: <motion.div ... style={{ opacity: contentOpacity }}> cambiado a <div ...>
+  4. Closing tag: </motion.div> cambiado a </div>
+- Verificado zero-basura: grep de scrollY|contentOpacity|useScroll|useTransform en page.tsx = 0 matches
+- Lint: 0 errores
+- Build: exitoso en 13.6s, 135,989 bytes, 80 archivos
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://65dc9927.imaginestudiodesign.pages.dev
+- Verificación post-deploy: HTTP 200, 10/10 content checks PASSED, Hero order correcto
+- Agent Browser verification: page title correcto, ZERO page errors, ZERO console errors
+- Eval JS confirmo: el div del hero content NO tiene style attribute (el opacity: contentOpacity fue completamente removido)
+- Git commit 02079ff pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- El efecto de translucidez al scroll en el Hero fue completamente eliminado
+- El formulario mini y todo el contenido del Hero ahora permanecen 100% visibles al hacer scroll
+- Código limpio: useScroll y useTransform removidos del import (zero-basura)
+- motion.div cambiado a div regular (ya no necesita ser motion component sin el style opacity)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 02079ff pushed a GitHub
