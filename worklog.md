@@ -903,3 +903,39 @@ Stage Summary:
 - EN: 1 línea, ES: 2 líneas (mantiene estructura del Task 11)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit e6a8cec pushed a GitHub
+
+---
+Task ID: 21
+Agent: Main (GLM 5.2)
+Task: Métricas del Hero social proof ahora coinciden con el form (1,500+ y 10+)
+
+Work Log:
+- Detectada inconsistencia entre dos bloques de métricas en la página:
+  - Proof social del mini form (Task 19): "4.8 · 1,500+ projects · 10+ years"
+  - Hero social proof (debajo del mini form): "500+ 5-Star Reviews · 500+ Projects · 7+ Years"
+  - METRICS_DATA (sección Trust, más abajo): "1500+ · 98% · 10+ · 24h" (ya era correcto)
+- El usuario reportó: "ahora dice 7" → confirmado hero.trustYears = "7+" (líneas 58 y 306)
+- Editado i18n.ts (EN y ES):
+  - hero.trustProjects: "500+" → "1,500+" (coincide con proof social del form)
+  - hero.trustYears: "7+" → "10+" (coincide con proof social del form)
+  - hero.trust5Stars ("500+ 5-Star Reviews") se mantuvo sin cambios (el usuario no lo mencionó)
+- Audit zero-basura:
+  - 0 refs a "7+" en i18n.ts (antes 2)
+  - 0 refs a "500+" en hero.trustProjects (antes 2)
+- Lint: 0 errores
+- Build: 140,415 bytes, 98 archivos
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://4e226088.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser:
+  - Métricas visibles en Hero social proof: ['1,500+', '10+'] ✓
+  - ZERO page errors, ZERO console errors
+- Git commit 47d9194 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Métricas del Hero social proof (debajo del mini form) ahora dicen:
+  "1,500+ Projects Completed in Wilmington · 10+ Years in the Market"
+- Antes decían: "500+ Projects · 7+ Years" (inconsistente)
+- Ahora coinciden con el proof social del mini form ("1,500+ projects · 10+ years")
+- También coinciden con METRICS_DATA de la sección Trust ("1500+ · 10+")
+- Tres bloques de métricas ahora son consistentes entre sí
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 47d9194 pushed a GitHub
