@@ -348,7 +348,12 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           </div>
         </FadeUp>
 
-        {/* Inline Mini WhatsApp Form with shimmer glow — RIGHT BELOW CAROUSEL */}
+        {/* Subtitle — RIGHT AFTER CAROUSEL, BEFORE MINI FORM */}
+        <FadeUp delay={0.35}>
+          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-12 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
+        </FadeUp>
+
+        {/* Inline Mini WhatsApp Form with shimmer glow — RIGHT BELOW SUBTITLE */}
         <FadeUp delay={0.4}>
           <div className="w-full max-w-[600px] mx-auto mb-4 sm:mb-6 lg:mb-8">
             <div className="shimmer-border-glow rounded-2xl">
@@ -395,6 +400,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                   href={waLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  /* 🔒 META PIXEL LEAD — DO NOT DELETE */
                   onClick={() => { try { (window as any).fbq("track", "Lead", { content_name: "Hero Mini Form" }); } catch {} }}
                   className="w-full flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#22c55e] active:bg-[#1da851] text-white font-bold rounded-xl py-3.5 sm:py-4 text-sm sm:text-base lg:text-lg tracking-wide transition-colors no-underline"
                 >
@@ -412,11 +418,6 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           <p className="text-sm text-gray-400 mb-6 lg:mb-8">
             {t("hero.form.orCall")}
           </p>
-        </FadeUp>
-
-        {/* Subtitle */}
-        <FadeUp delay={0.5}>
-          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-12 leading-relaxed drop-shadow-md">{t("hero.subtitle")}</p>
         </FadeUp>
 
         {/* Social Proof */}
@@ -549,7 +550,7 @@ function TransformationSection() {
             <FadeUp key={i} delay={i * 0.1}>
               <div className="project-card relative rounded-xl overflow-hidden border border-white/5 group">
                 <div className="relative aspect-[4/3]">
-                  <Image src={item.src} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <Image src={item.src} alt={item.name} fill loading="lazy" className="object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-3 lg:p-4 bg-white/[0.02]">
                   <p className="text-xs sm:text-sm font-bold text-white/80 group-hover:text-white transition-colors text-center">{item.name}</p>
@@ -674,7 +675,7 @@ function FeaturedProjectsSection() {
                   <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
                     <div className="project-card group rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] cursor-pointer">
                       <div className="relative aspect-[4/3] overflow-hidden">
-                        <Image src={project.src} alt={project.altEn} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <Image src={project.src} alt={project.altEn} fill loading="lazy" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4">
                           <span className="text-xs sm:text-sm font-bold text-white">{project.label}</span>
@@ -748,7 +749,7 @@ function TrustSection() {
           <div className="space-y-4 mb-16 lg:mb-20">
             {REVIEW_IMAGES.map((src, i) => (
               <div key={i} className="rounded-xl overflow-hidden border border-white/5">
-                <Image src={src} alt={`Google Review ${i + 1}`} width={800} height={200} className="w-full h-auto" />
+                <Image src={src} alt={`Google Review ${i + 1}`} width={800} height={200} loading="lazy" className="w-full h-auto" />
               </div>
             ))}
           </div>
@@ -973,7 +974,7 @@ function FinalCTASection({ onQuote }: { onQuote: () => void }) {
       <div className="absolute top-0 left-0 right-0 section-divider" />
       <FloatingElements elements={FINAL_CTA_ELEMENTS} />
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
+        <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} loading="lazy" className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
         <FadeUp delay={0.1}>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 lg:mb-8 leading-tight">
             {t("final.title1")} <span className="gradient-brand-text">{t("final.titleHighlight")}</span> {t("final.title2")}
@@ -1017,7 +1018,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="h-8 w-auto object-contain opacity-70" />
+            <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} loading="lazy" className="h-8 w-auto object-contain opacity-70" />
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
             <a href="tel:+19105474314" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Phone className="w-3 h-3" /> (910) 547-4314</a>

@@ -36,19 +36,34 @@ yarn-error.log*
 # vercel
 .vercel
 
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 local-*
 .claude
 .z-ai-config
+
+# logs
 *.log
 dev.log
 dev.out.log
+server.log
+
+# test/prompts (not part of app)
 test
 prompt
 
-server.log
-# Skills directory
+# Z.ai system mounts (NOT part of project)
 /skills/
+/upload/
+/mini-services/
+/tool-results/
+
+# Debug/audit artifacts (should never be committed)
+*.audit.png
+*.check.png
+pc-*.png
+hero-*-check.png
+hero-*-audit.png
+mobile-*-check.png
+desktop-*-check.png

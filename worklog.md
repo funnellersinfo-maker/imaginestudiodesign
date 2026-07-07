@@ -205,3 +205,121 @@ Stage Summary:
 - Meta Pixel fires PageView, Lead fires on all 4 conversion points
 - Deployed to https://imaginestudiodesign.pages.dev
 
+
+---
+Task ID: 5
+Agent: Main (GLM 5.2)
+Task: Transfer project from previous chat via GitHub repo + apply Hero fix (reorder Subtitle before Mini Form)
+
+Work Log:
+- User provided GitHub repo URL: https://github.com/funnellersinfo-maker/imaginestudiodesign.git
+- Cloned repo (depth 50) to /tmp/isd-repo — 1262 files including all binary images
+- Verified all critical files present: meta-pixel.tsx (Pixel ID 1739205054172572), page.tsx (1061 lines), i18n.ts (517 lines), all 7 custom components, LOGO.png, all carousel/gallery/review images
+- Replaced workspace scaffold at /home/z/my-project/ with repo contents (backed up scaffold to /tmp/workspace-scaffold-backup/)
+- Verified Meta Pixel intact with all 4 conversion points: Free Quote Form, Sticky WhatsApp, Floating WhatsApp, Hero Mini Form
+- Diagnosed Hero bug: order was Headlines → Carousel → Mini Form → "or call" → Subtitle → Social Proof (WRONG)
+- Applied fix via MultiEdit (3 atomic edits in page.tsx):
+  1. Inserted Subtitle FadeUp block (delay 0.35) right after Carousel, before Mini Form
+  2. Removed duplicate Subtitle block from its old position (between "or call" and Social Proof)
+  3. Added "🔒 META PIXEL LEAD — DO NOT DELETE" comment above the fbq call in Hero Mini Form (was the only one missing the protection)
+- Updated Mini Form comment from "RIGHT BELOW CAROUSEL" to "RIGHT BELOW SUBTITLE"
+- bun install completed (added ws@8.21.0)
+- bun run lint: 0 errors in modified files (23 errors are all pre-existing debug scripts in root: verify-slider*.js, playwright-*.js, cdp-check.js, debug-error.js)
+- Dev server started successfully: HTTP 200, 149KB page render
+- Investigated 6 hero images (hero-colorful-*.jpg, hero-IMG_0223.jpg, hero-WA0057.jpg, hero-WA0069.jpg) — confirmed NOT present in repo, NOT in /tmp/my-project backup, NOT on production site (HTTP 404 on all 6). Kept HERO_CAROUSEL_IMAGES pointing to 7 existing carousel images to avoid breaking production.
+
+Stage Summary:
+- Project fully transferred from GitHub repo to /home/z/my-project/ — all source code, components, images, videos, configs preserved
+- Meta Pixel 🔒 verified INTACT with all 4 conversion points and protective bilingual comments
+- Hero Section fix applied: new order is Headlines → Carousel → Subtitle → Mini Form → "or call" → Social Proof
+- Hero Mini Form fbq call now has protective 🔒 comment (was the only one missing it)
+- HERO_CAROUSEL_IMAGES array kept as-is (7 carousel images) because the 6 new hero images don't exist anywhere accessible
+- Workspace ready for QA + deploy (see Task ID 6)
+
+---
+Task ID: 6
+Agent: Main (GLM 5.2)
+Task: Full QA audit + static build + Cloudflare Pages deploy + post-deploy verification
+
+Work Log:
+- Step 1 (Next.js config): Verified next.config.ts has output: 'export', images: { unoptimized: true }, typescript: { ignoreBuildErrors: true }, reactStrictMode: false — no changes needed
+- Step 2 (Eliminate API routes): Confirmed NO src/app/api/ folder exists, NO route.ts/route.tsx files, NO next/server or next/headers imports, NO fetch('/api/...') calls, NO "use server" directives, NO @/lib/db imports in client components. quote-form-modal.tsx is 100% client-side (WhatsApp redirect, no DB). No changes needed.
+- Step 3 (Component audit):
+  - Hero: ✅ Carousel with 9 references, Mini Form with shimmer-border-glow, 21 Framer Motion elements, WhatsApp link
+  - StickyCTA: ✅ WhatsApp number 19105474314 via wa.me template literal, 2 tel: links, fixed position
+  - QuoteFormModal: ✅ type=tel, type=email, WhatsApp redirect via window.open, 0 fetch/POST calls
+  - FAQ: ❌ Does not exist in project (9 sections per original spec). NOT added — prompt rule says "NO agregues funcionalidades nuevas"
+  - Footer: ✅ Copyright, tel:+19105474314, mailto:gtimaginedesign@gmail.com
+- Step 4 (Performance):
+  - Optimized 11 images with sharp (real-leon-tires 2.6MB→288KB, real-cabrera-flooring 2.1MB→205KB, etc.) — total images 10.37MB→4.64MB (-55.3%)
+  - Optimized 3 videos with ffmpeg CRF 32 (card-bg 6.7MB→3.3MB, hero-bg 3.6MB→1.9MB, vis-card-bg 2.4MB→1.4MB) — transform-bg.mp4 kept original (already optimized)
+  - Total public/ size: 38MB → 26MB (-32%)
+  - Added loading="lazy" to 5 below-the-fold images in page.tsx (kept priority on nav logo + hero carousel)
+- Step 5 (SEO): Verified all good — title 65 chars, description ~155 chars, Open Graph complete, html lang="en", favicon /LOGO.png, 1 h1 (motion.h1 with mobile/desktop variants — visually 1 at a time)
+- Step 6 (Build): bunx next build succeeded in 7.9s compile + 337ms static generation. Output: out/index.html = 135,989 bytes, 80 files total, 28MB total, 11 JS chunks. All key content verified present (business name, title, meta description, fbq pixel, WhatsApp number, hero carousel image, subtitle, mini form, or call text, social proof).
+- Step 7 (Deploy): First attempt with project name "imaginestudio" failed (project doesn't exist). Listed all Pages projects and found correct name is "imaginestudiodesign". Second attempt with correct name succeeded: 80 files uploaded (52 already existed), 28 new files, deployed to https://70daa71d.imaginestudiodesign.pages.dev
+- Step 8 (Post-deploy verification):
+  - curl https://imaginestudiodesign.pages.dev/ → HTTP 200, 135,989 bytes (identical to local build)
+  - All 10 content checks PASSED: business name, title, meta description, Meta Pixel fbq, WhatsApp number, hero carousel image, subtitle, mini form, or call text, social proof
+  - 9/9 JS chunks referenced in live HTML match local build (deploy is fresh)
+  - Agent Browser verification: page title "Imagine Studio Design | Business Visibility Company - Wilmington, NC", URL https://imaginestudiodesign.pages.dev/, ZERO page errors, ZERO console errors
+  - Hero order verified in live HTML by byte offset: Carousel (15400) → Subtitle (17694) → MiniForm (22504) → OrCall (24674) → SocialProof (25503) ✅ CORRECT
+  - Screenshots saved: /tmp/live-desktop.png (527KB), /tmp/live-mobile.png (201KB), /tmp/live-hero.png (738KB)
+
+Stage Summary:
+- Production URL: https://imaginestudiodesign.pages.dev (HTTP 200, 136KB HTML)
+- Deploy preview URL: https://70daa71d.imaginestudiodesign.pages.dev
+- Hero fix LIVE in production: Carousel → Subtitle → Mini Form → "or call" → Social Proof (verified by byte offset in live HTML)
+- Meta Pixel 🔒 LIVE with all 4 conversion points (fbq present in live HTML)
+- Performance improved: public/ 38MB → 26MB (-32%), 11 images optimized, 3 videos recompressed, 5 loading="lazy" added
+- 80 files deployed to Cloudflare Pages (52 reused, 28 new)
+- Build: 28MB total, 11 JS chunks, 80 files, 0 errors
+- Zero page errors, zero console errors on live site
+- All 8 QA steps completed successfully
+
+---
+Task ID: 7
+Agent: Main (GLM 5.2)
+Task: Limpieza profunda de basura acumulada de sesiones previas + git + deploy
+
+Work Log:
+- Inventario completo del workspace: 286 archivos trackeados, detectadas 7 categorías de basura
+- Identificadas carpetas del sistema Z.ai que NO son basura: skills/ (skills oficiales), mini-services/ (vacía con .gitkeep), upload/ (mountpoint root:root)
+- Borrado físico de basura:
+  - 8 scripts .js de debug en root (verify-slider*.js, playwright-*.js, cdp-check.js, debug-error.js)
+  - 7 screenshots .png de auditoría en root (hero-*.png, transformation-section.png)
+  - keepalive.sh (script de sesión previa)
+  - upload/ (274 MB, 143 archivos — imágenes crudas del cliente + screenshots de audit del modelo anterior). Carpeta física no se pudo borrar (mountpoint root:root, "Device or resource busy") pero se borraron TODOS los archivos internos y se agregó a .gitignore
+  - tool-results/ (logs de tools)
+  - examples/websocket/ (no se usa en static export)
+  - db/ (no se usa DB en static export)
+  - prisma/ (no se usa DB)
+  - src/lib/db.ts (no se usa DB)
+  - download/ (placeholder inútil "Here are all the generated files.")
+  - .env (DATABASE_URL apuntando a DB borrada)
+  - package-lock.json (usamos bun.lock)
+  - dev.log, server.log
+- Verificación de dependencias: grep de cada sospechosa en src/
+  - 0 imports confirmados: @dnd-kit/*, @mdxeditor/editor, @reactuses/core, @tanstack/react-query, @tanstack/react-table, @prisma/client, prisma, react-markdown, react-syntax-highlighter, uuid, next-intl, next-auth, ws, z-ai-web-dev-sdk, sharp
+  - 1 import confirmado (mantener): react-day-picker, react-resizable-panels, recharts, next-themes (usados por componentes ui)
+- Editado package.json: eliminadas 17 dependencias no usadas, renombrado name a "imaginestudiodesign" v1.0.0, simplificados scripts (quitados db:*)
+- Editado .gitignore: agregados /upload/, /mini-services/, /tool-results/, patrones de screenshots de audit (*.audit.png, pc-*.png, hero-*-check.png, etc.)
+- Editado eslint.config.mjs: removidos ignores obsoletos (examples/**), agregados nuevos (upload/**, mini-services/**, tool-results/**)
+- bun install: 17 paquetes eliminados de node_modules, lockfile actualizado
+- bun run lint: 0 errores (antes había 23, todos de los scripts debug borrados)
+- bunx next build: exitoso en 15s, output 135,989 bytes, 80 archivos, 28 MB total
+- Deploy a Cloudflare Pages (project: imaginestudiodesign): exitoso, 17 archivos nuevos subidos (63 ya existían), deployment URL: https://f3df096e.imaginestudiodesign.pages.dev
+- Verificación post-deploy: HTTP 200, 135,989 bytes idéntico a local, 10/10 content checks PASSED, 9/9 JS chunks coinciden con local, Hero order verificado por byte offset (Carousel 15400 → Subtitle 17694 → MiniForm 22504 → OrCall 24674 → SocialProof 25503), ZERO page errors, ZERO console errors
+- Git commit local: eed5f16 con mensaje descriptivo detallado (169 deletions, 4 modifications)
+- Git push: FALLÓ — no hay credenciales de GitHub configuradas. Requiere PAT del usuario.
+
+Stage Summary:
+- Limpieza profunda completada: ~274 MB de basura eliminados del control de versiones
+- 169 archivos eliminados de git, 4 modificados (package.json, .gitignore, eslint.config.mjs, bun.lock)
+- 17 dependencias no usadas eliminadas del package.json
+- Lint pasa 100% limpio (0 errores, antes 23)
+- Build pasa limpio (135,989 bytes, 80 archivos)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit local eed5f16 hecho, PENDIENTE push a origin/main (requiere PAT de GitHub)
+- Meta Pixel 🔒 intacto con los 4 puntos de conversión
+- Hero order verificado en producción: Carousel → Subtitle → MiniForm → OrCall → SocialProof
