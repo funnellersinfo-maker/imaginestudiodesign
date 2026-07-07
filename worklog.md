@@ -750,3 +750,46 @@ Stage Summary:
 - Sin layout shift: cada Image tiene width/height reales
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit 8271aa6 pushed a GitHub
+
+---
+Task ID: 18
+Agent: Main (GLM 5.2)
+Task: Fix botón del StickyCTA (barra fija inferior) que no abría el QuoteFormModal
+
+Work Log:
+- Reporte del usuario: "el botón de la barra baja fija para abrir el formulario de cotización no tiene acción"
+- Investigado sticky-cta.tsx:
+  - StickyCTA (línea 22): interface StickyCTAProps { onQuoteClick: () => void }
+  - El botón CTA (línea 57): onClick={onQuoteClick} ← correcto
+  - FloatingCTA (línea 94): { onQuoteClick: () => void } ← correcto
+  - El botón CTA (línea 142): onClick={onQuoteClick} ← correcto
+- Investigado page.tsx línea 1067-1068:
+  - <StickyCTA onQuote={() => setQuoteOpen(true)} /> ← BUG: prop name es 'onQuote', debería ser 'onQuoteClick'
+  - <FloatingCTA onQuote={() => setQuoteOpen(true)} /> ← BUG: mismo problema
+- Causa raíz: mismatch de nombre de prop
+  - page.tsx pasaba el prop como 'onQuote'
+  - sticky-cta.tsx esperaba 'onQuoteClick'
+  - Resultado: dentro del componente, onQuoteClick era undefined
+  - onClick={onQuoteClick} llamaba undefined() → botón sin acción, sin error visible
+- Fix: cambiado onQuote → onQuoteClick en líneas 1067-1068 de page.tsx
+  - <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
+  - <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
+- Lint: 0 errores
+- Build: 137,936 bytes
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://83171b39.imaginestudiodesign.pages.dev
+- Verificación interactiva con Agent Browser (viewport mobile 390x844):
+  - Scroll down 500px → StickyCTA aparece
+  - Botón CTA encontrado: "GET MY FREE QUOTE", hasOnClick=true, reactProps=true
+  - Click del botón ejecutado
+  - Dialog encontrado (role=dialog) → modal ABIERTO ✅
+  - modalTextVisible=true → contenido del modal visible ✅
+  - ZERO page errors, ZERO console errors
+- Git commit febcc8d pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Bug fix: mismatch de prop name (onQuote vs onQuoteClick) entre page.tsx y sticky-cta.tsx
+- El botón "GET MY FREE QUOTE" de la barra fija inferior (mobile) ahora abre correctamente el QuoteFormModal
+- El botón flotante de desktop (FloatingCTA) también estaba afectado y ahora funciona
+- Verificación interactiva confirmó: click → modal se abre, contenido visible, cero errores
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit febcc8d pushed a GitHub
