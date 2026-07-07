@@ -84,13 +84,14 @@ function ScaleIn({ children, delay = 0, className = "" }: { children: React.Reac
 
 /* ───────── DATA (uses t() inside components) ───────── */
 const PROJECTS_DATA = [
-  { src: "/images/carousel/empire-metal.jpg", altEn: "Empire Metal vehicle wrap", altEs: "Vinilo Empire Metal", label: "Empire Metal" },
-  { src: "/images/carousel/leon-tires.jpg", altEn: "Leon Tires & Body Services fleet branding", altEs: "Marca de flota Leon Tires", label: "Leon Tires & Body Services" },
-  { src: "/images/carousel/lecheras.jpg", altEn: "Lecheras branded vehicle", altEs: "Vehículo Lecheras", label: "Lecheras" },
-  { src: "/images/carousel/sunrise.jpg", altEn: "Sunrise vehicle wrap", altEs: "Vinilo Sunrise", label: "Sunrise" },
-  { src: "/images/carousel/four-seasons.jpg", altEn: "Four Seasons Landscapes LLC wrap", altEs: "Vinilo Four Seasons Landscapes", label: "Four Seasons Landscapes LLC" },
-  { src: "/images/carousel/rico-landscaping.jpg", altEn: "Rico Landscaping branded truck", altEs: "Camión Rico Landscaping", label: "Rico Landscaping" },
-  { src: "/images/carousel/empire-metal-works.jpg", altEn: "Empire Metal Works LLC truck", altEs: "Camión Empire Metal Works", label: "Empire Metal Works LLC" },
+  { src: "/images/projects/20220207_154015.jpg", altEn: "Vehicle wrap project", altEs: "Proyecto de vinilo vehicular", label: "Wrap Project" },
+  { src: "/images/projects/20220207_154152.jpg", altEn: "Commercial vehicle wrap", altEs: "Vinilo comercial vehicular", label: "Commercial Wrap" },
+  { src: "/images/projects/IMG-20260306-WA0016.jpg", altEn: "Custom vehicle branding", altEs: "Marca vehicular personalizada", label: "Custom Branding" },
+  { src: "/images/projects/IMG-20260306-WA0019.jpg", altEn: "Fleet branding project", altEs: "Proyecto de marca de flota", label: "Fleet Branding" },
+  { src: "/images/projects/IMG-20260306-WA0020.jpg", altEn: "Business vehicle wrap", altEs: "Vinilo vehicular de negocio", label: "Business Wrap" },
+  { src: "/images/projects/IMG-20260306-WA0024.jpg", altEn: "Truck wrap transformation", altEs: "Transformación de camión con vinilo", label: "Truck Wrap" },
+  { src: "/images/projects/IMG-20260423-WA0066.jpg", altEn: "Service vehicle wrap", altEs: "Vinilo de vehículo de servicio", label: "Service Vehicle" },
+  { src: "/images/projects/IMG-20260423-WA0070.jpg", altEn: "Professional wrap finish", altEs: "Acabado profesional de vinilo", label: "Pro Finish" },
 ];
 
 const INDUSTRIES_DATA = [
