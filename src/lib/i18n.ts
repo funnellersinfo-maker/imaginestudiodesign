@@ -53,9 +53,9 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.trust3": "Custom Apparel",
     "hero.trust4": "Fleet Branding",
     "hero.trust5Stars": "500+ 5-Star Reviews",
-    "hero.trustProjects": "500+",
+    "hero.trustProjects": "1,500+",
     "hero.trustProjectsLabel": "Projects Completed in Wilmington",
-    "hero.trustYears": "7+",
+    "hero.trustYears": "10+",
     "hero.trustYearsLabel": "Years in the Market",
 
     // Problem
@@ -301,9 +301,9 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.trust3": "Ropa Personalizada",
     "hero.trust4": "Marca de Flota",
     "hero.trust5Stars": "500+ Reseñas 5 Estrellas",
-    "hero.trustProjects": "500+",
+    "hero.trustProjects": "1,500+",
     "hero.trustProjectsLabel": "Proyectos Completados en Wilmington",
-    "hero.trustYears": "7+",
+    "hero.trustYears": "10+",
     "hero.trustYearsLabel": "Años en el Mercado",
 
     // Problem
