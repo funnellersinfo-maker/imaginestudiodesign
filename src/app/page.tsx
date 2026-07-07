@@ -5,8 +5,6 @@ import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   Phone,
-  ChevronLeft,
-  ChevronRight,
   ArrowRight,
   CheckCircle2,
   Shield,
@@ -131,15 +129,7 @@ const VISIBILITY_DATA = [
   { icon: Zap, titleKey: "vis.digital", descKey: "vis.digitalDesc" },
 ];
 
-const HERO_CAROUSEL_IMAGES = [
-  "/images/hero/20240804_173141.jpg",
-  "/images/hero/20230909_132155.jpg",
-  "/images/hero/20240804_165750.jpg",
-  "/images/hero/20250315_131334.jpg",
-  "/images/hero/IMG-20250915-WA0057.jpg",
-  "/images/hero/IMG-20251022-WA0069.jpg",
-  "/images/hero/20240804_165723.jpg",
-];
+const HERO_STATIC_IMAGE = "/images/hero/20240804_173141.jpg";
 
 const BIZ_KEYS = [
   "biz.contractor", "biz.roofing", "biz.hvac", "biz.plumbing", "biz.electrical",
@@ -205,7 +195,6 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { t, lang } = useLang();
 
-  const [carouselIdx, setCarouselIdx] = useState(0);
   const [form, setForm] = useState({ name: "", businessType: "", message: "" });
 
   const WHATSAPP_NUMBER = "19105474314";
@@ -216,27 +205,6 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   )}`;
 
   const isFormValid = form.name.trim() !== "" && form.businessType !== "" && form.message.trim() !== "";
-
-  // Preload first 2 carousel images
-  useEffect(() => {
-    HERO_CAROUSEL_IMAGES.slice(0, 2).forEach((src) => {
-      const img = new window.Image();
-      img.src = src;
-    });
-  }, []);
-  // Preload next image on advance
-  useEffect(() => {
-    const nextIdx = (carouselIdx + 1) % HERO_CAROUSEL_IMAGES.length;
-    const img = new window.Image();
-    img.src = HERO_CAROUSEL_IMAGES[nextIdx];
-  }, [carouselIdx]);
-
-  // Hero carousel auto-advance
-  useEffect(() => {
-    const delay = 8000 + Math.random() * 4000;
-    const id = setTimeout(() => setCarouselIdx((i) => (i + 1) % HERO_CAROUSEL_IMAGES.length), delay);
-    return () => clearTimeout(id);
-  }, [carouselIdx]);
 
   const headlines = [
     { line1: t("hero.h5.line1"), line2: t("hero.h5.line2"), line3: t("hero.h5.line3") },
@@ -301,50 +269,15 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           </AnimatePresence>
         </div>
 
-        {/* Hero Carousel with shimmer border — RIGHT AFTER HEADLINES */}
+        {/* Hero Static Image with shimmer border — RIGHT AFTER HEADLINES */}
         <FadeUp delay={0.3}>
           <div className="relative w-full max-w-[700px] mx-auto mb-6 sm:mb-8 lg:mb-10">
             <div className="shimmer-border rounded-2xl">
               <div className="shimmer-inner-dark rounded-[14px]">
                 <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-video rounded-[14px] overflow-hidden bg-white/5">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={carouselIdx}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                      className="absolute inset-0"
-                    >
-                      <Image src={HERO_CAROUSEL_IMAGES[carouselIdx]} alt="Gallery" fill className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
-                    </motion.div>
-                  </AnimatePresence>
-                  <button
-                    onClick={() => setCarouselIdx((i) => (i - 1 + HERO_CAROUSEL_IMAGES.length) % HERO_CAROUSEL_IMAGES.length)}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </button>
-                  <button
-                    onClick={() => setCarouselIdx((i) => (i + 1) % HERO_CAROUSEL_IMAGES.length)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
-                    aria-label="Next image"
-                  >
-                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </button>
+                  <Image src={HERO_STATIC_IMAGE} alt="Imagine Studio Design vehicle wrap showcase" fill priority className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
                 </div>
               </div>
-            </div>
-            <div className="flex items-center justify-center gap-2 mt-3">
-              {HERO_CAROUSEL_IMAGES.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCarouselIdx(i)}
-                  className={`w-2 h-2 rounded-full transition-all ${i === carouselIdx ? "bg-brand-hot-pink w-6" : "bg-white/30 hover:bg-white/50"}`}
-                  aria-label={`Go to image ${i + 1}`}
-                />
-              ))}
             </div>
           </div>
         </FadeUp>
@@ -398,6 +331,20 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                     placeholder={t("hero.form.message")}
                     className="pl-10 bg-white/5 text-white placeholder:text-gray-500 rounded-xl min-h-[100px] sm:min-h-[120px] text-sm resize-none border-white/10 focus:border-brand-hot-pink/50"
                   />
+                </div>
+
+                {/* Proof social — arriba del botón para aumentar conversión */}
+                <div className="flex items-center justify-center gap-2 mb-3 text-xs text-gray-300">
+                  <div className="flex -space-x-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                    ))}
+                  </div>
+                  <span className="font-bold text-white">4.8</span>
+                  <span className="text-gray-500">·</span>
+                  <span>1,500+ projects</span>
+                  <span className="text-gray-500">·</span>
+                  <span>10+ years</span>
                 </div>
 
                 {/* WhatsApp Button — disabled hasta que todos los campos estén llenos */}

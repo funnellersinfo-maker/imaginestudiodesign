@@ -62,6 +62,36 @@ const SLIDES = [
     altEn: "Custom business vehicle wrap",
     altEs: "Vinilo vehicular personalizado para negocios",
   },
+  {
+    src: "/images/hero/20230909_132155.jpg",
+    altEn: "Vehicle wrap project showcase",
+    altEs: "Muestra de proyecto de vinilo vehicular",
+  },
+  {
+    src: "/images/hero/20240804_165750.jpg",
+    altEn: "Professional vehicle branding",
+    altEs: "Marca vehicular profesional",
+  },
+  {
+    src: "/images/hero/20250315_131334.jpg",
+    altEn: "Custom wrap design",
+    altEs: "Diseño de vinilo personalizado",
+  },
+  {
+    src: "/images/hero/IMG-20250915-WA0057.jpg",
+    altEn: "Branded commercial vehicle",
+    altEs: "Vehículo comercial con marca",
+  },
+  {
+    src: "/images/hero/IMG-20251022-WA0069.jpg",
+    altEn: "Fleet branding showcase",
+    altEs: "Muestra de marca de flota",
+  },
+  {
+    src: "/images/hero/20240804_165723.jpg",
+    altEn: "Business vehicle wrap transformation",
+    altEs: "Transformación de vinilo vehicular para negocio",
+  },
 ];
 
 // Fisher-Yates shuffle (se ejecuta una sola vez al montar el componente)
