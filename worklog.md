@@ -858,3 +858,48 @@ Stage Summary:
 - Zero-basura: 72 líneas eliminadas, 49 insertadas (net -23 líneas)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit 1e35022 pushed a GitHub
+
+---
+Task ID: 20
+Agent: Main (GLM 5.2)
+Task: CTA del mini form — sin descuento, 'free' una sola vez, foco en acción+velocidad
+
+Work Log:
+- Corrección solicitada por el cliente:
+  1. Los dueños NO autorizaron ningún descuento → removido '10% off' y 'Reply within 24h'
+  2. 'FREE'/'GRATIS' estaba repetido dos veces → ahora se menciona una sola vez
+  3. Foco en acción clara + beneficio de velocidad (siguiendo sugerencia del cliente)
+
+- CTA anterior (problemático, de Task 19):
+  - EN: 'Free quote + FREE design mockup · Reply within 24h or your wrap is 10% off'
+  - ES: 'Cotización gratis + mockup de diseño GRATIS\nResponde en 24h o tu vinilo es 10% off'
+
+- CTA nuevo (corregido):
+  - EN (1 línea): 'Fill the form and get a free quote in seconds'
+  - ES (2 líneas): 'Llena el formulario\nRecibe una cotización gratis en segundos'
+
+- Audit zero-basura:
+  - '10% off' en i18n.ts: 0 ✓
+  - 'FREE design mockup' en i18n.ts: 0 ✓
+  - 'mockup de diseño GRATIS' en i18n.ts: 0 ✓
+  - Los 7 'GRATIS' restantes son de otros botones legítimos (nav, hero.cta, process.cta, final.cta, sticky.cta) — no del CTA del mini form
+
+- Lint: 0 errores
+- Build: 140,460 bytes, 98 archivos
+- Deploy a Cloudflare Pages: exitoso
+  - Nota: el production URL tardó ~15s extra en propagar el cache
+  - Deploy preview URLs confirmaron el nuevo CTA inmediatamente
+- Verificación con Agent Browser:
+  - EN: text='Fill the form and get a free quote in seconds', offsetHeight=17px (1 línea) ✓
+  - ES: text='Llena el formulario\nRecibe una cotización gratis en segundos', offsetHeight=33px (2 líneas) ✓
+  - ZERO page errors, ZERO console errors
+- Git commit e6a8cec pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- CTA del mini form corregido según feedback del cliente:
+  - Sin descuento (no autorizado por los dueños)
+  - 'free'/'gratis' mencionado una sola vez
+  - Foco en acción (fill form) + beneficio (free quote in seconds)
+- EN: 1 línea, ES: 2 líneas (mantiene estructura del Task 11)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit e6a8cec pushed a GitHub
