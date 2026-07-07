@@ -84,14 +84,14 @@ function ScaleIn({ children, delay = 0, className = "" }: { children: React.Reac
 
 /* ───────── DATA (uses t() inside components) ───────── */
 const PROJECTS_DATA = [
-  { src: "/images/projects/20220207_154015.jpg", altEn: "Vehicle wrap project", altEs: "Proyecto de vinilo vehicular", label: "Wrap Project" },
-  { src: "/images/projects/20220207_154152.jpg", altEn: "Commercial vehicle wrap", altEs: "Vinilo comercial vehicular", label: "Commercial Wrap" },
-  { src: "/images/projects/IMG-20260306-WA0016.jpg", altEn: "Custom vehicle branding", altEs: "Marca vehicular personalizada", label: "Custom Branding" },
-  { src: "/images/projects/IMG-20260306-WA0019.jpg", altEn: "Fleet branding project", altEs: "Proyecto de marca de flota", label: "Fleet Branding" },
-  { src: "/images/projects/IMG-20260306-WA0020.jpg", altEn: "Business vehicle wrap", altEs: "Vinilo vehicular de negocio", label: "Business Wrap" },
-  { src: "/images/projects/IMG-20260306-WA0024.jpg", altEn: "Truck wrap transformation", altEs: "Transformación de camión con vinilo", label: "Truck Wrap" },
-  { src: "/images/projects/IMG-20260423-WA0066.jpg", altEn: "Service vehicle wrap", altEs: "Vinilo de vehículo de servicio", label: "Service Vehicle" },
-  { src: "/images/projects/IMG-20260423-WA0070.jpg", altEn: "Professional wrap finish", altEs: "Acabado profesional de vinilo", label: "Pro Finish" },
+  { src: "/images/projects/20220207_154015.jpg", altEn: "Navy hoodie branded for Vazquez Remodeling LLC", altEs: "Hoodie azul marino con marca de Vazquez Remodeling LLC", label: "Vazquez Remodeling Hoodie" },
+  { src: "/images/projects/20220207_154152.jpg", altEn: "Business cards for Vazquez Remodeling, roofing and siding", altEs: "Tarjetas de presentación de Vazquez Remodeling, roofing y siding", label: "Vazquez Remodeling Cards" },
+  { src: "/images/projects/IMG-20260306-WA0016.jpg", altEn: "White hoodie branded for Empire Metal Works LLC Roofing", altEs: "Hoodie blanco con marca de Empire Metal Works LLC Roofing", label: "Empire Metal Works Hoodie" },
+  { src: "/images/projects/IMG-20260306-WA0019.jpg", altEn: "Gray hoodie branded for JB Seamless Gutter and Gutter Protection", altEs: "Hoodie gris con marca de JB Seamless Gutter and Gutter Protection", label: "JB Seamless Gutter Hoodie" },
+  { src: "/images/projects/IMG-20260306-WA0020.jpg", altEn: "Empire Metal Works LLC Roofing branded hoodie on mannequin", altEs: "Hoodie con marca de Empire Metal Works LLC Roofing en maniquí", label: "Empire Metal Works Apparel" },
+  { src: "/images/projects/IMG-20260306-WA0024.jpg", altEn: "White hoodie branded for JB Seamless Gutter Protection", altEs: "Hoodie blanco con marca de JB Seamless Gutter Protection", label: "JB Seamless Gutter Apparel" },
+  { src: "/images/projects/IMG-20260423-WA0066.jpg", altEn: "Black trucker hats with Empire Metal warrior logo", altEs: "Gorras trucker negras con logo guerrero de Empire Metal", label: "Empire Metal Hats" },
+  { src: "/images/projects/IMG-20260423-WA0070.jpg", altEn: "Hats and shirts branded for Antonio PRO Painting LLC", altEs: "Gorras y camisas con marca de Antonio PRO Painting LLC", label: "Antonio PRO Painting Apparel" },
 ];
 
 const INDUSTRIES_DATA = [
