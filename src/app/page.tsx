@@ -357,7 +357,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         <FadeUp delay={0.4}>
           <div className="w-full max-w-[600px] mx-auto mb-4 sm:mb-6 lg:mb-8">
             {/* CTA line — explicación en 2 segundos */}
-            <p className="text-center text-xs sm:text-sm font-bold text-white mb-3 leading-snug drop-shadow-md">
+            <p className="text-center text-xs sm:text-sm font-bold text-white mb-3 leading-snug drop-shadow-md whitespace-pre-line">
               {t("hero.form.cta")}
             </p>
             <div className="shimmer-border-glow rounded-2xl">
