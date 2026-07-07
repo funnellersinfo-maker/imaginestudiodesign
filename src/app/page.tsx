@@ -1064,8 +1064,8 @@ export default function Home() {
       <FinalCTASection onQuote={() => setQuoteOpen(true)} />
       <MapSection />
       <Footer />
-      <StickyCTA onQuote={() => setQuoteOpen(true)} />
-      <FloatingCTA onQuote={() => setQuoteOpen(true)} />
+      <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
+      <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
       <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
     </main>
   );
