@@ -560,3 +560,29 @@ Stage Summary:
 - Imágenes optimizadas: 5 nuevas pesan solo 972KB total
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit 07503fc pushed a GitHub
+
+---
+Task ID: 14
+Agent: Main (GLM 5.2)
+Task: +20% separación entre hook y carrusel #1 en mobile
+
+Work Log:
+- Identificado el mb del headlines (hook): mb-6 sm:mb-10 lg:mb-14 (línea 282)
+- Análisis del +20% solo en mobile:
+  - Mobile (mb-6 = 24px) → +20% = 28.8px → mb-7 (28px, el valor Tailwind más cercano)
+  - Tablet (sm:mb-10 = 40px) → sin cambios
+  - Desktop (lg:mb-14 = 56px) → sin cambios
+- Editado page.tsx línea 282: mb-6 sm:mb-10 lg:mb-14 → mb-7 sm:mb-10 lg:mb-14
+- Lint: 0 errores
+- Build: 136,711 bytes, 92 archivos
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://3f6183ee.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser en viewport mobile 390x844:
+  gap entre headlines y carousel = 28px (antes 24px) ✅
+- ZERO page errors, ZERO console errors
+- Git commit a8ba0f5 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Separación entre hook (headlines) y carrusel #1 aumentada +20% en mobile (24px → 28px)
+- Tablet y desktop sin cambios
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit a8ba0f5 pushed a GitHub
