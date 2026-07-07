@@ -357,3 +357,55 @@ Stage Summary:
 - motion.div cambiado a div regular (ya no necesita ser motion component sin el style opacity)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit 02079ff pushed a GitHub
+
+---
+Task ID: 9
+Agent: Main (GLM 5.2)
+Task: Nuevas imágenes del carrusel hero + separación +20% entre lang-toggle/badge/headline
+
+Work Log:
+- Verificadas las 7 imágenes subidas por el usuario en /upload/:
+  20230909_132155.jpg (6.3MB), 20240804_165750.jpg (9.5MB), 20250315_131334.jpg (4.9MB),
+  IMG-20250915-WA0057.jpg (165KB), IMG-20251022-WA0069.jpg (448KB),
+  20240804_165723.jpg (7.9MB), 20240804_173141.jpg (8.0MB)
+- Creada carpeta /public/images/hero/ (separada de /public/images/carousel/ que es del segundo carrusel)
+- Copiadas las 7 imágenes a /public/images/hero/
+- Optimizadas con sharp (max 1600px, quality 78, mozjpeg, progressive):
+  - 20230909_132155.jpg: 6305KB → 180KB (-97.2%)
+  - 20240804_165723.jpg: 7992KB → 362KB (-95.5%)
+  - 20240804_165750.jpg: 9541KB → 399KB (-95.8%)
+  - 20240804_173141.jpg: 8013KB → 332KB (-95.9%)
+  - 20250315_131334.jpg: 4931KB → 293KB (-94.1%)
+  - IMG-20250915-WA0057.jpg: 165KB → 83KB (-49.8%)
+  - IMG-20251022-WA0069.jpg: 448KB → 289KB (-35.6%)
+  - TOTAL: 37MB → 2.0MB (-95%)
+- Actualizado HERO_CAROUSEL_IMAGES en page.tsx:
+  - Primera: /images/hero/20240804_173141.jpg (visible al cargar, carouselIdx=0)
+  - Resto en orden: 20230909_132155, 20240804_165750, 20250315_131334,
+    IMG-20250915-WA0057, IMG-20251022-WA0069, 20240804_165723
+- Aumentada separación +20% entre lang-toggle / badge / headline:
+  - Hero pt: pt-28 md:pt-32 lg:pt-40 → pt-32 md:pt-40 lg:pt-48
+    (mobile +14%, tablet +25%, desktop +20%)
+  - Badge mt (mobile): mt-8 → mt-10 (+25% separación lang-toggle ↔ badge en mobile)
+  - Badge mb: mb-6 lg:mb-20 → mb-8 lg:mb-24 (+33% mobile, +20% desktop separación badge ↔ headline)
+- Audit basura: confirmado que /images/carousel/*.jpg (leon-tires, sunrise, etc.) se siguen usando
+  en PROJECTS_DATA para la sección "Featured Projects" (segundo carrusel) — NO son basura
+- Lint: 0 errores
+- Build: exitoso en 13.8s, 135,973 bytes, 87 archivos (antes 80, +7 por las nuevas imágenes hero)
+- Deploy a Cloudflare Pages: exitoso, 25 archivos nuevos subidos (62 ya existían), deployment URL https://5670c885.imaginestudiodesign.pages.dev
+- Verificación post-deploy: HTTP 200, Meta Pixel intacto, Hero order correcto por byte offset
+- Agent Browser verification:
+  - Title correcto
+  - ZERO page errors, ZERO console errors
+  - Eval JS confirmó: primera imagen visible del carousel = /images/hero/20240804_173141.jpg ✓
+  - Eval JS confirmó: hero content div sin style attribute (translucidez del Task 8 sigue eliminada)
+- Git commit dfc21f4 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Carrusel del Hero ahora muestra las 7 imágenes nuevas del cliente (no más las del segundo carrusel)
+- Primera imagen visible al cargar: 20240804_173141.jpg (la que el cliente pidió como primera)
+- Las 7 imágenes se ciclan con auto-advance (8-12s por slide) — eso es el comportamiento "aleatorio"
+- Separación +20% aplicada entre lang-toggle, badge Wilmington #1, y hook headline
+- Imágenes optimizadas: 37MB → 2.0MB (no afecta velocidad de carga)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit dfc21f4 pushed a GitHub
