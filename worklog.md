@@ -1169,3 +1169,37 @@ Stage Summary:
 - Meta Pixel íntegro con 4 puntos de conversión
 - Formularios y CTAs funcionales
 - Mobile + Desktop responsive sin errores
+
+---
+Task ID: 28
+Agent: Main (GLM 5.2)
+Task: Reemplazar emojis por formato numerado en TODOS los mensajes WhatsApp
+
+Work Log:
+- Reporte del usuario: los emojis (👋👤📞🏢📧💬📍) se rompen al llegar a WhatsApp (se ven como rombos con ?)
+- Detectados 4 builders de mensaje WhatsApp en el código:
+  1. page.tsx (líneas 201-206): Hero Mini Form
+  2. quote-form-modal.tsx (líneas 33-53): buildWhatsAppURL function
+  3. sticky-cta.tsx (líneas 27-31): StickyCTA
+  4. sticky-cta.tsx (líneas 98-102): FloatingCTA
+- Reemplazados TODOS los emojis por formato numerado (1. 2. 3.):
+  - page.tsx: 👋/👤/🏢/💬 → "1. Name: / 2. Business: / 3. Message:"
+  - quote-form-modal.tsx: 👋/👤/📞/🏢/📧/💬/📍 → "1. Name: / 2. Phone: / 3. Business Type: / 4. Email: / 5. Message: / Source:"
+    (También removidos los asteriscos * que causaban formato raro en WhatsApp)
+  - sticky-cta.tsx (StickyCTA + FloatingCTA): 👋 → sin emoji, también removidos acentos (informacion, diseno) para evitar encoding issues
+- Audit: 0 emojis problemáticos en mensajes WhatsApp (solo queda 🔒 en comentarios protectores del Meta Pixel)
+- Lint: 0 errores
+- Build: pasado
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://ce2aaac4.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser: ZERO page errors, ZERO console errors
+- Git commit 9121e4f pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- TODOS los mensajes WhatsApp ahora llegan con formato numerado limpio (sin emojis rotos)
+- Ejemplo del mensaje que llegará a WhatsApp desde el mini form:
+  "Hi! I'd like a quote.
+  1. Name: Alex
+  2. Business: biz.landscaping
+  3. Message: Oki"
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 9121e4f pushed a GitHub
