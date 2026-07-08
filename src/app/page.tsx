@@ -201,8 +201,8 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const WHATSAPP_NUMBER = "19105474314";
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     lang === "es"
-      ? `👋 ¡Hola! Quiero una cotización.\n👤 Nombre: ${form.name || "..."}\n🏢 Negocio: ${form.businessType || "..."}\n💬 ${form.message || "..."}`
-      : `👋 Hi! I'd like a quote.\n👤 Name: ${form.name || "..."}\n🏢 Business: ${form.businessType || "..."}\n💬 ${form.message || "..."}`
+      ? `Hola! Quiero una cotizacion.\n1. Nombre: ${form.name || "..."}\n2. Negocio: ${form.businessType || "..."}\n3. Mensaje: ${form.message || "..."}`
+      : `Hi! I'd like a quote.\n1. Name: ${form.name || "..."}\n2. Business: ${form.businessType || "..."}\n3. Message: ${form.message || "..."}`
   )}`;
 
   const isFormValid = form.name.trim() !== "" && form.businessType !== "" && form.message.trim() !== "";

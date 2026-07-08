@@ -26,8 +26,8 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
 
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     lang === "es"
-      ? "👋 ¡Hola! Quiero información sobre sus servicios de diseño para mi negocio."
-      : "👋 Hi! I'd like information about your design services for my business."
+      ? "Hola! Quiero informacion sobre sus servicios de diseno para mi negocio."
+      : "Hi! I'd like information about your design services for my business."
   )}`;
 
   /* 🔒 META PIXEL LEAD — DO NOT DELETE */
@@ -97,8 +97,8 @@ export function FloatingCTA({ onQuoteClick }: { onQuoteClick: () => void }) {
 
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     lang === "es"
-      ? "👋 ¡Hola! Quiero información sobre sus servicios de diseño para mi negocio."
-      : "👋 Hi! I'd like information about your design services for my business."
+      ? "Hola! Quiero informacion sobre sus servicios de diseno para mi negocio."
+      : "Hi! I'd like information about your design services for my business."
   )}`;
 
   /* 🔒 META PIXEL LEAD — DO NOT DELETE */

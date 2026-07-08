@@ -33,21 +33,21 @@ const WHATSAPP_NUMBER = "19105474314";
 function buildWhatsAppURL(data: { name: string; phone: string; businessType: string; email: string; message: string }, lang: "en" | "es"): string {
   let text: string;
   if (lang === "es") {
-    text = `👋 *¡Hola! Quiero una cotización para mi negocio.*
+    text = `Hola! Quiero una cotizacion para mi negocio.
 
-👤 *Nombre:* ${data.name}
-📞 *Teléfono:* ${data.phone}
-🏢 *Tipo de negocio:* ${data.businessType}${data.email ? `\n📧 *Email:* ${data.email}` : ""}${data.message ? `\n💬 *Mensaje:* ${data.message}` : ""}
+1. Nombre: ${data.name}
+2. Telefono: ${data.phone}
+3. Tipo de negocio: ${data.businessType}${data.email ? `\n4. Email: ${data.email}` : ""}${data.message ? `\n5. Mensaje: ${data.message}` : ""}
 
-📍 *Fuente:* Página web Imagine Studio Design`;
+Fuente: Pagina web Imagine Studio Design`;
   } else {
-    text = `👋 *Hi! I'd like a quote for my business.*
+    text = `Hi! I'd like a quote for my business.
 
-👤 *Name:* ${data.name}
-📞 *Phone:* ${data.phone}
-🏢 *Business Type:* ${data.businessType}${data.email ? `\n📧 *Email:* ${data.email}` : ""}${data.message ? `\n💬 *Message:* ${data.message}` : ""}
+1. Name: ${data.name}
+2. Phone: ${data.phone}
+3. Business Type: ${data.businessType}${data.email ? `\n4. Email: ${data.email}` : ""}${data.message ? `\n5. Message: ${data.message}` : ""}
 
-📍 *Source:* Imagine Studio Design Website`;
+Source: Imagine Studio Design Website`;
   }
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
