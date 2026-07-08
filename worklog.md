@@ -1035,3 +1035,28 @@ Stage Summary:
 - 4 videos huérfanos eliminados (~15 MB liberados)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit e3aa803 pushed a GitHub
+
+---
+Task ID: 25
+Agent: Main (GLM 5.2)
+Task: +43% separación entre hook (headlines) y carousel en desktop
+
+Work Log:
+- Reporte del usuario: "en PC el copy del hook del carrusel choca, sepáralo un poco, solo PC"
+- Identificado el mb del headlines en page.tsx línea 252:
+  mb-7 sm:mb-10 lg:mb-14 (mobile 28px, tablet 40px, desktop 56px)
+- Editado lg:mb-14 → lg:mb-20 (solo desktop, +43% separación: 56px → 80px)
+- Mobile (mb-7) y tablet (sm:mb-10) sin cambios
+- Lint: 0 errores
+- Build: 141,221 bytes, 83 archivos
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://2bb0dc9d.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser (viewport 1920x1080):
+  gap headlines → hero image = 82px (antes ~56px, +46%) ✓
+  ZERO page errors, ZERO console errors
+- Git commit d49d1d8 pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Separación entre hook (headlines) y carousel aumentada +43% en desktop (56px → 80px)
+- Mobile y tablet sin cambios (no tenían el problema de choque)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit d49d1d8 pushed a GitHub
