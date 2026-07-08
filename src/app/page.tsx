@@ -381,6 +381,22 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           </p>
         </FadeUp>
 
+        {/* Static Showcase Image with gradient glow — MORE THAN WRAPS */}
+        <FadeUp delay={0.5}>
+          <div className="w-full max-w-[700px] mx-auto mb-6 lg:mb-8">
+            <div className="shimmer-border-glow rounded-2xl">
+              <div className="shimmer-inner-dark rounded-[14px]">
+                <div className="relative aspect-[16/9] rounded-[14px] overflow-hidden bg-white/5">
+                  <Image src="/images/showcase-everything.jpg" alt="Imagine Studio Design showcase — vehicle wraps, signage, apparel and more" fill loading="lazy" className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-sm sm:text-base font-bold gradient-brand-text mt-4 leading-snug drop-shadow-md">
+              {t("hero.showcase.tagline")}
+            </p>
+          </div>
+        </FadeUp>
+
         {/* Social Proof */}
         <FadeUp delay={0.8}>
           <div className="mt-8 sm:mt-14 lg:mt-20 w-full max-w-xl lg:max-w-3xl mx-auto">

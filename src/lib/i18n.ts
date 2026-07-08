@@ -249,6 +249,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.form.message": "Tell us about your business",
     "hero.form.send": "SEND VIA WHATSAPP",
     "hero.form.orCall": "or call (910) 547-4314",
+    "hero.showcase.tagline": "More than vehicle wraps — we handle EVERYTHING your business needs to be seen.",
     "hero.form.cta": "Fill the form and get a free quote in seconds",
 
     // Sticky CTA
@@ -504,6 +505,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.form.message": "Cuéntanos de tu negocio",
     "hero.form.send": "ENVIAR POR WHATSAPP",
     "hero.form.orCall": "o llama al (910) 547-4314",
+    "hero.showcase.tagline": "Más que vinilos de vehículos — hacemos TODO lo que tu negocio necesita para ser visible.",
     "hero.form.cta": "Llena el formulario\nRecibe una cotización gratis en segundos",
 
     // Sticky CTA
