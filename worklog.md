@@ -1060,3 +1060,41 @@ Stage Summary:
 - Mobile y tablet sin cambios (no tenían el problema de choque)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit d49d1d8 pushed a GitHub
+
+---
+Task ID: 26
+Agent: Main (GLM 5.2)
+Task: Quitar 6 imágenes duplicadas del Hero del GalleryCarousel
+
+Work Log:
+- Reporte del usuario: "quita del carrusel del segundo bloque las imágenes que salen arriba fijas alrededor del hook para que no se repitan"
+- Investigación: el GalleryCarousel tenía 17 slides, de las cuales 6 eran imágenes /images/hero/* que moví desde el Hero carousel en Task 19
+- Esas 6 imágenes eran las que "salen arriba fijas alrededor del hook" (estaban en el Hero antes de hacerlo estático)
+- Eliminadas 6 entradas del SLIDES array en gallery-carousel.tsx:
+  - /images/hero/20230909_132155.jpg
+  - /images/hero/20240804_165750.jpg
+  - /images/hero/20250315_131334.jpg
+  - /images/hero/IMG-20250915-WA0057.jpg
+  - /images/hero/IMG-20251022-WA0069.jpg
+  - /images/hero/20240804_165723.jpg
+- Total slides: 17 → 11 (6 originales gallery + 5 nuevas Task 13)
+- Zero-basura: borradas 6 imágenes físicas huérfanas de /public/images/hero/
+  - Solo se mantiene 20240804_173141.jpg (Hero static image)
+  - /public/images/hero/ bajó de ~2.0MB a 336KB
+- Audit: 0 refs huérfanas a /images/hero/ en gallery-carousel.tsx ✓
+- Lint: 0 errores
+- Build: pasado
+- Deploy a Cloudflare Pages: exitoso, deployment URL https://318213c7.imaginestudiodesign.pages.dev
+- Verificación con Agent Browser:
+  - totalSlides=11 ✓
+  - foundHeroImgsInCarousel=0 ✓ (no hay repetición)
+  - ZERO page errors, ZERO console errors
+- Git commit 5c6427e pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- GalleryCarousel ya NO tiene imágenes duplicadas del Hero
+- 6 imágenes /images/hero/* eliminadas del SLIDES array
+- 6 imágenes físicas huérfanas borradas de /public/images/hero/ (zero-basura)
+- GalleryCarousel ahora tiene 11 slides únicos (sin repetir con el Hero)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev
+- Commit 5c6427e pushed a GitHub
