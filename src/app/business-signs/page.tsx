@@ -157,27 +157,12 @@ const BS_PROJECTS_DATA = [
   { src: "/images/projects/IMG-20260306-WA0020.jpg", altEn: "Empire Metal Works branded hoodie", label: "Empire Metal Works" },
 ];
 
-const BS_FAQ_DATA = [
-  {
-    q: "How long does it take to make a custom business sign?",
-    a: "Most signs take 2-4 weeks from design approval to installation, depending on complexity and permit requirements.",
-  },
-  {
-    q: "Do you handle permits for outdoor signs?",
-    a: "Yes, we handle all permitting with the City of Wilmington and New Hanover County as part of our service.",
-  },
-  {
-    q: "What materials do you use?",
-    a: "We use premium materials: aluminum, acrylic, LED illumination, and high-quality vinyl — all rated for outdoor durability.",
-  },
-  {
-    q: "Can you match my existing brand colors?",
-    a: "Absolutely. We color-match to your brand guidelines or existing signage for perfect consistency.",
-  },
-  {
-    q: "Do you offer financing or payment plans?",
-    a: "We offer flexible payment options. Ask us during your free consultation.",
-  },
+const BS_FAQ_KEYS = [
+  { qKey: "bs.faq.q1", aKey: "bs.faq.a1" },
+  { qKey: "bs.faq.q2", aKey: "bs.faq.a2" },
+  { qKey: "bs.faq.q3", aKey: "bs.faq.a3" },
+  { qKey: "bs.faq.q4", aKey: "bs.faq.a4" },
+  { qKey: "bs.faq.q5", aKey: "bs.faq.a5" },
 ];
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -769,7 +754,7 @@ function TrustSection() {
           <div className="mb-16 lg:mb-20">
             <div className="relative rounded-2xl overflow-hidden lg:aspect-[21/9]">
               <Image
-                src="/images/team-family-booth.png"
+                src="/images/team-family-booth.jpg"
                 alt="Imagine Studio Design team and family"
                 width={1200}
                 height={800}
@@ -829,21 +814,21 @@ function FAQSection() {
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-12 lg:mb-16">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">FAQ</span>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("bs.faq.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              BUSINESS SIGNS <span className="gradient-brand-text">FAQ</span>
+              {t("bs.faq.title1")} <span className="gradient-brand-text">{t("bs.faq.titleHighlight")}</span>
             </h2>
           </div>
         </FadeUp>
         <FadeUp delay={0.2}>
           <Accordion type="single" collapsible className="space-y-4">
-            {BS_FAQ_DATA.map((faq, i) => (
+            {BS_FAQ_KEYS.map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="rounded-xl border border-white/5 bg-white/[0.02] px-4 lg:px-6">
                 <AccordionTrigger className="text-white font-bold text-sm sm:text-base lg:text-lg text-left hover:no-underline py-5 lg:py-6">
-                  {faq.q}
+                  {t(faq.qKey)}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-400 text-sm sm:text-base leading-relaxed pb-5 lg:pb-6">
-                  {faq.a}
+                  {t(faq.aKey)}
                 </AccordionContent>
               </AccordionItem>
             ))}

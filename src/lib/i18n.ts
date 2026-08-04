@@ -472,6 +472,21 @@ const translations: Record<Lang, Record<string, string>> = {
     "bs.quote.submitting": "Sending...",
     "bs.quote.noSpam": "No spam. We reply within 24 hours.",
     "bs.quote.nameRequired": "Please enter your name and phone number.",
+
+    // Business Signs Landing — FAQ (EN)
+    "bs.faq.tag": "FAQ",
+    "bs.faq.title1": "BUSINESS SIGNS",
+    "bs.faq.titleHighlight": "FAQ",
+    "bs.faq.q1": "How long does it take to make a custom business sign?",
+    "bs.faq.a1": "Most signs take 2-4 weeks from design approval to installation, depending on complexity and permit requirements.",
+    "bs.faq.q2": "Do you handle permits for outdoor signs?",
+    "bs.faq.a2": "Yes, we handle all permitting with the City of Wilmington and New Hanover County as part of our service.",
+    "bs.faq.q3": "What materials do you use?",
+    "bs.faq.a3": "We use premium materials: aluminum, acrylic, LED illumination, and high-quality vinyl — all rated for outdoor durability.",
+    "bs.faq.q4": "Can you match my existing brand colors?",
+    "bs.faq.a4": "Absolutely. We color-match to your brand guidelines or existing signage for perfect consistency.",
+    "bs.faq.q5": "Do you offer financing or payment plans?",
+    "bs.faq.a5": "We offer flexible payment options. Ask us during your free consultation.",
   },
   es: {
     // Nav
@@ -935,6 +950,21 @@ const translations: Record<Lang, Record<string, string>> = {
     "bs.quote.submitting": "Enviando...",
     "bs.quote.noSpam": "Sin spam. Respondemos en 24 horas.",
     "bs.quote.nameRequired": "Por favor ingresa tu nombre y teléfono.",
+
+    // Business Signs Landing — FAQ (ES)
+    "bs.faq.tag": "FAQ",
+    "bs.faq.title1": "PREGUNTAS",
+    "bs.faq.titleHighlight": "FRECUENTES",
+    "bs.faq.q1": "¿Cuánto tarda en hacerse un letrero personalizado?",
+    "bs.faq.a1": "La mayoría de letreros toman 2-4 semanas desde la aprobación del diseño hasta la instalación, dependiendo de la complejidad y permisos requeridos.",
+    "bs.faq.q2": "¿Manejan los permisos para letreros exteriores?",
+    "bs.faq.a2": "Sí, manejamos todos los permisos con la Ciudad de Wilmington y el Condado de New Hanover como parte de nuestro servicio.",
+    "bs.faq.q3": "¿Qué materiales utilizan?",
+    "bs.faq.a3": "Usamos materiales premium: aluminio, acrílico, iluminación LED y vinilo de alta calidad — todos certificados para durabilidad exterior.",
+    "bs.faq.q4": "¿Pueden igualar los colores de mi marca existente?",
+    "bs.faq.a4": "Por supuesto. Hacemos calce de color según tu guía de marca o letreros existentes para perfecta consistencia.",
+    "bs.faq.q5": "¿Ofrecen financiamiento o planes de pago?",
+    "bs.faq.a5": "Ofrecemos opciones de pago flexibles. Pregúntanos durante tu consulta gratis.",
   },
 };
 
