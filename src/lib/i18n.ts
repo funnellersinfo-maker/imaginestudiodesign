@@ -1298,8 +1298,8 @@ const translations: Record<Lang, Record<string, string>> = {
 
     // Window Graphics — Graphic Types (ES)
     "wg.vis.tag": "Qué Instalamos",
-    "wg.vis.title1": "CADA TIPO DE",
-    "wg.vis.titleHighlight": "GRÁFICO PARA VENTANA",
+    "wg.vis.title1": "DISEÑO PREMIUM PARA",
+    "wg.vis.titleHighlight": "CADA TIPO DE VENTANA",
     "wg.vis.subtitle": "Desde cubiertas completas hasta elegante vinilo esmerilado — lo instalamos todo.",
     "wg.vis.perforated": "Vinilo Perforado",
     "wg.vis.perforatedDesc": "Visibilidad en un sentido — tú ves afuera, ellos ven tu anuncio. Perfecto para tiendas.",
