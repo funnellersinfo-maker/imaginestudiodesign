@@ -1207,7 +1207,7 @@ const translations: Record<Lang, Record<string, string>> = {
     // Window Graphics — Hero (ES)
     "wg.hero.badge": "La #1 Empresa de Gráficos para Ventanas en Wilmington, NC",
     "wg.hero.h1.line1": "CONVIERTE TUS VENTANAS",
-    "wg.hero.h1.line2": "EN CLIENTES.",
+    "wg.hero.h1.line2": "EN CLIENTES 24/7.",
     "wg.hero.h1.line3": "",
     "wg.hero.h2.line1": "TUS VENTANAS SON",
     "wg.hero.h2.line2": "ESPACIO PUBLICITARIO SIN USAR.",
