@@ -62,6 +62,46 @@ const SLIDES = [
     altEn: "Custom business vehicle wrap",
     altEs: "Vinilo vehicular personalizado para negocios",
   },
+  {
+    src: "/images/gallery/IMG-20260423-WA0068.jpg",
+    altEn: "Colorful insulated tumblers branded for the Wilmington Marathon event",
+    altEs: "Vasos térmicos coloridos con marca del evento Wilmington Marathon",
+  },
+  {
+    src: "/images/gallery/IMG-20260203-WA0050.jpg",
+    altEn: "Baseball caps branded with Lucero Masonry Inc logos",
+    altEs: "Gorras de béisbol con marca de Lucero Masonry Inc",
+  },
+  {
+    src: "/images/gallery/IMG-20260203-WA0056.jpg",
+    altEn: "Mannequin displaying Lucero Masonry t-shirt and branded baseball caps",
+    altEs: "Maniquí con camiseta de Lucero Masonry y gorras con marca",
+  },
+  {
+    src: "/images/gallery/IMG-20250924-WA0021.jpg",
+    altEn: "Pink t-shirt with Run for the Ta Tas sponsor logos",
+    altEs: "Camiseta rosada con logos de patrocinadores de Run for the Ta Tas",
+  },
+  {
+    src: "/images/gallery/IMG-20250924-WA0025.jpg",
+    altEn: "Pink t-shirt with breast cancer awareness branding on a mannequin",
+    altEs: "Camiseta rosada con branding de conciencia sobre cáncer de mama en maniquí",
+  },
+  {
+    src: "/images/gallery/IMG-20251021-WA0056.jpg",
+    altEn: "White long-sleeve shirt with Brothers Painting Services logo",
+    altEs: "Camiseta blanca de manga larga con logo de Brothers Painting Services",
+  },
+  {
+    src: "/images/gallery/IMG-20251021-WA0058.jpg",
+    altEn: "White long-sleeve shirts branded for Brothers Painting Services LLC",
+    altEs: "Camisetas blancas de manga larga con marca de Brothers Painting Services LLC",
+  },
+  {
+    src: "/images/gallery/IMG-20251118-WA0040.jpg",
+    altEn: "Two hoodies displaying Kings Garage branding on a table",
+    altEs: "Dos hoodies con marca de Kings Garage sobre una mesa",
+  },
 ];
 
 // Fisher-Yates shuffle (se ejecuta una sola vez al montar el componente)
