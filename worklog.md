@@ -1203,3 +1203,53 @@ Stage Summary:
   3. Message: Oki"
 - Deploy exitoso a https://imaginestudiodesign.pages.dev
 - Commit 9121e4f pushed a GitHub
+
+---
+Task ID: 29
+Agent: Main (GLM 5.2)
+Task: Landing #2 Business Signs — /business-signs route (Phase 2)
+
+Work Log:
+- Análisis profundo de la landing actual de Vehicle Wraps (STEP 1)
+- Wireframe textual de 8 secciones aprobado por el usuario
+- Ajuste: mantener arquitectura exacta de Vehicle Wraps (no quitar secciones)
+- Desarrollo completo:
+  - Creado src/app/business-signs/page.tsx (~960 líneas, 12 secciones espejo + FAQ)
+  - Creado src/app/business-signs/layout.tsx (SEO metadata específico)
+  - Agregadas ~200 traducciones EN/ES con prefijo bs. en i18n.ts
+- Limpieza de basura re-agregada por el otro chat (scripts debug, api/route.ts, prisma, etc.)
+- Lint: 0 errores en business-signs
+- Build: exitoso, /business-signs generada como página estática (152,161 bytes)
+- Git commit 6c814c8 pushed a origin/main
+- Deploy a Cloudflare Pages: exitoso, 31 archivos nuevos subidos
+
+Verificación post-deploy:
+- HTTP 200 en /business-signs
+- SEO Title: "Business Signs Wilmington NC | Imagine Studio Design"
+- Meta description con "Wilmington, NC"
+- H1: "MAKE YOUR BUSINESS IMPOSSIBLE TO IGNORE."
+- Sign types presentes: Channel Letters, Monument Signs, Exterior Signs
+- Meta Pixel (fbq) presente
+- WhatsApp number 19105474314 presente
+- Hero image (signage-project.png) presente
+- Showcase image (showcase-everything.jpg) presente
+- FAQ section presente (5 preguntas)
+- Lang Toggle funciona (EN ↔ ES confirmado)
+- Headline ES: "HAZ QUE TU NEGOCIO SEA IMPOSIBLE DE IGNORAR."
+- Mini form disabled (aria-disabled=true, validación funciona)
+- ZERO page errors
+
+Landing principal (Vehicle Wraps) sigue intacta:
+- HTTP 200
+- Meta Pixel intacto
+- "Business Visibility" presente
+
+Stage Summary:
+- Landing #2 Business Signs LIVE en https://imaginestudiodesign.pages.dev/business-signs
+- Arquitectura espejo de Vehicle Wraps (12 secciones + FAQ)
+- SEO optimizado para "Business Signs Wilmington NC"
+- Meta Pixel con content_name específico "Business Signs Hero Mini Form"
+- Bilingüe EN/ES funcional
+- Todos los componentes reused sin modificar
+- Landing principal intacta
+- Commit 6c814c8 pushed a GitHub
