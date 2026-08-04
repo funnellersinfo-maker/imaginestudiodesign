@@ -98,7 +98,7 @@ function ScaleIn({ children, delay = 0, className = "" }: { children: React.Reac
 /* ═══════════════════════════════════════════════════
    DATA — adapted for Business Signs
    ═══════════════════════════════════════════════════ */
-const BS_HERO_STATIC_IMAGE = "/images/signage-project.png";
+const BS_HERO_STATIC_IMAGE = "/images/hero/business-signs-hero.jpg";
 const BS_SHOWCASE_IMAGE = "/images/showcase-everything.jpg";
 
 const BS_BIZ_KEYS = [
