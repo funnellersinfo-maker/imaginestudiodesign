@@ -98,7 +98,7 @@ function ScaleIn({ children, delay = 0, className = "" }: { children: React.Reac
 /* ═══════════════════════════════════════════════════
    DATA — adapted for Window Graphics
    ═══════════════════════════════════════════════════ */
-const WG_HERO_STATIC_IMAGE = "/images/signage-project.png";
+const WG_HERO_STATIC_IMAGE = "/images/hero/window-graphics-hero.jpg";
 const WG_SHOWCASE_IMAGE = "/images/showcase-everything.jpg";
 
 const WG_BIZ_KEYS = [
