@@ -1253,3 +1253,41 @@ Stage Summary:
 - Todos los componentes reused sin modificar
 - Landing principal intacta
 - Commit 6c814c8 pushed a GitHub
+
+---
+Task ID: 30
+Agent: Main (GLM 5.2)
+Task: Business Signs — arreglar team image + FAQ bilingue EN/ES
+
+Work Log:
+- Reporte del usuario: team/family photo no se ve + FAQs en español siguen en inglés
+- Investigación:
+  1. team-family-booth.png NO existía en public/images/ (por eso no se veía)
+  2. BS_FAQ_DATA tenía strings hardcodeados en inglés (no usaba i18n.ts)
+- Solución 1 — Team image:
+  - Cliente subió nueva imagen: upload/1f29d055-3116-4f7b-926c-4570dfada7ee.jpg (268KB, 1036x1169)
+  - Copiada como public/images/team-family-booth.jpg (cambio de extensión .png → .jpg)
+  - Optimizada con sharp: 268KB → 223KB (-17%)
+  - Actualizada referencia en business-signs/page.tsx: .png → .jpg
+- Solución 2 — FAQ bilingue:
+  - Cambiado BS_FAQ_DATA (strings hardcodeados) → BS_FAQ_KEYS (keys de i18n.ts)
+  - Agregadas 12 traducciones nuevas en i18n.ts (6 EN + 6 ES):
+    - bs.faq.tag, bs.faq.title1, bs.faq.titleHighlight
+    - bs.faq.q1 a bs.faq.q5 (preguntas)
+    - bs.faq.a1 a bs.faq.a5 (respuestas)
+  - FAQ title también traducido (antes "BUSINESS SIGNS FAQ" hardcodeado, ahora usa t())
+- Lint: 0 errores
+- Build: exitoso
+- Deploy a Cloudflare Pages: exitoso, 28 archivos nuevos
+- Verificación con Agent Browser (tras full browser restart para limpiar cache):
+  - Team image src: team-family-booth.jpg ✓
+  - FAQ EN mode: "How long does it take" ✓
+  - FAQ ES mode: "¿Cuánto tarda" ✓
+  - ZERO page errors
+- Git commit 054021e pushed a origin/main, local y remote sincronizados
+
+Stage Summary:
+- Team/Family photo ahora se ve correctamente (nueva imagen del cliente)
+- FAQ completamente bilingue EN/ES (preguntas + respuestas + título)
+- Deploy exitoso a https://imaginestudiodesign.pages.dev/business-signs
+- Commit 054021e pushed a GitHub
