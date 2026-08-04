@@ -1291,3 +1291,50 @@ Stage Summary:
 - FAQ completamente bilingue EN/ES (preguntas + respuestas + título)
 - Deploy exitoso a https://imaginestudiodesign.pages.dev/business-signs
 - Commit 054021e pushed a GitHub
+
+---
+Task ID: 31
+Agent: Main (GLM 5.2)
+Task: Landing #3 Window Graphics — /window-graphics route (Phase 2)
+
+Work Log:
+- Wireframe textual aprobado por el usuario
+- Agregadas 440 líneas de traducciones EN/ES en i18n.ts (prefijo wg.)
+- Creada src/app/window-graphics/page.tsx (~1098 líneas, 12 secciones espejo de Business Signs)
+- Creada src/app/window-graphics/layout.tsx (SEO metadata específico)
+- 6 Window Graphic Types: Perforated Film, Frosted Graphics, Vinyl Lettering, Full Covers, Etched Glass, Storefront Decals
+- FAQ bilingüe EN/ES desde el inicio (5 preguntas)
+- Meta Pixel con content_name específico: "Window Graphics Hero Mini Form"
+- Lint: 0 errores
+- Build: exitoso, /window-graphics generada como página estática
+- HTML: 152,778 bytes
+- Git commit 297c15f pushed a origin/main
+- Deploy a Cloudflare Pages: exitoso, 37 archivos nuevos
+
+Verificación post-deploy:
+- HTTP 200 en /window-graphics
+- SEO Title: "Window Graphics Wilmington NC | Imagine Studio Design"
+- H1: "TURN YOUR WINDOWS INTO CUSTOMERS."
+- 6 graphic types presentes (Perforated, Frosted, etc.)
+- FAQ EN: "How long do window graphics last?"
+- FAQ ES: "¿Cuánto duran los gráficos para ventanas?"
+- Meta Pixel (fbq) presente
+- WhatsApp number presente
+- Mini form disabled (aria-disabled=true)
+- Lang Toggle funciona (EN ↔ ES confirmado)
+- Headline ES: "CONVIERTE TUS VENTANAS EN CLIENTES."
+- ZERO page errors
+
+Otras landings intactas:
+- Principal (/): HTTP 200 ✓
+- Business Signs (/business-signs): HTTP 200 ✓
+- Window Graphics (/window-graphics): HTTP 200 ✓
+
+Stage Summary:
+- Landing #3 Window Graphics LIVE en https://imaginestudiodesign.pages.dev/window-graphics
+- Arquitectura espejo de Business Signs (12 secciones + FAQ)
+- SEO optimizado para "Window Graphics Wilmington NC"
+- Meta Pixel con content_name específico
+- FAQ bilingüe EN/ES desde el inicio
+- 3 landings ahora LIVE: Vehicle Wraps, Business Signs, Window Graphics
+- Commit 297c15f pushed a GitHub
