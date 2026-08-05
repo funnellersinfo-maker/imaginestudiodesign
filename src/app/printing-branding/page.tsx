@@ -98,7 +98,7 @@ function ScaleIn({ children, delay = 0, className = "" }: { children: React.Reac
 /* ═══════════════════════════════════════════════════
    DATA — adapted for Printing & Branding
    ═══════════════════════════════════════════════════ */
-const PB_HERO_STATIC_IMAGE = "/images/apparel-project.png";
+const PB_HERO_STATIC_IMAGE = "/images/hero/printing-branding-hero.jpg";
 const PB_SHOWCASE_IMAGE = "/images/showcase-everything.jpg";
 
 const PB_BIZ_KEYS = [
@@ -147,14 +147,14 @@ const PB_METRICS_DATA = [
 ];
 
 const PB_PROJECTS_DATA = [
-  { src: "/images/signage-project.png", altEn: "Custom business sign installation", label: "Custom Storefront Sign" },
-  { src: "/images/showcase-everything.jpg", altEn: "Business signage portfolio", label: "Sign Portfolio" },
-  { src: "/images/projects/20220207_154015.jpg", altEn: "Branded apparel with sign matching", label: "Brand Consistency" },
-  { src: "/images/projects/20220207_154152.jpg", altEn: "Business cards and signage", label: "Business Cards" },
-  { src: "/images/projects/IMG-20260423-WA0066.jpg", altEn: "Branded hats matching signs", label: "Branded Apparel" },
-  { src: "/images/projects/IMG-20260423-WA0070.jpg", altEn: "Painting company branding", label: "Company Branding" },
-  { src: "/images/projects/IMG-20260306-WA0016.jpg", altEn: "Empire Metal Works signage", label: "Empire Metal Works" },
-  { src: "/images/projects/IMG-20260306-WA0020.jpg", altEn: "Empire Metal Works branded hoodie", label: "Empire Metal Works" },
+  { src: "/images/gallery/IMG-20260423-WA0068.jpg", altEn: "Wilmington Marathon branded tumblers", label: "Wilmington Marathon" },
+  { src: "/images/gallery/IMG-20260203-WA0050.jpg", altEn: "Lucero Masonry branded caps", label: "Lucero Masonry Inc" },
+  { src: "/images/gallery/IMG-20260203-WA0056.jpg", altEn: "Lucero Masonry t-shirt and caps", label: "Lucero Masonry Inc" },
+  { src: "/images/gallery/IMG-20250924-WA0021.jpg", altEn: "Run for the Ta Tas pink t-shirt", label: "Run for the Ta Tas" },
+  { src: "/images/gallery/IMG-20250924-WA0025.jpg", altEn: "Breast cancer awareness pink t-shirt", label: "Breast Cancer Awareness" },
+  { src: "/images/gallery/IMG-20251021-WA0056.jpg", altEn: "Brothers Painting Services long-sleeve", label: "Brothers Painting Services" },
+  { src: "/images/gallery/IMG-20251021-WA0058.jpg", altEn: "Brothers Painting Services LLC shirts", label: "Brothers Painting Services" },
+  { src: "/images/gallery/IMG-20251118-WA0040.jpg", altEn: "Kings Garage branded hoodies", label: "Kings Garage" },
 ];
 
 const PB_FAQ_KEYS = [
