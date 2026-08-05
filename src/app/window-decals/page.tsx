@@ -96,57 +96,57 @@ function ScaleIn({ children, delay = 0, className = "" }: { children: React.Reac
 }
 
 /* ═══════════════════════════════════════════════════
-   DATA — adapted for Window Graphics
+   DATA — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
-const WG_HERO_STATIC_IMAGE = "/images/hero/window-graphics-hero.jpg";
-const WG_SHOWCASE_IMAGE = "/images/showcase-everything.jpg";
+const WD_HERO_STATIC_IMAGE = "/images/hero/window-decals-hero.jpg";
+const WD_SHOWCASE_IMAGE = "/images/showcase-everything.jpg";
 
-const WG_BIZ_KEYS = [
-  "wg.biz.contractor", "wg.biz.roofing", "wg.biz.hvac", "wg.biz.plumbing", "wg.biz.electrical",
-  "wg.biz.landscaping", "wg.biz.painting", "wg.biz.tree", "wg.biz.concrete",
-  "wg.biz.restaurant", "wg.biz.retail", "wg.biz.otherService", "wg.biz.other",
+const WD_BIZ_KEYS = [
+  "wd.biz.contractor", "wd.biz.roofing", "wd.biz.hvac", "wd.biz.plumbing", "wd.biz.electrical",
+  "wd.biz.landscaping", "wd.biz.painting", "wd.biz.tree", "wd.biz.concrete",
+  "wd.biz.restaurant", "wd.biz.retail", "wd.biz.otherService", "wd.biz.other",
 ];
 
-const WG_INDUSTRIES_DATA = [
-  { icon: HardHat, labelKey: "wg.ind.contractors", descKey: "wg.ind.contractorsDesc" },
-  { icon: HomeIcon, labelKey: "wg.ind.roofing", descKey: "wg.ind.roofingDesc" },
-  { icon: Snowflake, labelKey: "wg.ind.hvac", descKey: "wg.ind.hvacDesc" },
-  { icon: Wrench, labelKey: "wg.ind.plumbing", descKey: "wg.ind.plumbingDesc" },
-  { icon: Plug, labelKey: "wg.ind.electrical", descKey: "wg.ind.electricalDesc" },
-  { icon: TreePine, labelKey: "wg.ind.landscaping", descKey: "wg.ind.landscapingDesc" },
-  { icon: PaintBucket, labelKey: "wg.ind.painting", descKey: "wg.ind.paintingDesc" },
-  { icon: TreePine, labelKey: "wg.ind.tree", descKey: "wg.ind.treeDesc" },
-  { icon: GlassWater, labelKey: "wg.ind.concrete", descKey: "wg.ind.concreteDesc" },
-  { icon: Building2, labelKey: "wg.ind.construction", descKey: "wg.ind.constructionDesc" },
-  { icon: Store, labelKey: "wg.ind.restaurant", descKey: "wg.ind.restaurantDesc" },
-  { icon: Store, labelKey: "wg.ind.retail", descKey: "wg.ind.retailDesc" },
+const WD_INDUSTRIES_DATA = [
+  { icon: HardHat, labelKey: "wd.ind.contractors", descKey: "wd.ind.contractorsDesc" },
+  { icon: HomeIcon, labelKey: "wd.ind.roofing", descKey: "wd.ind.roofingDesc" },
+  { icon: Snowflake, labelKey: "wd.ind.hvac", descKey: "wd.ind.hvacDesc" },
+  { icon: Wrench, labelKey: "wd.ind.plumbing", descKey: "wd.ind.plumbingDesc" },
+  { icon: Plug, labelKey: "wd.ind.electrical", descKey: "wd.ind.electricalDesc" },
+  { icon: TreePine, labelKey: "wd.ind.landscaping", descKey: "wd.ind.landscapingDesc" },
+  { icon: PaintBucket, labelKey: "wd.ind.painting", descKey: "wd.ind.paintingDesc" },
+  { icon: TreePine, labelKey: "wd.ind.tree", descKey: "wd.ind.treeDesc" },
+  { icon: GlassWater, labelKey: "wd.ind.concrete", descKey: "wd.ind.concreteDesc" },
+  { icon: Building2, labelKey: "wd.ind.construction", descKey: "wd.ind.constructionDesc" },
+  { icon: Store, labelKey: "wd.ind.restaurant", descKey: "wd.ind.restaurantDesc" },
+  { icon: Store, labelKey: "wd.ind.retail", descKey: "wd.ind.retailDesc" },
 ];
 
-const WG_SIGN_TYPES_DATA = [
-  { icon: Building2, titleKey: "wg.vis.perforated", descKey: "wg.vis.perforatedDesc" },
-  { icon: Eye, titleKey: "wg.vis.frosted", descKey: "wg.vis.frostedDesc" },
-  { icon: Type, titleKey: "wg.vis.lettering", descKey: "wg.vis.letteringDesc" },
-  { icon: Layers, titleKey: "wg.vis.fullcover", descKey: "wg.vis.fullcoverDesc" },
-  { icon: Sparkles, titleKey: "wg.vis.etched", descKey: "wg.vis.etchedDesc" },
-  { icon: Store, titleKey: "wg.vis.decals", descKey: "wg.vis.decalsDesc" },
+const WD_SIGN_TYPES_DATA = [
+  { icon: Building2, titleKey: "wd.vis.perforated", descKey: "wd.vis.perforatedDesc" },
+  { icon: Eye, titleKey: "wd.vis.frosted", descKey: "wd.vis.frostedDesc" },
+  { icon: Type, titleKey: "wd.vis.lettering", descKey: "wd.vis.letteringDesc" },
+  { icon: Layers, titleKey: "wd.vis.fullcover", descKey: "wd.vis.fullcoverDesc" },
+  { icon: Sparkles, titleKey: "wd.vis.etched", descKey: "wd.vis.etchedDesc" },
+  { icon: Store, titleKey: "wd.vis.decals", descKey: "wd.vis.decalsDesc" },
 ];
 
-const WG_PROCESS_DATA = [
-  { num: "01", titleKey: "wg.process.step1", descKey: "wg.process.step1Desc", icon: Phone },
-  { num: "02", titleKey: "wg.process.step2", descKey: "wg.process.step2Desc", icon: Palette },
-  { num: "03", titleKey: "wg.process.step3", descKey: "wg.process.step3Desc", icon: Layers },
-  { num: "04", titleKey: "wg.process.step4", descKey: "wg.process.step4Desc", icon: Truck },
-  { num: "05", titleKey: "wg.process.step5", descKey: "wg.process.step5Desc", icon: Eye },
+const WD_PROCESS_DATA = [
+  { num: "01", titleKey: "wd.process.step1", descKey: "wd.process.step1Desc", icon: Phone },
+  { num: "02", titleKey: "wd.process.step2", descKey: "wd.process.step2Desc", icon: Palette },
+  { num: "03", titleKey: "wd.process.step3", descKey: "wd.process.step3Desc", icon: Layers },
+  { num: "04", titleKey: "wd.process.step4", descKey: "wd.process.step4Desc", icon: Truck },
+  { num: "05", titleKey: "wd.process.step5", descKey: "wd.process.step5Desc", icon: Eye },
 ];
 
-const WG_METRICS_DATA = [
-  { value: "1500+", labelKey: "wg.trust.projects" },
-  { value: "98%", labelKey: "wg.trust.satisfaction" },
-  { value: "10+", labelKey: "wg.trust.experience" },
-  { value: "24h", labelKey: "wg.trust.turnaround" },
+const WD_METRICS_DATA = [
+  { value: "1500+", labelKey: "wd.trust.projects" },
+  { value: "98%", labelKey: "wd.trust.satisfaction" },
+  { value: "10+", labelKey: "wd.trust.experience" },
+  { value: "24h", labelKey: "wd.trust.turnaround" },
 ];
 
-const WG_PROJECTS_DATA = [
+const WD_PROJECTS_DATA = [
   { src: "/images/signage-project.png", altEn: "Custom business sign installation", label: "Custom Storefront Sign" },
   { src: "/images/showcase-everything.jpg", altEn: "Business signage portfolio", label: "Sign Portfolio" },
   { src: "/images/projects/20220207_154015.jpg", altEn: "Branded apparel with sign matching", label: "Brand Consistency" },
@@ -157,12 +157,12 @@ const WG_PROJECTS_DATA = [
   { src: "/images/projects/IMG-20260306-WA0020.jpg", altEn: "Empire Metal Works branded hoodie", label: "Empire Metal Works" },
 ];
 
-const WG_FAQ_KEYS = [
-  { qKey: "wg.faq.q1", aKey: "wg.faq.a1" },
-  { qKey: "wg.faq.q2", aKey: "wg.faq.a2" },
-  { qKey: "wg.faq.q3", aKey: "wg.faq.a3" },
-  { qKey: "wg.faq.q4", aKey: "wg.faq.a4" },
-  { qKey: "wg.faq.q5", aKey: "wg.faq.a5" },
+const WD_FAQ_KEYS = [
+  { qKey: "wd.faq.q1", aKey: "wd.faq.a1" },
+  { qKey: "wd.faq.q2", aKey: "wd.faq.a2" },
+  { qKey: "wd.faq.q3", aKey: "wd.faq.a3" },
+  { qKey: "wd.faq.q4", aKey: "wd.faq.a4" },
+  { qKey: "wd.faq.q5", aKey: "wd.faq.a5" },
 ];
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -174,7 +174,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   NAV — reused, adapted nav links for Window Graphics
+   NAV — reused, adapted nav links for Window Decals
    ═══════════════════════════════════════════════════ */
 function Nav({ onQuote }: { onQuote: () => void }) {
   const [open, setOpen] = useState(false);
@@ -187,16 +187,16 @@ function Nav({ onQuote }: { onQuote: () => void }) {
             <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 lg:h-12 w-auto object-contain" priority />
           </a>
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            <a href="#our-work" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wg.nav.transformations")}</a>
-            <a href="#sign-types" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wg.nav.services")}</a>
-            <a href="#portfolio" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wg.nav.projects")}</a>
-            <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wg.nav.process")}</a>
+            <a href="#our-work" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wd.nav.transformations")}</a>
+            <a href="#sign-types" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wd.nav.services")}</a>
+            <a href="#portfolio" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wd.nav.projects")}</a>
+            <a href="#process" className="text-sm lg:text-base text-gray-400 hover:text-white transition-colors">{t("wd.nav.process")}</a>
           </div>
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
             <a href="tel:+19105474314" className="flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
               <Phone className="w-4 h-4" />(910) 547-4314
             </a>
-            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("wg.nav.getQuote")}</button>
+            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide">{t("wd.nav.getQuote")}</button>
           </div>
           <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
             {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
@@ -205,13 +205,13 @@ function Nav({ onQuote }: { onQuote: () => void }) {
         {open && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="md:hidden pb-6 pt-2 border-t border-white/5">
             <div className="flex flex-col gap-4">
-              <a href="#our-work" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wg.nav.transformations")}</a>
-              <a href="#sign-types" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wg.nav.services")}</a>
-              <a href="#portfolio" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wg.nav.projects")}</a>
-              <a href="#process" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wg.nav.process")}</a>
+              <a href="#our-work" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wd.nav.transformations")}</a>
+              <a href="#sign-types" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wd.nav.services")}</a>
+              <a href="#portfolio" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wd.nav.projects")}</a>
+              <a href="#process" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white py-2">{t("wd.nav.process")}</a>
               <div className="section-divider" />
               <a href="tel:+19105474314" className="flex items-center gap-2 text-emerald-400 py-2"><Phone className="w-4 h-4" /> (910) 547-4314</a>
-              <button onClick={() => { setOpen(false); onQuote(); }} className="cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide w-full">{t("wg.nav.getFreeQuote")}</button>
+              <button onClick={() => { setOpen(false); onQuote(); }} className="cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide w-full">{t("wd.nav.getFreeQuote")}</button>
             </div>
           </motion.div>
         )}
@@ -221,7 +221,7 @@ function Nav({ onQuote }: { onQuote: () => void }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   1. HERO — adapted for Window Graphics
+   1. HERO — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function HeroSection({ onQuote }: { onQuote: () => void }) {
   const { t, lang } = useLang();
@@ -231,15 +231,15 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     lang === "es"
       ? `Hola! Quiero una cotizacion para letreros.\n1. Nombre: ${form.name || "..."}\n2. Negocio: ${form.businessType || "..."}\n3. Mensaje: ${form.message || "..."}`
-      : `Hi! I'd like a quote for window graphics.\n1. Name: ${form.name || "..."}\n2. Business: ${form.businessType || "..."}\n3. Message: ${form.message || "..."}`
+      : `Hi! I'd like a quote for window decals.\n1. Name: ${form.name || "..."}\n2. Business: ${form.businessType || "..."}\n3. Message: ${form.message || "..."}`
   )}`;
 
   const isFormValid = form.name.trim() !== "" && form.businessType !== "" && form.message.trim() !== "";
 
   const headlines = [
-    { line1: t("wg.hero.h1.line1"), line2: t("wg.hero.h1.line2"), line3: t("wg.hero.h1.line3") },
-    { line1: t("wg.hero.h2.line1"), line2: t("wg.hero.h2.line2"), line3: t("wg.hero.h2.line3") },
-    { line1: t("wg.hero.h3.line1"), line2: t("wg.hero.h3.line2"), line3: t("wg.hero.h3.line3") },
+    { line1: t("wd.hero.h1.line1"), line2: t("wd.hero.h1.line2"), line3: t("wd.hero.h1.line3") },
+    { line1: t("wd.hero.h2.line1"), line2: t("wd.hero.h2.line2"), line3: t("wd.hero.h2.line3") },
+    { line1: t("wd.hero.h3.line1"), line2: t("wd.hero.h3.line2"), line3: t("wd.hero.h3.line3") },
   ];
 
   const [idx, setIdx] = useState(0);
@@ -266,7 +266,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         <FadeUp delay={0.1}>
           <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-4 py-1 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mt-10 sm:mt-0 mb-8 lg:mb-24">
             <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-brand-hot-pink flex-shrink-0" />
-            <span className="text-[9px] sm:text-sm text-gray-300 text-center leading-tight whitespace-nowrap">{t("wg.hero.badge")}</span>
+            <span className="text-[9px] sm:text-sm text-gray-300 text-center leading-tight whitespace-nowrap">{t("wd.hero.badge")}</span>
           </div>
         </FadeUp>
 
@@ -296,7 +296,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             <div className="shimmer-border rounded-2xl">
               <div className="shimmer-inner-dark rounded-[14px]">
                 <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-video rounded-[14px] overflow-hidden bg-white/5">
-                  <Image src={WG_HERO_STATIC_IMAGE} alt="Custom business sign installation by Imagine Studio Design in Wilmington NC" fill priority className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
+                  <Image src={WD_HERO_STATIC_IMAGE} alt="Custom business sign installation by Imagine Studio Design in Wilmington NC" fill priority className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
                 </div>
               </div>
             </div>
@@ -305,14 +305,14 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 
         {/* Subtitle */}
         <FadeUp delay={0.35}>
-          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-12 leading-relaxed drop-shadow-md">{t("wg.hero.subtitle")}</p>
+          <p className="text-[0.9rem] sm:text-lg md:text-xl lg:text-xl text-gray-300 max-w-2xl lg:max-w-3xl mx-auto mb-8 lg:mb-12 leading-relaxed drop-shadow-md">{t("wd.hero.subtitle")}</p>
         </FadeUp>
 
         {/* Mini WhatsApp Form */}
         <FadeUp delay={0.4}>
           <div className="w-full max-w-[600px] mx-auto mb-4 sm:mb-6 lg:mb-8">
             <p className="text-center text-xs sm:text-sm font-bold text-white mb-3 leading-snug drop-shadow-md whitespace-pre-line">
-              {t("wg.hero.form.cta")}
+              {t("wd.hero.form.cta")}
             </p>
             <div className="shimmer-border-glow rounded-2xl">
               <div className="shimmer-inner-dark rounded-[14px] p-4 sm:p-6">
@@ -322,7 +322,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                   <Input
                     value={form.name}
                     onChange={(e) => { setForm((f) => ({ ...f, name: e.target.value })); }}
-                    placeholder={t("wg.hero.form.name")}
+                    placeholder={t("wd.hero.form.name")}
                     className="pl-10 bg-white/5 text-white placeholder:text-gray-500 rounded-xl h-11 text-sm border-white/10 focus:border-brand-hot-pink/50"
                   />
                 </div>
@@ -331,10 +331,10 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                   <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none z-10 text-gray-500" />
                   <Select value={form.businessType} onValueChange={(v) => { setForm((f) => ({ ...f, businessType: v })); }}>
                     <SelectTrigger className="pl-10 bg-white/5 text-white rounded-xl h-11 text-sm border-white/10 focus:border-brand-hot-pink/50">
-                      <SelectValue placeholder={t("wg.hero.form.business")} />
+                      <SelectValue placeholder={t("wd.hero.form.business")} />
                     </SelectTrigger>
                     <SelectContent className="bg-[#111128] border-white/10 text-white max-h-60 overflow-y-auto">
-                      {WG_BIZ_KEYS.map((key) => (
+                      {WD_BIZ_KEYS.map((key) => (
                         <SelectItem key={key} value={key} className="text-gray-300 focus:text-white focus:bg-white/5">{t(key)}</SelectItem>
                       ))}
                     </SelectContent>
@@ -346,7 +346,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                   <Textarea
                     value={form.message}
                     onChange={(e) => { setForm((f) => ({ ...f, message: e.target.value })); }}
-                    placeholder={t("wg.hero.form.message")}
+                    placeholder={t("wd.hero.form.message")}
                     className="pl-10 bg-white/5 text-white placeholder:text-gray-500 rounded-xl min-h-[100px] sm:min-h-[120px] text-sm resize-none border-white/10 focus:border-brand-hot-pink/50"
                   />
                 </div>
@@ -372,7 +372,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                   /* 🔒 META PIXEL LEAD — DO NOT DELETE */
                   onClick={(e) => {
                     if (!isFormValid) { e.preventDefault(); return; }
-                    try { (window as any).fbq("track", "Lead", { content_name: "Window Graphics Hero Mini Form" }); } catch {}
+                    try { (window as any).fbq("track", "Lead", { content_name: "Window Decals Hero Mini Form" }); } catch {}
                   }}
                   className={`w-full flex items-center justify-center gap-2.5 text-white font-bold rounded-xl py-3.5 sm:py-4 text-sm sm:text-base lg:text-lg tracking-wide transition-all no-underline ${
                     isFormValid
@@ -381,7 +381,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                   }`}
                 >
                   <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                  {t("wg.hero.form.send")}
+                  {t("wd.hero.form.send")}
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
               </div>
@@ -392,7 +392,7 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
         {/* Or call text */}
         <FadeUp delay={0.45}>
           <p className="text-sm text-gray-400 mb-6 lg:mb-8">
-            {t("wg.hero.form.orCall")}
+            {t("wd.hero.form.orCall")}
           </p>
         </FadeUp>
 
@@ -402,12 +402,12 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
             <div className="shimmer-border-glow rounded-2xl">
               <div className="shimmer-inner-dark rounded-[14px]">
                 <div className="relative aspect-[16/9] rounded-[14px] overflow-hidden bg-white/5">
-                  <Image src={WG_SHOWCASE_IMAGE} alt="Imagine Studio Design window graphics showcase — exterior signs, channel letters, monument signs and more" fill loading="lazy" className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
+                  <Image src={WD_SHOWCASE_IMAGE} alt="Imagine Studio Design window decals showcase — exterior signs, channel letters, monument signs and more" fill loading="lazy" className="object-cover" sizes="(max-width: 700px) 100vw, 700px" />
                 </div>
               </div>
             </div>
             <p className="text-center text-sm sm:text-base font-bold gradient-brand-text mt-4 leading-snug drop-shadow-md">
-              {t("wg.hero.showcase.tagline")}
+              {t("wd.hero.showcase.tagline")}
             </p>
           </div>
         </FadeUp>
@@ -417,10 +417,10 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
           <div className="mt-8 sm:mt-14 lg:mt-20 w-full max-w-xl lg:max-w-3xl mx-auto">
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-x-3 gap-y-2.5 lg:gap-x-10 lg:gap-y-4">
               {[
-                t("wg.hero.trust1"),
-                t("wg.hero.trust2"),
-                t("wg.hero.trust3"),
-                t("wg.hero.trust4"),
+                t("wd.hero.trust1"),
+                t("wd.hero.trust2"),
+                t("wd.hero.trust3"),
+                t("wd.hero.trust4"),
               ].map((txt, i) => (
                 <div key={i} className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 justify-center sm:justify-start">
                   <div className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0">
@@ -437,15 +437,15 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
                     <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-yellow-400 fill-yellow-400" />
                   ))}
                 </div>
-                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("wg.hero.trust5Stars")}</span>
+                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("wd.hero.trust5Stars")}</span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("wg.hero.trustProjects")}</span>
-                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("wg.hero.trustProjectsLabel")}</span>
+                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("wd.hero.trustProjects")}</span>
+                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("wd.hero.trustProjectsLabel")}</span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("wg.hero.trustYears")}</span>
-                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("wg.hero.trustYearsLabel")}</span>
+                <span className="text-base sm:text-lg lg:text-2xl font-black gradient-brand-text">{t("wd.hero.trustYears")}</span>
+                <span className="text-xs sm:text-sm lg:text-base text-gray-400">{t("wd.hero.trustYearsLabel")}</span>
               </div>
             </div>
           </div>
@@ -464,11 +464,11 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 // GalleryCarousel is imported and used directly in the page render
 
 /* ═══════════════════════════════════════════════════
-   3. PROBLEM — adapted for Window Graphics
+   3. PROBLEM — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function ProblemSection() {
   const { t } = useLang();
-  const pains = [t("wg.problem.pain1"), t("wg.problem.pain2"), t("wg.problem.pain3")];
+  const pains = [t("wd.problem.pain1"), t("wd.problem.pain2"), t("wd.problem.pain3")];
   const icons = [Eye, TrendingUp, Shield];
   return (
     <section id="our-work" className="relative py-20 md:py-28 lg:py-36 overflow-hidden">
@@ -478,11 +478,11 @@ function ProblemSection() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-16 lg:mb-20">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wg.problem.tag")}</span>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wd.problem.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              {t("wg.problem.title1")} <span className="gradient-brand-text">{t("wg.problem.titleHighlight")}</span>.
+              {t("wd.problem.title1")} <span className="gradient-brand-text">{t("wd.problem.titleHighlight")}</span>.
             </h2>
-            <p className="text-gray-400 text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("wg.problem.subtitle")}</p>
+            <p className="text-gray-400 text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("wd.problem.subtitle")}</p>
           </div>
         </FadeUp>
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
@@ -499,8 +499,8 @@ function ProblemSection() {
         </div>
         <FadeUp delay={0.4}>
           <div className="mt-12 text-center">
-            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{t("wg.problem.soundFamiliar")}</p>
-            <p className="text-gray-400 text-base lg:text-lg">{t("wg.problem.goodNews")} <span className="text-brand-bright-blue font-semibold">{t("wg.problem.fixable")}</span></p>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">{t("wd.problem.soundFamiliar")}</p>
+            <p className="text-gray-400 text-base lg:text-lg">{t("wd.problem.goodNews")} <span className="text-brand-bright-blue font-semibold">{t("wd.problem.fixable")}</span></p>
           </div>
         </FadeUp>
       </div>
@@ -509,7 +509,7 @@ function ProblemSection() {
 }
 
 /* ═══════════════════════════════════════════════════
-   4. TRANSFORMATION — adapted for Window Graphics
+   4. TRANSFORMATION — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function TransformationSection() {
   const { t } = useLang();
@@ -526,11 +526,11 @@ function TransformationSection() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wg.transform.tag")}</span>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wd.transform.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              {t("wg.transform.from")} <span className="text-gray-500">{t("wg.transform.invisible")}</span> {t("wg.transform.to")} <span className="gradient-brand-text">{t("wg.transform.impossible")}</span>
+              {t("wd.transform.from")} <span className="text-gray-500">{t("wd.transform.invisible")}</span> {t("wd.transform.to")} <span className="gradient-brand-text">{t("wd.transform.impossible")}</span>
             </h2>
-            <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("wg.transform.subtitle")}</p>
+            <p className="text-gray-400 text-base sm:text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto">{t("wd.transform.subtitle")}</p>
           </div>
         </FadeUp>
         <ScaleIn delay={0.1}>
@@ -541,7 +541,7 @@ function TransformationSection() {
               beforeAlt="Business before new signage"
               afterAlt="Business after new signage - Brothers Painting Services LLC"
             />
-            <p className="text-center text-sm text-gray-500 mt-4">{t("wg.transform.realProject")}</p>
+            <p className="text-center text-sm text-gray-500 mt-4">{t("wd.transform.realProject")}</p>
           </div>
         </ScaleIn>
         <div className="grid sm:grid-cols-3 gap-4 lg:gap-6">
@@ -564,7 +564,7 @@ function TransformationSection() {
 }
 
 /* ═══════════════════════════════════════════════════
-   5. WHO WE HELP — adapted for Window Graphics
+   5. WHO WE HELP — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
@@ -575,15 +575,15 @@ function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-16 lg:mb-20">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wg.who.tag")}</span>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wd.who.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              {t("wg.who.title1")} <span className="gradient-brand-text">{t("wg.who.titleHighlight")}</span>
+              {t("wd.who.title1")} <span className="gradient-brand-text">{t("wd.who.titleHighlight")}</span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("wg.who.subtitle")}</p>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("wd.who.subtitle")}</p>
           </div>
         </FadeUp>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
-          {WG_INDUSTRIES_DATA.map((ind, i) => (
+          {WD_INDUSTRIES_DATA.map((ind, i) => (
             <FadeUp key={i} delay={i * 0.05}>
               <div className="group p-4 lg:p-6 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-brand-purple/20 transition-all duration-300 text-center h-full">
                 <div className="w-12 h-12 lg:w-14 lg:h-14 mx-auto rounded-xl gradient-blue-purple flex items-center justify-center mb-3 lg:mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -597,9 +597,9 @@ function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
         </div>
         <FadeUp delay={0.5}>
           <div className="mt-12 text-center">
-            <p className="text-gray-400 mb-4"><Store className="w-4 h-4 inline mr-1" /> {t("wg.who.also")}</p>
+            <p className="text-gray-400 mb-4"><Store className="w-4 h-4 inline mr-1" /> {t("wd.who.also")}</p>
             <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
-              {t("wg.who.seeCta")} <ArrowRight className="w-4 h-4" />
+              {t("wd.who.seeCta")} <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </FadeUp>
@@ -609,7 +609,7 @@ function WhoWeHelpSection({ onQuote }: { onQuote: () => void }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   6. SIGN TYPES (Visibility System) — adapted for Window Graphics
+   6. SIGN TYPES (Visibility System) — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function SignTypesSection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
@@ -621,15 +621,15 @@ function SignTypesSection({ onQuote }: { onQuote: () => void }) {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-16 lg:mb-20">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wg.vis.tag")}</span>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wd.vis.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              {t("wg.vis.title1")} <span className="gradient-brand-text">{t("wg.vis.titleHighlight")}</span>
+              {t("wd.vis.title1")} <span className="gradient-brand-text">{t("wd.vis.titleHighlight")}</span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("wg.vis.subtitle")}</p>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("wd.vis.subtitle")}</p>
           </div>
         </FadeUp>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {WG_SIGN_TYPES_DATA.map((item, i) => (
+          {WD_SIGN_TYPES_DATA.map((item, i) => (
             <FadeUp key={i} delay={i * 0.08}>
               <div className="group relative p-6 lg:p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-brand-purple/20 transition-all duration-500 h-full">
                 <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-xl gradient-brand flex items-center justify-center mb-4 lg:mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
@@ -643,9 +643,9 @@ function SignTypesSection({ onQuote }: { onQuote: () => void }) {
         </div>
         <FadeUp delay={0.5}>
           <div className="mt-12 p-6 rounded-2xl border border-brand-purple/20 bg-brand-purple/5 text-center">
-            <p className="text-white text-lg font-semibold mb-2">{t("wg.vis.everything")} <span className="gradient-brand-text">{t("wg.vis.professional")}</span>.</p>
+            <p className="text-white text-lg font-semibold mb-2">{t("wd.vis.everything")} <span className="gradient-brand-text">{t("wd.vis.professional")}</span>.</p>
             <button onClick={onQuote} className="mt-4 cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
-              {t("wg.vis.customCta")} <ArrowRight className="w-4 h-4" />
+              {t("wd.vis.customCta")} <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </FadeUp>
@@ -655,7 +655,7 @@ function SignTypesSection({ onQuote }: { onQuote: () => void }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   7. FEATURED PROJECTS — adapted for Window Graphics
+   7. FEATURED PROJECTS — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function FeaturedProjectsSection() {
   const { t } = useLang();
@@ -667,16 +667,16 @@ function FeaturedProjectsSection() {
         <FadeUp>
           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-4 lg:mb-6 leading-tight">
-              {t("wg.featured.headline")}
+              {t("wd.featured.headline")}
             </h2>
-            <p className="text-sm sm:text-base text-gray-500 max-w-xl mx-auto">{t("wg.featured.subline")}</p>
+            <p className="text-sm sm:text-base text-gray-500 max-w-xl mx-auto">{t("wd.featured.subline")}</p>
           </div>
         </FadeUp>
         <FadeIn delay={0.2}>
           <div className="relative pl-12 pr-12 lg:pl-16 lg:pr-16">
             <Carousel opts={{ align: "start", loop: true }} className="w-full">
               <CarouselContent className="-ml-4">
-                {WG_PROJECTS_DATA.map((project, i) => (
+                {WD_PROJECTS_DATA.map((project, i) => (
                   <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
                     <div className="project-card group rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] cursor-pointer">
                       <div className="relative aspect-[4/3] overflow-hidden">
@@ -701,7 +701,7 @@ function FeaturedProjectsSection() {
 }
 
 /* ═══════════════════════════════════════════════════
-   8. TRUST — adapted for Window Graphics
+   8. TRUST — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function TrustSection() {
   const { t } = useLang();
@@ -720,7 +720,7 @@ function TrustSection() {
         {/* Metrics bar */}
         <FadeUp>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-16 lg:mb-20">
-            {WG_METRICS_DATA.map((m, i) => (
+            {WD_METRICS_DATA.map((m, i) => (
               <ScaleIn key={i} delay={i * 0.1}>
                 <div className="text-center p-4 lg:p-6 rounded-xl border border-white/5 bg-white/[0.02]">
                   <div className="text-2xl sm:text-3xl lg:text-4xl font-black gradient-brand-text mb-1">{m.value}</div>
@@ -762,7 +762,7 @@ function TrustSection() {
               />
             </div>
             <p className="text-white text-base sm:text-lg lg:text-xl font-semibold leading-relaxed text-center mt-4 px-4">
-              {t("wg.trust.teamText")}
+              {t("wd.trust.teamText")}
             </p>
           </div>
         </FadeUp>
@@ -779,22 +779,22 @@ function TrustSection() {
             </div>
             <div className="flex items-center justify-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
               <span className="text-xl lg:text-2xl font-black gradient-brand-text">1500+</span>
-              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("wg.trust.projects")}</span>
+              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("wd.trust.projects")}</span>
             </div>
             <div className="flex items-center justify-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
               <span className="text-xl lg:text-2xl font-black gradient-brand-text">10+</span>
-              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("wg.trust.experience")}</span>
+              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("wd.trust.experience")}</span>
             </div>
             <div className="flex items-center justify-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
               <span className="text-xl lg:text-2xl font-black gradient-brand-text">98%</span>
-              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("wg.trust.satisfaction")}</span>
+              <span className="text-gray-300 text-sm lg:text-base font-medium">{t("wd.trust.satisfaction")}</span>
             </div>
           </div>
         </FadeUp>
         {/* Guarantee */}
         <FadeUp delay={0.3}>
           <div className="text-center">
-            <p className="text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("wg.trust.guarantee")}</p>
+            <p className="text-gray-400 text-sm"><Shield className="w-4 h-4 inline mr-1 text-brand-purple" /> {t("wd.trust.guarantee")}</p>
           </div>
         </FadeUp>
       </div>
@@ -803,7 +803,7 @@ function TrustSection() {
 }
 
 /* ═══════════════════════════════════════════════════
-   8.5. FAQ — NEW section for Window Graphics
+   8.5. FAQ — NEW section for Window Decals
    ═══════════════════════════════════════════════════ */
 function FAQSection() {
   const { t } = useLang();
@@ -814,15 +814,15 @@ function FAQSection() {
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-12 lg:mb-16">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wg.faq.tag")}</span>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wd.faq.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              {t("wg.faq.title1")} <span className="gradient-brand-text">{t("wg.faq.titleHighlight")}</span>
+              {t("wd.faq.title1")} <span className="gradient-brand-text">{t("wd.faq.titleHighlight")}</span>
             </h2>
           </div>
         </FadeUp>
         <FadeUp delay={0.2}>
           <Accordion type="single" collapsible className="space-y-4">
-            {WG_FAQ_KEYS.map((faq, i) => (
+            {WD_FAQ_KEYS.map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="rounded-xl border border-white/5 bg-white/[0.02] px-4 lg:px-6">
                 <AccordionTrigger className="text-white font-bold text-sm sm:text-base lg:text-lg text-left hover:no-underline py-5 lg:py-6">
                   {t(faq.qKey)}
@@ -840,7 +840,7 @@ function FAQSection() {
 }
 
 /* ═══════════════════════════════════════════════════
-   9. PROCESS — adapted for Window Graphics
+   9. PROCESS — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function ProcessSection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
@@ -851,16 +851,16 @@ function ProcessSection({ onQuote }: { onQuote: () => void }) {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-16 lg:mb-20">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wg.process.tag")}</span>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wd.process.tag")}</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 lg:mb-8 leading-tight">
-              {t("wg.process.title1")} <span className="gradient-brand-text">{t("wg.process.titleHighlight")}</span>.
+              {t("wd.process.title1")} <span className="gradient-brand-text">{t("wd.process.titleHighlight")}</span>.
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("wg.process.subtitle")}</p>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t("wd.process.subtitle")}</p>
           </div>
         </FadeUp>
         <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-6 relative">
           <div className="absolute top-12 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue via-brand-purple to-brand-hot-pink opacity-30" />
-          {WG_PROCESS_DATA.map((step, i) => (
+          {WD_PROCESS_DATA.map((step, i) => (
             <FadeUp key={i} delay={i * 0.1}>
               <div className="relative text-center group">
                 <div className="relative z-10 w-24 h-24 lg:w-28 lg:h-28 mx-auto rounded-2xl border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center mb-4 lg:mb-5 group-hover:border-brand-purple/40 group-hover:bg-brand-purple/10 transition-all duration-300">
@@ -874,7 +874,7 @@ function ProcessSection({ onQuote }: { onQuote: () => void }) {
           ))}
         </div>
         <div className="md:hidden space-y-4">
-          {WG_PROCESS_DATA.map((step, i) => (
+          {WD_PROCESS_DATA.map((step, i) => (
             <FadeUp key={i} delay={i * 0.1}>
               <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
                 <div className="w-14 h-14 flex-shrink-0 rounded-xl gradient-brand flex items-center justify-center">
@@ -891,7 +891,7 @@ function ProcessSection({ onQuote }: { onQuote: () => void }) {
         <FadeUp delay={0.5}>
           <div className="mt-12 text-center">
             <button onClick={onQuote} className="cta-primary text-white font-bold px-8 py-3.5 rounded-xl text-sm tracking-wide inline-flex items-center gap-2">
-              {t("wg.process.cta")} <ArrowRight className="w-4 h-4" />
+              {t("wd.process.cta")} <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </FadeUp>
@@ -901,7 +901,7 @@ function ProcessSection({ onQuote }: { onQuote: () => void }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   10. FINAL CTA — adapted for Window Graphics
+   10. FINAL CTA — adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function FinalCTASection({ onQuote }: { onQuote: () => void }) {
   const { t } = useLang();
@@ -914,19 +914,19 @@ function FinalCTASection({ onQuote }: { onQuote: () => void }) {
         <FadeUp><Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} loading="lazy" className="mx-auto h-10 lg:h-12 w-auto object-contain mb-8 lg:mb-10 opacity-80" /></FadeUp>
         <FadeUp delay={0.1}>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 lg:mb-8 leading-tight">
-            {t("wg.final.title1")} <span className="gradient-brand-text">{t("wg.final.titleHighlight")}</span> {t("wg.final.title2")}
+            {t("wd.final.title1")} <span className="gradient-brand-text">{t("wd.final.titleHighlight")}</span> {t("wd.final.title2")}
           </h2>
         </FadeUp>
         <FadeUp delay={0.2}>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-4 lg:mb-6 leading-relaxed">{t("wg.final.subtitle")}</p>
+          <p className="text-lg sm:text-xl lg:text-2xl text-gray-400 max-w-2xl lg:max-w-3xl mx-auto mb-4 lg:mb-6 leading-relaxed">{t("wd.final.subtitle")}</p>
         </FadeUp>
         <FadeUp delay={0.3}>
-          <p className="text-white text-xl lg:text-2xl font-bold mb-10 lg:mb-14">{t("wg.final.build")} <span className="gradient-brand-text">{t("wg.final.unstoppable")}</span>.</p>
+          <p className="text-white text-xl lg:text-2xl font-bold mb-10 lg:mb-14">{t("wd.final.build")} <span className="gradient-brand-text">{t("wd.final.unstoppable")}</span>.</p>
         </FadeUp>
         <FadeUp delay={0.4}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 lg:gap-6 mb-8">
             <button onClick={onQuote} className="cta-primary text-white font-bold px-10 lg:px-12 py-4 lg:py-5 rounded-xl text-lg lg:text-xl tracking-wide flex items-center gap-2 min-w-[280px] lg:min-w-[320px] justify-center animate-pulse-glow">
-              {t("wg.final.cta")} <ArrowRight className="w-5 h-5" />
+              {t("wd.final.cta")} <ArrowRight className="w-5 h-5" />
             </button>
             <a href="tel:+19105474314" className="flex items-center gap-2 px-6 lg:px-8 py-4 lg:py-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm lg:text-base font-semibold">
               <Phone className="w-4 h-4" /> (910) 547-4314
@@ -935,11 +935,11 @@ function FinalCTASection({ onQuote }: { onQuote: () => void }) {
         </FadeUp>
         <FadeUp delay={0.5}>
           <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-gray-500 text-sm lg:text-base">
-            <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {t("wg.final.fast")}</span>
+            <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {t("wd.final.fast")}</span>
             <span className="text-white/10">|</span>
-            <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> {t("wg.final.quality")}</span>
+            <span className="flex items-center gap-1"><Shield className="w-4 h-4" /> {t("wd.final.quality")}</span>
             <span className="text-white/10">|</span>
-            <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {t("wg.final.wilmington")}</span>
+            <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {t("wd.final.wilmington")}</span>
           </div>
         </FadeUp>
       </div>
@@ -979,9 +979,9 @@ function MapSection() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
           <div className="text-center mb-10 lg:mb-14">
-            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wg.map.tag")}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">{t("wg.map.title")}</h2>
-            <p className="text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">{t("wg.map.subtitle")}</p>
+            <span className="inline-block text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-4">{t("wd.map.tag")}</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">{t("wd.map.title")}</h2>
+            <p className="text-gray-400 text-base lg:text-lg max-w-2xl mx-auto">{t("wd.map.subtitle")}</p>
           </div>
         </FadeUp>
         <FadeUp delay={0.1}>
@@ -991,7 +991,7 @@ function MapSection() {
                 <MapPin className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="text-white font-bold text-lg mb-1">{t("wg.map.addressLabel")}</h3>
+                <h3 className="text-white font-bold text-lg mb-1">{t("wd.map.addressLabel")}</h3>
                 <p className="text-gray-300 text-base mb-4">{ADDRESS}</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a href="tel:+19105474314" className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors font-medium text-sm">
@@ -1023,14 +1023,14 @@ function MapSection() {
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-gray-400 text-sm">
                   <Navigation className="w-4 h-4" />
-                  <span>{t("wg.map.findUs")}</span>
+                  <span>{t("wd.map.findUs")}</span>
                 </div>
                 <button
                   onClick={handleDirections}
                   className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl gradient-brand text-white font-bold text-sm tracking-wide hover:scale-[1.03] transition-transform"
                 >
                   <Navigation className="w-4 h-4" />
-                  {t("wg.map.getDirections")}
+                  {t("wd.map.getDirections")}
                 </button>
               </div>
             </div>
@@ -1042,7 +1042,7 @@ function MapSection() {
 }
 
 /* ═══════════════════════════════════════════════════
-   FOOTER — reused, adapted for Window Graphics
+   FOOTER — reused, adapted for Window Decals
    ═══════════════════════════════════════════════════ */
 function Footer() {
   const { t } = useLang();
@@ -1056,11 +1056,11 @@ function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
             <a href="tel:+19105474314" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Phone className="w-3 h-3" /> (910) 547-4314</a>
             <a href="mailto:gtimaginedesign@gmail.com" className="hover:text-gray-300 transition-colors flex items-center gap-1"><Mail className="w-3 h-3" /> gtimaginedesign@gmail.com</a>
-            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {t("wg.footer.location")}</span>
+            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {t("wd.footer.location")}</span>
           </div>
         </div>
         <div className="mt-6 pt-6 border-t border-white/5 text-center text-xs text-gray-600">
-          © {new Date().getFullYear()} {t("wg.footer.rights")}
+          © {new Date().getFullYear()} {t("wd.footer.rights")}
         </div>
       </div>
     </footer>
@@ -1068,7 +1068,7 @@ function Footer() {
 }
 
 /* ═══════════════════════════════════════════════════
-   MAIN PAGE — Window Graphics Landing
+   MAIN PAGE — Window Decals Landing
    ═══════════════════════════════════════════════════ */
 export default function BusinessSignsPage() {
   const [quoteOpen, setQuoteOpen] = useState(false);
