@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "Perforated Window Film",
     "Frosted Window Decals",
     "Vinyl Lettering",
-    "Window Graphics",
+    "Window Decals",
     "One-Way Vision Film",
     "Etched Glass Vinyl",
     "Wilmington NC sign company",
