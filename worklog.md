@@ -1380,3 +1380,57 @@ Stage Summary:
 - Phase 2 COMPLETADA — 4 landings live
 - Landing #4 Printing & Branding LIVE en https://imaginestudiodesign.pages.dev/printing-branding
 - Commit 3d98222 pushed a GitHub
+
+---
+Task ID: 33
+Agent: Main (GLM 5.2)
+Task: Auditoría móvil — optimizar jerarquía visual + contraste + touch targets (4 landings)
+
+Work Log:
+- Auditoría de StickyCTA, FloatingCTA y CTAs en móvil
+- Identificados problemas:
+  1. Botón principal decía "GET MY FREE QUOTE" (no conveyaba contacto directo)
+  2. WhatsApp y Call buttons tenían bg /20 opacity (casi invisibles en móvil)
+  3. Touch targets de 48px (mínimo aceptable pero no óptimo)
+  4. "or call" text era <p> no clickeable (perdía oportunidad de call directo)
+  5. Dismiss button tomaba espacio innecesario
+
+- Optimizaciones aplicadas (sin cambiar diseño ni estructura):
+
+StickyCTA (mobile bottom bar):
+- Botón principal: "GET MY FREE QUOTE" → "MESSAGE US" (EN) / "ENVÍANOS UN MENSAJE" (ES)
+- WhatsApp button: bg-[#25D366]/20 → bg-[#25D366] (solid green) + icono blanco + glow-brand-sm
+- Call button: bg-emerald-600/20 → bg-emerald-600 (solid) + icono blanco
+- Touch targets: w-12 h-12 (48px) → w-14 h-14 (56px) en WhatsApp y Call
+- CTA button: agregado min-h-[56px] para consistencia
+- Dismiss button: w-8 h-8 (32px) → w-7 h-7 (28px) (más espacio para acciones)
+- Icons: w-5 h-5 → w-6 h-6 (más visibles)
+- Padding: px-4 py-3 → px-3 py-2.5 (más compacto)
+- Gap: gap-3 → gap-2 (más ajustado)
+
+Hero "or call" text — ahora clickeable en las 4 landings:
+- Antes: <p className="text-sm text-gray-400"> (no clickeable, bajo contraste)
+- Ahora: <a href="tel:+19105474314" className="text-sm text-gray-300 hover:text-emerald-400 transition-colors block">
+- Aplicado a: page.tsx, business-signs/page.tsx, window-decals/page.tsx, printing-branding/page.tsx
+
+Desktop (FloatingCTA): SIN CAMBIOS (como solicitado)
+
+Verificación con Agent Browser (móvil 390x844) en las 4 landings:
+- /: CTA="MESSAGE US", WA=56px solid green, CALL=56px solid emerald, orCall=tel:+19105474314 ✓
+- /business-signs: mismo resultado ✓
+- /window-decals: mismo resultado ✓
+- /printing-branding: mismo resultado ✓
+- ZERO page errors, ZERO console errors en todas
+
+- Lint: 0 errores
+- Build: exitoso
+- Deploy: exitoso
+- Git commit feadd2a pushed a origin/main (merge con commit del otro chat)
+
+Stage Summary:
+- StickyCTA optimizado en móvil: 3 acciones claras (MESSAGE US, WhatsApp, Call)
+- Botones WhatsApp y Call ahora sólidos (antes casi invisibles con /20 opacity)
+- Touch targets de 56px (antes 48px)
+- "or call" ahora es link clickeable en las 4 landings
+- Desktop sin cambios
+- Usuario entiende en <2 segundos que puede contactar directamente sin llenar el form
