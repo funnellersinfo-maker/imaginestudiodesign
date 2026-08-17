@@ -391,9 +391,9 @@ function HeroSection({ onQuote }: { onQuote: () => void }) {
 
         {/* Or call text */}
         <FadeUp delay={0.45}>
-          <p className="text-sm text-gray-400 mb-6 lg:mb-8">
+          <a href="tel:+19105474314" className="text-sm text-gray-300 hover:text-emerald-400 transition-colors mb-6 lg:mb-8 block">
             {t("pb.hero.form.orCall")}
-          </p>
+          </a>
         </FadeUp>
 
         {/* Static Showcase Image with gradient glow */}

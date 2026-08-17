@@ -253,7 +253,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.form.cta": "Fill the form and get a free quote in seconds",
 
     // Sticky CTA
-    "sticky.cta": "GET MY FREE QUOTE",
+    "sticky.cta": "MESSAGE US",
 
     // Exit Intent Popup
     "exit.title": "Wait! Don't Leave Yet",
@@ -1183,7 +1183,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "hero.form.cta": "Llena el formulario\nRecibe una cotización gratis en segundos",
 
     // Sticky CTA
-    "sticky.cta": "MI COTIZACIÓN GRATIS",
+    "sticky.cta": "ENVÍANOS UN MENSAJE",
 
     // Exit Intent Popup
     "exit.title": "¡Espera! No Te Vayas Todavía",

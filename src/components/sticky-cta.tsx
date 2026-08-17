@@ -52,10 +52,10 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
           className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
         >
-          <div className="glass-strong border-t border-white/10 px-4 py-3 flex items-center gap-3">
+          <div className="glass-strong border-t border-white/10 px-3 py-2.5 flex items-center gap-2">
             <button
               onClick={onQuoteClick}
-              className="flex-1 cta-primary text-white font-bold py-3 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2"
+              className="flex-1 cta-primary text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 min-h-[56px]"
             >
               {t("sticky.cta")}
             </button>
@@ -64,24 +64,24 @@ export default function StickyCTA({ onQuoteClick }: StickyCTAProps) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={trackLeadWA}
-              className="w-12 h-12 rounded-xl bg-[#25D366]/20 border border-[#25D366]/30 flex items-center justify-center flex-shrink-0"
+              className="w-14 h-14 rounded-xl bg-[#25D366] flex items-center justify-center flex-shrink-0 glow-brand-sm"
               aria-label="WhatsApp"
             >
-              <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
+              <WhatsAppIcon className="w-6 h-6 text-white" />
             </a>
             <a
               href="tel:+19105474314"
-              className="w-12 h-12 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0"
+              className="w-14 h-14 rounded-xl bg-emerald-600 flex items-center justify-center flex-shrink-0"
               aria-label="Call us"
             >
-              <Phone className="w-5 h-5 text-emerald-400" />
+              <Phone className="w-6 h-6 text-white" />
             </a>
             <button
               onClick={() => setDismissed(true)}
-              className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0"
+              className="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0"
               aria-label="Dismiss"
             >
-              <X className="w-4 h-4 text-gray-400" />
+              <X className="w-3.5 h-3.5 text-gray-400" />
             </button>
           </div>
         </motion.div>
