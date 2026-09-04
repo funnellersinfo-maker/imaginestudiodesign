@@ -186,84 +186,22 @@ function Hero({ waLink }: { waLink: string }) {
   );
 }
 
-/* ───────── SECTION 2 — TRANSFORMATION ───────── */
-function Transformation() {
-  const { lang } = useLang();
-  const text = lang === "es" ? {
-    title: "DE BLANCO A MARCA.",
-    steps: ["Camiseta Blanca", "Diseño", "Bordado / Impresión", "Producto Final"]
-  } : {
-    title: "FROM BLANK TO BRANDED.",
-    steps: ["Blank Shirt", "Design", "Print / Embroidery", "Finished Apparel"]
-  };
-
-  const images = [
-    "/images/apparel/blank-shirt.png",
-    "/images/apparel/design-process.png",
-    "/images/apparel/embroidery-machine.png",
-    "/images/apparel/custom-embroidery.png",
-  ];
-
-  return (
-    <section id="section-2" className="relative py-24 lg:py-40 overflow-hidden bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-center text-black mb-16 lg:mb-24"
-        >
-          {text.title}
-        </motion.h2>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
-          {images.map((src, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="relative"
-            >
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 group">
-                <Image src={src} alt={`${text.steps[i]} - custom apparel process step ${i + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 25vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6">
-                  <span className="text-white font-bold text-xs sm:text-sm lg:text-base">{text.steps[i]}</span>
-                </div>
-                <span className="absolute top-3 left-3 text-white/40 font-black text-xl lg:text-2xl">0{i + 1}</span>
-              </div>
-              {i < 3 && (
-                <div className="hidden lg:flex absolute top-1/2 -right-4 z-10 -translate-y-1/2">
-                  <ArrowRight className="w-6 h-6 text-gray-300" />
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ───────── SECTION 3 — SERVICES ───────── */
+/* ───────── SECTION 2 — SERVICES (antes Section 3) ───────── */
 function Services({ waLink }: { waLink: string }) {
   const { lang } = useLang();
   const text = lang === "es" ? {
     title: "LO QUE HACEMOS",
     services: [
-      { num: "01", title: "Impresión Personalizada", desc: "Tu diseño.\nTu mensaje.\nTu camiseta.", img: "/images/apparel/custom-printing.png", cta: "EXPLORAR" },
-      { num: "02", title: "Bordado Personalizado", desc: "Hecho para verse profesional.\nHecho para durar.", img: "/images/apparel/custom-embroidery.png", cta: "EXPLORAR" },
-      { num: "03", title: "Gorras Personalizadas", desc: "Pon tu marca\n donde la gente la vea.", img: "/images/apparel/custom-caps.png", cta: "EXPLORAR" },
+      { num: "01", title: "Estampado", desc: "Tu diseño.\nTu mensaje.\nTu camiseta.", img: "/images/apparel/20220207_154015.jpg", cta: "EXPLORAR" },
+      { num: "02", title: "Bordado Personalizado", desc: "Hecho para verse profesional.\nHecho para durar.", img: "/images/apparel/hero/20220209_104058.jpg", cta: "EXPLORAR" },
+      { num: "03", title: "Gorras Personalizadas", desc: "Pon tu marca\n donde la gente la vea.", img: "/images/apparel/hero/IMG-20260203-WA0056.jpg", cta: "EXPLORAR" },
     ]
   } : {
     title: "WHAT WE MAKE",
     services: [
-      { num: "01", title: "Custom Printing", desc: "Your design.\nYour message.\nYour shirt.", img: "/images/apparel/custom-printing.png", cta: "EXPLORE" },
-      { num: "02", title: "Custom Embroidery", desc: "Made to look professional.\nMade to last.", img: "/images/apparel/custom-embroidery.png", cta: "EXPLORE" },
-      { num: "03", title: "Custom Caps", desc: "Put your brand\nwhere people can see it.", img: "/images/apparel/custom-caps.png", cta: "EXPLORE" },
+      { num: "01", title: "Custom Printing", desc: "Your design.\nYour message.\nYour shirt.", img: "/images/apparel/20220207_154015.jpg", cta: "EXPLORE" },
+      { num: "02", title: "Custom Embroidery", desc: "Made to look professional.\nMade to last.", img: "/images/apparel/hero/20220209_104058.jpg", cta: "EXPLORE" },
+      { num: "03", title: "Custom Caps", desc: "Put your brand\nwhere people can see it.", img: "/images/apparel/hero/IMG-20260203-WA0056.jpg", cta: "EXPLORE" },
     ]
   };
 
@@ -367,10 +305,14 @@ function RealWork() {
   const subtitle = lang === "es" ? "Una tienda real con equipo real y producción real." : "A real shop with real equipment and real production.";
 
   const images = [
-    { src: "/images/apparel/embroidery-machine.png", alt: "Professional embroidery machine at Imagine Studio Design" },
-    { src: "/images/apparel/custom-printing.png", alt: "Custom printing process at Imagine Studio Design" },
-    { src: "/images/apparel/custom-embroidery.png", alt: "Close-up of custom embroidery detail" },
-    { src: "/images/apparel/custom-caps.png", alt: "Custom embroidered caps finished orders" },
+    { src: "/images/apparel/hero/20220209_104058.jpg", alt: "Custom apparel work — embroidered shirts and caps" },
+    { src: "/images/apparel/hero/20220209_104128.jpg", alt: "Custom apparel work — branded apparel display" },
+    { src: "/images/apparel/hero/IMG-20260203-WA0099.jpg", alt: "Custom apparel work — embroidery detail" },
+    { src: "/images/apparel/hero/IMG-20260203-WA0100.jpg", alt: "Custom apparel work — finished branded apparel" },
+    { src: "/images/apparel/hero/3b27ba9b-8ede-45e3-9777-4bf3d4526442.jpg", alt: "Custom apparel work — production process" },
+    { src: "/images/apparel/hero/5c7d8526-4bf8-4bbf-b0bd-3518955db925.jpg", alt: "Custom apparel work — branded merchandise" },
+    { src: "/images/apparel/hero/IMG-2HH0260423-WA0070.jpg", alt: "Custom apparel work — branded caps and shirts" },
+    { src: "/images/apparel/hero/IMG-20260203-WA0056.jpg", alt: "Custom apparel work — finished embroidery" },
   ];
 
   return (
@@ -417,10 +359,10 @@ function Occasions({ waLink }: { waLink: string }) {
   };
 
   const images = [
-    "/images/apparel/business-apparel.png",
-    "/images/apparel/custom-embroidery.png",
-    "/images/apparel/custom-printing.png",
-    "/images/apparel/custom-caps.png",
+    "/images/apparel/hero/20220209_104058.jpg",
+    "/images/apparel/hero/IMG-20260203-WA0099.jpg",
+    "/images/apparel/20220207_154015.jpg",
+    "/images/apparel/hero/IMG-20260203-WA0056.jpg",
   ];
 
   return (
@@ -571,7 +513,6 @@ export default function CustomApparelPage() {
       <Nav waLink={waLink} />
       <LangToggle />
       <Hero waLink={waLink} />
-      <Transformation />
       <Services waLink={waLink} />
       <BusinessApparel waLink={waLink} />
       <RealWork />
