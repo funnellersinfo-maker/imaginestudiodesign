@@ -91,7 +91,7 @@ function Hero({ waLink }: { waLink: string }) {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050510]">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050510] pt-32 pb-20">
       {/* Dopaminic glow background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#050510] via-[#0a0a1a] to-[#050510]" />
@@ -100,11 +100,46 @@ function Hero({ waLink }: { waLink: string }) {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-bright-blue/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: "2s" }} />
       </div>
 
-      {/* Carrusel automático con shimmer-border-glow */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center">
-        <div className="relative w-full max-w-[500px] h-[400px] sm:max-w-[600px] sm:h-[500px] lg:max-w-[700px] lg:h-[600px]">
-          <div className="shimmer-border-glow rounded-3xl h-full">
-            <div className="shimmer-inner-dark rounded-[22px] h-full overflow-hidden">
+      {/* Hook — headline + subtitle + CTA (ARRIBA) */}
+      <div className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-[0.95] text-white drop-shadow-2xl"
+        >
+          {text.headline1}<br />
+          <span className="gradient-brand-text">{text.headline2}</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto mt-8 mb-10 leading-relaxed drop-shadow-lg"
+        >
+          {text.sub}
+        </motion.p>
+
+        <motion.a
+          href={waLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow mx-auto"
+          style={{ width: "fit-content" }}
+        >
+          {text.cta} <ArrowRight className="w-5 h-5" />
+        </motion.a>
+      </div>
+
+      {/* Carrusel automático con shimmer-border-glow (ABAJO) */}
+      <div className="relative z-10 w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[700px] px-4">
+        <div className="shimmer-border-glow rounded-3xl">
+          <div className="shimmer-inner-dark rounded-[22px] overflow-hidden">
+            <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-video rounded-[22px] overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slideIdx}
@@ -127,51 +162,18 @@ function Hero({ waLink }: { waLink: string }) {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-20">
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-[0.95] text-white drop-shadow-2xl"
-        >
-          {text.headline1}<br />
-          <span className="gradient-brand-text">{text.headline2}</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto mt-8 mb-12 leading-relaxed drop-shadow-lg"
-        >
-          {text.sub}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <a href={waLink} target="_blank" rel="noopener noreferrer" className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
-            {text.cta} <ArrowRight className="w-5 h-5" />
-          </a>
-        </motion.div>
-      </div>
-
-      {/* Slide dots */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
-        {HERO_SLIDES.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setSlideIdx(i)}
-            className={`w-2 h-2 rounded-full transition-all ${i === slideIdx ? "bg-brand-hot-pink w-6" : "bg-white/30 hover:bg-white/50"}`}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        ))}
+        {/* Slide dots */}
+        <div className="flex items-center justify-center gap-2 mt-4">
+          {HERO_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setSlideIdx(i)}
+              className={`w-2 h-2 rounded-full transition-all ${i === slideIdx ? "bg-brand-hot-pink w-6" : "bg-white/30 hover:bg-white/50"}`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Scroll indicator */}
