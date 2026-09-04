@@ -91,7 +91,7 @@ function Hero({ waLink }: { waLink: string }) {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050510] pt-32 pb-20">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050510] pt-40 pb-20">
       {/* Dopaminic glow background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#050510] via-[#0a0a1a] to-[#050510]" />
