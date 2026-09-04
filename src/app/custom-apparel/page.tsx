@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, MapPin, Phone, Mail, X, Menu } from "lucide-react";
 import { useLang } from "@/lib/i18n";
-import QuoteFormModal from "@/components/quote-form-modal";
 import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
 import LangToggle from "@/components/lang-toggle";
 
@@ -17,7 +16,7 @@ const WHATSAPP_NUMBER = "19105474314";
 const ADDRESS = "4608 Cedar Ave, Suite 105, Wilmington, NC 28403";
 
 /* ───────── NAV ───────── */
-function Nav({ onQuote }: { onQuote: () => void }) {
+function Nav({ waLink }: { waLink: string }) {
   const [open, setOpen] = useState(false);
   const { t, lang } = useLang();
 
@@ -44,9 +43,9 @@ function Nav({ onQuote }: { onQuote: () => void }) {
             ))}
           </div>
           <div className="hidden md:flex items-center gap-4">
-            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide flex items-center gap-2">
+            <a href={waLink} target="_blank" rel="noopener noreferrer" className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide flex items-center gap-2">
               {navText.quote} <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
           </div>
           <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
             {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
@@ -58,7 +57,7 @@ function Nav({ onQuote }: { onQuote: () => void }) {
 }
 
 /* ───────── HERO ───────── */
-function Hero({ onQuote, onVisit }: { onQuote: () => void; onVisit: () => void }) {
+function Hero({ waLink, onVisit }: { waLink: string; onVisit: () => void }) {
   const { lang } = useLang();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 100]);
@@ -119,9 +118,9 @@ function Hero({ onQuote, onVisit }: { onQuote: () => void; onVisit: () => void }
           transition={{ duration: 0.8, delay: 0.4 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <button onClick={onQuote} className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
+          <a href={waLink} target="_blank" rel="noopener noreferrer" className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
             {text.cta} <ArrowRight className="w-5 h-5" />
-          </button>
+          </a>
           <button onClick={onVisit} className="flex items-center gap-2 px-8 py-5 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all text-base sm:text-lg font-semibold backdrop-blur-sm">
             {text.cta2}
           </button>
@@ -200,7 +199,7 @@ function Transformation() {
 }
 
 /* ───────── SECTION 3 — SERVICES ───────── */
-function Services({ onQuote }: { onQuote: () => void }) {
+function Services({ waLink }: { waLink: string }) {
   const { lang } = useLang();
   const text = lang === "es" ? {
     title: "LO QUE HACEMOS",
@@ -233,14 +232,14 @@ function Services({ onQuote }: { onQuote: () => void }) {
 
         <div className="grid md:grid-cols-3 gap-6 lg:gap-10">
           {text.services.map((service, i) => (
-            <motion.div
+            <motion.a
               key={i}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.15 }}
               className="group cursor-pointer"
-              onClick={onQuote}
+              href={waLink} target="_blank" rel="noopener noreferrer"
             >
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden mb-6">
                 <Image src={service.img} alt={`Custom apparel service: ${service.title} by Imagine Studio Design in Wilmington NC`} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 33vw" />
@@ -254,7 +253,7 @@ function Services({ onQuote }: { onQuote: () => void }) {
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>
@@ -263,7 +262,7 @@ function Services({ onQuote }: { onQuote: () => void }) {
 }
 
 /* ───────── SECTION 4 — BUSINESS APPAREL ───────── */
-function BusinessApparel({ onQuote }: { onQuote: () => void }) {
+function BusinessApparel({ waLink }: { waLink: string }) {
   const { lang } = useLang();
   const text = lang === "es" ? {
     headline: "Haz que tu equipo luzca como un equipo.",
@@ -291,9 +290,9 @@ function BusinessApparel({ onQuote }: { onQuote: () => void }) {
             <p className="text-gray-600 text-lg lg:text-xl leading-relaxed mb-10 max-w-lg">
               {text.body}
             </p>
-            <button onClick={onQuote} className="inline-flex items-center gap-2 bg-black text-white font-bold px-8 py-4 rounded-xl text-base hover:bg-gray-800 transition-colors">
+            <a href={waLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-black text-white font-bold px-8 py-4 rounded-xl text-base hover:bg-gray-800 transition-colors">
               {text.cta} <ArrowRight className="w-5 h-5" />
-            </button>
+            </a>
           </motion.div>
 
           <motion.div
@@ -357,7 +356,7 @@ function RealWork() {
 }
 
 /* ───────── SECTION 6 — OCCASIONS ───────── */
-function Occasions({ onQuote }: { onQuote: () => void }) {
+function Occasions({ waLink }: { waLink: string }) {
   const { lang } = useLang();
   const text = lang === "es" ? {
     title: "¿QUÉ ESTÁS HACIENDO?",
@@ -388,21 +387,21 @@ function Occasions({ onQuote }: { onQuote: () => void }) {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           {text.items.map((item, i) => (
-            <motion.div
+            <motion.a
               key={i}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="group cursor-pointer"
-              onClick={onQuote}
+              href={waLink} target="_blank" rel="noopener noreferrer"
             >
               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-4">
                 <Image src={images[i]} alt={`${item} — custom apparel for ${item.toLowerCase()} by Imagine Studio Design`} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 25vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <h3 className="absolute bottom-0 left-0 right-0 p-4 lg:p-6 text-white font-bold text-base lg:text-xl">{item}</h3>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>
@@ -411,7 +410,7 @@ function Occasions({ onQuote }: { onQuote: () => void }) {
 }
 
 /* ───────── SECTION 7 — FINAL CTA ───────── */
-function FinalCTA({ onQuote, onVisit }: { onQuote: () => void; onVisit: () => void }) {
+function FinalCTA({ waLink, onVisit }: { waLink: string; onVisit: () => void }) {
   const { lang } = useLang();
   const text = lang === "es" ? {
     headline: "¿LISTO PARA USAR TU MARCA?",
@@ -472,9 +471,9 @@ function FinalCTA({ onQuote, onVisit }: { onQuote: () => void; onVisit: () => vo
           transition={{ delay: 0.4 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
         >
-          <button onClick={onQuote} className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
+          <a href={waLink} target="_blank" rel="noopener noreferrer" className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
             {text.cta} <ArrowRight className="w-5 h-5" />
-          </button>
+          </a>
           <button onClick={onVisit} className="flex items-center gap-2 px-8 py-5 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all text-base sm:text-lg font-semibold backdrop-blur-sm">
             {text.cta2}
           </button>
@@ -507,26 +506,36 @@ function FinalCTA({ onQuote, onVisit }: { onQuote: () => void; onVisit: () => vo
 
 /* ───────── MAIN PAGE ───────── */
 export default function CustomApparelPage() {
-  const [quoteOpen, setQuoteOpen] = useState(false);
+  const { lang } = useLang();
 
   const scrollToVisit = () => {
     document.getElementById("section-7")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    lang === "es"
+      ? "Hola! Quiero una cotizacion de ropa personalizada (camisetas, bordados, gorras)."
+      : "Hi! I'd like a quote for custom apparel (t-shirts, embroidery, caps)."
+  )}`;
+
+  const handleWaClick = () => {
+    try { (window as any).fbq("track", "Lead", { content_name: "Apparel WhatsApp" }); } catch {}
+    window.open(waLink, "_blank");
+  };
+
   return (
     <main className="min-h-screen bg-background">
-      <Nav onQuote={() => setQuoteOpen(true)} />
+      <Nav waLink={waLink} />
       <LangToggle />
-      <Hero onQuote={() => setQuoteOpen(true)} onVisit={scrollToVisit} />
+      <Hero waLink={waLink} onVisit={scrollToVisit} />
       <Transformation />
-      <Services onQuote={() => setQuoteOpen(true)} />
-      <BusinessApparel onQuote={() => setQuoteOpen(true)} />
+      <Services waLink={waLink} />
+      <BusinessApparel waLink={waLink} />
       <RealWork />
-      <Occasions onQuote={() => setQuoteOpen(true)} />
-      <FinalCTA onQuote={() => setQuoteOpen(true)} onVisit={scrollToVisit} />
-      <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
-      <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
-      <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
+      <Occasions waLink={waLink} />
+      <FinalCTA waLink={waLink} onVisit={scrollToVisit} />
+      <StickyCTA onQuoteClick={handleWaClick} />
+      <FloatingCTA onQuoteClick={handleWaClick} />
     </main>
   );
 }
