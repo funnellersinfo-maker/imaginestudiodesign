@@ -193,15 +193,15 @@ function Services({ waLink }: { waLink: string }) {
     title: "LO QUE HACEMOS",
     services: [
       { num: "01", title: "Estampado", desc: "Tu diseño.\nTu mensaje.\nTu camiseta.", img: "/images/apparel/20220207_154015.jpg", cta: "EXPLORAR" },
-      { num: "02", title: "Bordado Personalizado", desc: "Hecho para verse profesional.\nHecho para durar.", img: "/images/apparel/hero/20220209_104058.jpg", cta: "EXPLORAR" },
-      { num: "03", title: "Gorras Personalizadas", desc: "Pon tu marca\n donde la gente la vea.", img: "/images/apparel/hero/IMG-20260203-WA0056.jpg", cta: "EXPLORAR" },
+      { num: "02", title: "Bordado Personalizado", desc: "Hecho para verse profesional.\nHecho para durar.", img: "/images/apparel/service-embroidery.jpg", cta: "EXPLORAR" },
+      { num: "03", title: "Gorras Personalizadas", desc: "Pon tu marca\n donde la gente la vea.", img: "/images/apparel/service-caps.jpg", cta: "EXPLORAR" },
     ]
   } : {
     title: "WHAT WE MAKE",
     services: [
       { num: "01", title: "Custom Printing", desc: "Your design.\nYour message.\nYour shirt.", img: "/images/apparel/20220207_154015.jpg", cta: "EXPLORE" },
-      { num: "02", title: "Custom Embroidery", desc: "Made to look professional.\nMade to last.", img: "/images/apparel/hero/20220209_104058.jpg", cta: "EXPLORE" },
-      { num: "03", title: "Custom Caps", desc: "Put your brand\nwhere people can see it.", img: "/images/apparel/hero/IMG-20260203-WA0056.jpg", cta: "EXPLORE" },
+      { num: "02", title: "Custom Embroidery", desc: "Made to look professional.\nMade to last.", img: "/images/apparel/service-embroidery.jpg", cta: "EXPLORE" },
+      { num: "03", title: "Custom Caps", desc: "Put your brand\nwhere people can see it.", img: "/images/apparel/service-caps.jpg", cta: "EXPLORE" },
     ]
   };
 
@@ -290,7 +290,7 @@ function BusinessApparel({ waLink }: { waLink: string }) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative aspect-[4/3] rounded-3xl overflow-hidden"
           >
-            <Image src="/images/apparel/business-apparel.png" alt="Professional team wearing matching branded apparel by Imagine Studio Design" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+            <Image src="/images/apparel/team-imagine.jpg" alt="Imagine Studio Design team wearing matching branded apparel" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
           </motion.div>
         </div>
       </div>
