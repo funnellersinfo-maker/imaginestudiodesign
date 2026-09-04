@@ -56,48 +56,86 @@ function Nav({ waLink }: { waLink: string }) {
   );
 }
 
-/* ───────── HERO ───────── */
-function Hero({ waLink, onVisit }: { waLink: string; onVisit: () => void }) {
+/* ───────── HERO — Carrusel automático con resplandor dopaminérgico ───────── */
+const HERO_SLIDES = [
+  "/images/apparel/hero/20220209_104058.jpg",
+  "/images/apparel/hero/20220209_104128.jpg",
+  "/images/apparel/hero/IMG-20260203-WA0056.jpg",
+  "/images/apparel/hero/IMG-20260203-WA0099.jpg",
+  "/images/apparel/hero/IMG-20260203-WA0100.jpg",
+  "/images/apparel/hero/3b27ba9b-8ede-45e3-9777-4bf3d4526442.jpg",
+  "/images/apparel/hero/5c7d8526-4bf8-4bbf-b0bd-3518955db925.jpg",
+  "/images/apparel/hero/IMG-2HH0260423-WA0070.jpg",
+];
+
+function Hero({ waLink }: { waLink: string }) {
   const { lang } = useLang();
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 100]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const [slideIdx, setSlideIdx] = useState(0);
+
+  // Auto-advance cada 3 segundos
+  useEffect(() => {
+    const id = setTimeout(() => setSlideIdx((i) => (i + 1) % HERO_SLIDES.length), 3000);
+    return () => clearTimeout(id);
+  }, [slideIdx]);
 
   const text = lang === "es" ? {
     headline1: "TU MARCA.",
     headline2: "EN CADA HILO.",
     sub: "Camisetas, Bordados y Gorras personalizadas para tu negocio, equipo o próximo evento.",
-    cta: "COTIZACIÓN GRATIS",
-    cta2: "VISITAR TIENDA"
+    cta: "COTIZACIÓN GRATIS"
   } : {
     headline1: "YOUR BRAND.",
     headline2: "ON EVERY THREAD.",
     sub: "Custom T-Shirts, Embroidery & Caps made for your business, team or next big event.",
-    cta: "GET A FREE QUOTE",
-    cta2: "VISIT OUR SHOP"
+    cta: "GET A FREE QUOTE"
   };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050510]">
+      {/* Dopaminic glow background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#050510] via-[#0a0a1a] to-[#050510]" />
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-brand-purple/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-brand-hot-pink/15 rounded-full blur-[100px]" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-brand-purple/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-brand-hot-pink/15 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-bright-blue/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: "2s" }} />
       </div>
 
-      <motion.div style={{ y, opacity }} className="absolute inset-0 z-10">
-        <div className="relative w-full h-full">
-          <Image src="/images/apparel/hero-composition.png" alt="Custom branded apparel — t-shirts, embroidery, caps by Imagine Studio Design" fill priority className="object-cover opacity-60" sizes="100vw" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-transparent to-[#050510]/50" />
+      {/* Carrusel automático con shimmer-border-glow */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center">
+        <div className="relative w-full max-w-[500px] h-[400px] sm:max-w-[600px] sm:h-[500px] lg:max-w-[700px] lg:h-[600px]">
+          <div className="shimmer-border-glow rounded-3xl h-full">
+            <div className="shimmer-inner-dark rounded-[22px] h-full overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={slideIdx}
+                  initial={{ opacity: 0, scale: 1.08 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={HERO_SLIDES[slideIdx]}
+                    alt={`Custom apparel work ${slideIdx + 1} — t-shirts, embroidery, caps by Imagine Studio Design in Wilmington NC`}
+                    fill
+                    priority={slideIdx === 0}
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 700px"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-20">
+      {/* Content */}
+      <div className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-20">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-[0.95] text-white"
+          className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-[0.95] text-white drop-shadow-2xl"
         >
           {text.headline1}<br />
           <span className="gradient-brand-text">{text.headline2}</span>
@@ -107,7 +145,7 @@ function Hero({ waLink, onVisit }: { waLink: string; onVisit: () => void }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto mt-8 mb-12 leading-relaxed"
+          className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto mt-8 mb-12 leading-relaxed drop-shadow-lg"
         >
           {text.sub}
         </motion.p>
@@ -121,12 +159,22 @@ function Hero({ waLink, onVisit }: { waLink: string; onVisit: () => void }) {
           <a href={waLink} target="_blank" rel="noopener noreferrer" className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
             {text.cta} <ArrowRight className="w-5 h-5" />
           </a>
-          <button onClick={onVisit} className="flex items-center gap-2 px-8 py-5 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all text-base sm:text-lg font-semibold backdrop-blur-sm">
-            {text.cta2}
-          </button>
         </motion.div>
-      </motion.div>
+      </div>
 
+      {/* Slide dots */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+        {HERO_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setSlideIdx(i)}
+            className={`w-2 h-2 rounded-full transition-all ${i === slideIdx ? "bg-brand-hot-pink w-6" : "bg-white/30 hover:bg-white/50"}`}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Scroll indicator */}
       <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
         <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
           <div className="w-1.5 h-3 rounded-full bg-white/40" />
@@ -410,7 +458,7 @@ function Occasions({ waLink }: { waLink: string }) {
 }
 
 /* ───────── SECTION 7 — FINAL CTA ───────── */
-function FinalCTA({ waLink, onVisit }: { waLink: string; onVisit: () => void }) {
+function FinalCTA({ waLink }: { waLink: string }) {
   const { lang } = useLang();
   const text = lang === "es" ? {
     headline: "¿LISTO PARA USAR TU MARCA?",
@@ -474,9 +522,6 @@ function FinalCTA({ waLink, onVisit }: { waLink: string; onVisit: () => void }) 
           <a href={waLink} target="_blank" rel="noopener noreferrer" className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
             {text.cta} <ArrowRight className="w-5 h-5" />
           </a>
-          <button onClick={onVisit} className="flex items-center gap-2 px-8 py-5 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all text-base sm:text-lg font-semibold backdrop-blur-sm">
-            {text.cta2}
-          </button>
         </motion.div>
 
         <motion.div
@@ -508,10 +553,6 @@ function FinalCTA({ waLink, onVisit }: { waLink: string; onVisit: () => void }) 
 export default function CustomApparelPage() {
   const { lang } = useLang();
 
-  const scrollToVisit = () => {
-    document.getElementById("section-7")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     lang === "es"
       ? "Hola! Quiero una cotizacion de ropa personalizada (camisetas, bordados, gorras)."
@@ -527,13 +568,13 @@ export default function CustomApparelPage() {
     <main className="min-h-screen bg-background">
       <Nav waLink={waLink} />
       <LangToggle />
-      <Hero waLink={waLink} onVisit={scrollToVisit} />
+      <Hero waLink={waLink} />
       <Transformation />
       <Services waLink={waLink} />
       <BusinessApparel waLink={waLink} />
       <RealWork />
       <Occasions waLink={waLink} />
-      <FinalCTA waLink={waLink} onVisit={scrollToVisit} />
+      <FinalCTA waLink={waLink} />
       <StickyCTA onQuoteClick={handleWaClick} />
       <FloatingCTA onQuoteClick={handleWaClick} />
     </main>
