@@ -1,0 +1,532 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, MapPin, Phone, Mail, X, Menu } from "lucide-react";
+import { useLang } from "@/lib/i18n";
+import QuoteFormModal from "@/components/quote-form-modal";
+import StickyCTA, { FloatingCTA } from "@/components/sticky-cta";
+import LangToggle from "@/components/lang-toggle";
+
+/* ═══════════════════════════════════════════════════
+   CUSTOM APPAREL LANDING — Premium, editorial, short
+   ═══════════════════════════════════════════════════ */
+
+const WHATSAPP_NUMBER = "19105474314";
+const ADDRESS = "4608 Cedar Ave, Suite 105, Wilmington, NC 28403";
+
+/* ───────── NAV ───────── */
+function Nav({ onQuote }: { onQuote: () => void }) {
+  const [open, setOpen] = useState(false);
+  const { t, lang } = useLang();
+
+  const navText = lang === "es" ? {
+    visit: "VISITAR TIENDA",
+    quote: "COTIZACIÓN GRATIS",
+    links: ["Trabajo", "Servicios", "Equipo", "Contacto"]
+  } : {
+    visit: "VISIT OUR SHOP",
+    quote: "FREE QUOTE",
+    links: ["Work", "Services", "Team", "Contact"]
+  };
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-40 glass-strong">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          <a href="/" className="flex items-center gap-3 flex-shrink-0">
+            <Image src="/LOGO.png" alt="Imagine Studio Design" width={140} height={40} className="h-8 lg:h-12 w-auto object-contain" priority />
+          </a>
+          <div className="hidden md:flex items-center gap-8">
+            {navText.links.map((link, i) => (
+              <a key={i} href={`#section-${i + 2}`} className="text-sm text-gray-400 hover:text-white transition-colors">{link}</a>
+            ))}
+          </div>
+          <div className="hidden md:flex items-center gap-4">
+            <button onClick={onQuote} className="cta-primary text-white text-sm font-bold px-6 py-2.5 rounded-lg tracking-wide flex items-center gap-2">
+              {navText.quote} <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+          <button onClick={() => setOpen(!open)} className="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" aria-label="Toggle menu">
+            {open ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ───────── HERO ───────── */
+function Hero({ onQuote, onVisit }: { onQuote: () => void; onVisit: () => void }) {
+  const { lang } = useLang();
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 100]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+
+  const text = lang === "es" ? {
+    headline1: "TU MARCA.",
+    headline2: "EN CADA HILO.",
+    sub: "Camisetas, Bordados y Gorras personalizadas para tu negocio, equipo o próximo evento.",
+    cta: "COTIZACIÓN GRATIS",
+    cta2: "VISITAR TIENDA"
+  } : {
+    headline1: "YOUR BRAND.",
+    headline2: "ON EVERY THREAD.",
+    sub: "Custom T-Shirts, Embroidery & Caps made for your business, team or next big event.",
+    cta: "GET A FREE QUOTE",
+    cta2: "VISIT OUR SHOP"
+  };
+
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050510]">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#050510] via-[#0a0a1a] to-[#050510]" />
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-brand-purple/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-brand-hot-pink/15 rounded-full blur-[100px]" />
+      </div>
+
+      <motion.div style={{ y, opacity }} className="absolute inset-0 z-10">
+        <div className="relative w-full h-full">
+          <Image src="/images/apparel/hero-composition.png" alt="Custom branded apparel — t-shirts, embroidery, caps by Imagine Studio Design" fill priority className="object-cover opacity-60" sizes="100vw" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050510] via-transparent to-[#050510]/50" />
+        </div>
+      </motion.div>
+
+      <motion.div className="relative z-20 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-32 pb-20">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-[0.95] text-white"
+        >
+          {text.headline1}<br />
+          <span className="gradient-brand-text">{text.headline2}</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto mt-8 mb-12 leading-relaxed"
+        >
+          {text.sub}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <button onClick={onQuote} className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
+            {text.cta} <ArrowRight className="w-5 h-5" />
+          </button>
+          <button onClick={onVisit} className="flex items-center gap-2 px-8 py-5 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all text-base sm:text-lg font-semibold backdrop-blur-sm">
+            {text.cta2}
+          </button>
+        </motion.div>
+      </motion.div>
+
+      <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
+          <div className="w-1.5 h-3 rounded-full bg-white/40" />
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+/* ───────── SECTION 2 — TRANSFORMATION ───────── */
+function Transformation() {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    title: "DE BLANCO A MARCA.",
+    steps: ["Camiseta Blanca", "Diseño", "Bordado / Impresión", "Producto Final"]
+  } : {
+    title: "FROM BLANK TO BRANDED.",
+    steps: ["Blank Shirt", "Design", "Print / Embroidery", "Finished Apparel"]
+  };
+
+  const images = [
+    "/images/apparel/blank-shirt.png",
+    "/images/apparel/design-process.png",
+    "/images/apparel/embroidery-machine.png",
+    "/images/apparel/custom-embroidery.png",
+  ];
+
+  return (
+    <section id="section-2" className="relative py-24 lg:py-40 overflow-hidden bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-center text-black mb-16 lg:mb-24"
+        >
+          {text.title}
+        </motion.h2>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
+          {images.map((src, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              className="relative"
+            >
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 group">
+                <Image src={src} alt={`${text.steps[i]} - custom apparel process step ${i + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 25vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6">
+                  <span className="text-white font-bold text-xs sm:text-sm lg:text-base">{text.steps[i]}</span>
+                </div>
+                <span className="absolute top-3 left-3 text-white/40 font-black text-xl lg:text-2xl">0{i + 1}</span>
+              </div>
+              {i < 3 && (
+                <div className="hidden lg:flex absolute top-1/2 -right-4 z-10 -translate-y-1/2">
+                  <ArrowRight className="w-6 h-6 text-gray-300" />
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── SECTION 3 — SERVICES ───────── */
+function Services({ onQuote }: { onQuote: () => void }) {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    title: "LO QUE HACEMOS",
+    services: [
+      { num: "01", title: "Impresión Personalizada", desc: "Tu diseño.\nTu mensaje.\nTu camiseta.", img: "/images/apparel/custom-printing.png", cta: "EXPLORAR" },
+      { num: "02", title: "Bordado Personalizado", desc: "Hecho para verse profesional.\nHecho para durar.", img: "/images/apparel/custom-embroidery.png", cta: "EXPLORAR" },
+      { num: "03", title: "Gorras Personalizadas", desc: "Pon tu marca\n donde la gente la vea.", img: "/images/apparel/custom-caps.png", cta: "EXPLORAR" },
+    ]
+  } : {
+    title: "WHAT WE MAKE",
+    services: [
+      { num: "01", title: "Custom Printing", desc: "Your design.\nYour message.\nYour shirt.", img: "/images/apparel/custom-printing.png", cta: "EXPLORE" },
+      { num: "02", title: "Custom Embroidery", desc: "Made to look professional.\nMade to last.", img: "/images/apparel/custom-embroidery.png", cta: "EXPLORE" },
+      { num: "03", title: "Custom Caps", desc: "Put your brand\nwhere people can see it.", img: "/images/apparel/custom-caps.png", cta: "EXPLORE" },
+    ]
+  };
+
+  return (
+    <section id="section-3" className="relative py-24 lg:py-40 overflow-hidden bg-[#0a0a1a]">
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-purple/10 rounded-full blur-[100px]" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-center text-white mb-16 lg:mb-24"
+        >
+          {text.title}
+        </motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-10">
+          {text.services.map((service, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              className="group cursor-pointer"
+              onClick={onQuote}
+            >
+              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden mb-6">
+                <Image src={service.img} alt={`Custom apparel service: ${service.title} by Imagine Studio Design in Wilmington NC`} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 100vw, 33vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <span className="absolute top-4 left-4 text-white/30 font-black text-2xl lg:text-3xl">{service.num}</span>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-white font-bold text-xl lg:text-2xl mb-2">{service.title}</h3>
+                  <p className="text-gray-300 text-sm lg:text-base whitespace-pre-line leading-relaxed">{service.desc}</p>
+                  <span className="inline-flex items-center gap-1 mt-4 text-brand-hot-pink font-bold text-sm group-hover:gap-2 transition-all">
+                    {service.cta} <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── SECTION 4 — BUSINESS APPAREL ───────── */
+function BusinessApparel({ onQuote }: { onQuote: () => void }) {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    headline: "Haz que tu equipo luzca como un equipo.",
+    body: "La ropa con marca ayuda a tu negocio a verse consistente, profesional y reconocible dondequiera que vaya tu equipo.",
+    cta: "COTIZACIÓN GRATIS"
+  } : {
+    headline: "MAKE YOUR TEAM LOOK LIKE A TEAM.",
+    body: "Branded apparel helps your business look consistent, professional and recognizable wherever your team goes.",
+    cta: "GET A FREE QUOTE"
+  };
+
+  return (
+    <section id="section-4" className="relative py-24 lg:py-40 overflow-hidden bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-black leading-[1.05] mb-8">
+              {text.headline}
+            </motion.h2>
+            <p className="text-gray-600 text-lg lg:text-xl leading-relaxed mb-10 max-w-lg">
+              {text.body}
+            </p>
+            <button onClick={onQuote} className="inline-flex items-center gap-2 bg-black text-white font-bold px-8 py-4 rounded-xl text-base hover:bg-gray-800 transition-colors">
+              {text.cta} <ArrowRight className="w-5 h-5" />
+            </button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative aspect-[4/3] rounded-3xl overflow-hidden"
+          >
+            <Image src="/images/apparel/business-apparel.png" alt="Professional team wearing matching branded apparel by Imagine Studio Design" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── SECTION 5 — REAL WORK ───────── */
+function RealWork() {
+  const { lang } = useLang();
+  const title = lang === "es" ? "HECHO AQUÍ." : "MADE HERE.";
+  const subtitle = lang === "es" ? "Una tienda real con equipo real y producción real." : "A real shop with real equipment and real production.";
+
+  const images = [
+    { src: "/images/apparel/embroidery-machine.png", alt: "Professional embroidery machine at Imagine Studio Design" },
+    { src: "/images/apparel/custom-printing.png", alt: "Custom printing process at Imagine Studio Design" },
+    { src: "/images/apparel/custom-embroidery.png", alt: "Close-up of custom embroidery detail" },
+    { src: "/images/apparel/custom-caps.png", alt: "Custom embroidered caps finished orders" },
+  ];
+
+  return (
+    <section id="section-5" className="relative py-24 lg:py-40 overflow-hidden bg-[#050510]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16 lg:mb-24"
+        >
+          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-white mb-4">{title}</h2>
+          <p className="text-gray-400 text-lg lg:text-xl">{subtitle}</p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          {images.map((img, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className={`relative overflow-hidden rounded-2xl ${i === 0 || i === 3 ? "aspect-[3/4]" : "aspect-square"}`}
+            >
+              <Image src={img.src} alt={img.alt} fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 25vw" />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── SECTION 6 — OCCASIONS ───────── */
+function Occasions({ onQuote }: { onQuote: () => void }) {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    title: "¿QUÉ ESTÁS HACIENDO?",
+    items: ["TU NEGOCIO", "TU EQUIPO", "TU EVENTO", "TU MARCA"]
+  } : {
+    title: "WHAT ARE YOU MAKING?",
+    items: ["YOUR BUSINESS", "YOUR TEAM", "YOUR EVENT", "YOUR BRAND"]
+  };
+
+  const images = [
+    "/images/apparel/business-apparel.png",
+    "/images/apparel/custom-embroidery.png",
+    "/images/apparel/custom-printing.png",
+    "/images/apparel/custom-caps.png",
+  ];
+
+  return (
+    <section id="section-6" className="relative py-24 lg:py-40 overflow-hidden bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-center text-black mb-16 lg:mb-24"
+        >
+          {text.title}
+        </motion.h2>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          {text.items.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="group cursor-pointer"
+              onClick={onQuote}
+            >
+              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-4">
+                <Image src={images[i]} alt={`${item} — custom apparel for ${item.toLowerCase()} by Imagine Studio Design`} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 25vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <h3 className="absolute bottom-0 left-0 right-0 p-4 lg:p-6 text-white font-bold text-base lg:text-xl">{item}</h3>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── SECTION 7 — FINAL CTA ───────── */
+function FinalCTA({ onQuote, onVisit }: { onQuote: () => void; onVisit: () => void }) {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    headline: "¿LISTO PARA USAR TU MARCA?",
+    sub: "Creemos algo que tu equipo estará orgulloso de usar.",
+    cta: "COTIZACIÓN GRATIS",
+    cta2: "VISITAR TIENDA",
+    address: "4608 Cedar Ave, Suite 105, Wilmington, NC 28403",
+    phone: "(910) 547-4314",
+    email: "gtimaginedesign@gmail.com"
+  } : {
+    headline: "READY TO WEAR YOUR BRAND?",
+    sub: "Let's create something your team will be proud to wear.",
+    cta: "GET A FREE QUOTE",
+    cta2: "VISIT OUR SHOP",
+    address: "4608 Cedar Ave, Suite 105, Wilmington, NC 28403",
+    phone: "(910) 547-4314",
+    email: "gtimaginedesign@gmail.com"
+  };
+
+  return (
+    <section id="section-7" className="relative py-24 lg:py-40 overflow-hidden bg-[#050510]">
+      <div className="absolute top-1/3 left-1/3 w-[600px] h-[600px] bg-brand-hot-pink/15 rounded-full blur-[120px]" />
+      <div className="absolute bottom-1/3 right-1/3 w-[500px] h-[500px] bg-brand-purple/15 rounded-full blur-[100px]" />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mb-8"
+        >
+          <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="mx-auto h-10 lg:h-12 w-auto object-contain opacity-80" />
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-white mb-6 leading-[0.95]"
+        >
+          {text.headline}
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto mb-12"
+        >
+          {text.sub}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+        >
+          <button onClick={onQuote} className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow">
+            {text.cta} <ArrowRight className="w-5 h-5" />
+          </button>
+          <button onClick={onVisit} className="flex items-center gap-2 px-8 py-5 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all text-base sm:text-lg font-semibold backdrop-blur-sm">
+            {text.cta2}
+          </button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="flex flex-col items-center gap-3 text-gray-400 text-sm"
+        >
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-brand-hot-pink" />
+            <span>{text.address}</span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <a href="tel:+19105474314" className="flex items-center gap-2 text-gray-300 hover:text-emerald-400 transition-colors">
+              <Phone className="w-4 h-4" /> {text.phone}
+            </a>
+            <a href={`mailto:${text.email}`} className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
+              <Mail className="w-4 h-4" /> {text.email}
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ───────── MAIN PAGE ───────── */
+export default function CustomApparelPage() {
+  const [quoteOpen, setQuoteOpen] = useState(false);
+
+  const scrollToVisit = () => {
+    document.getElementById("section-7")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <main className="min-h-screen bg-background">
+      <Nav onQuote={() => setQuoteOpen(true)} />
+      <LangToggle />
+      <Hero onQuote={() => setQuoteOpen(true)} onVisit={scrollToVisit} />
+      <Transformation />
+      <Services onQuote={() => setQuoteOpen(true)} />
+      <BusinessApparel onQuote={() => setQuoteOpen(true)} />
+      <RealWork />
+      <Occasions onQuote={() => setQuoteOpen(true)} />
+      <FinalCTA onQuote={() => setQuoteOpen(true)} onVisit={scrollToVisit} />
+      <StickyCTA onQuoteClick={() => setQuoteOpen(true)} />
+      <FloatingCTA onQuoteClick={() => setQuoteOpen(true)} />
+      <QuoteFormModal open={quoteOpen} onOpenChange={setQuoteOpen} />
+    </main>
+  );
+}
