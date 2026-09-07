@@ -63,7 +63,7 @@ function Hero({ waLink }: { waLink: string }) {
     const id = setTimeout(() => setSlideIdx((i) => (i + 1) % HERO_SLIDES.length), 3000);
     return () => clearTimeout(id);
   }, [slideIdx]);
-  const text = lang === "es" ? { h1: "TU CAMIÓN ES", h2: "TU MEJOR VENDEDOR.", sub: "Vinilos vehiculares que convierten cada viaje en publicidad. Wilmington, NC.", cta: "COTIZACIÓN GRATIS" } : { h1: "YOUR TRUCK IS", h2: "YOUR BEST SALESPERSON.", sub: "Vehicle wraps that turn every drive into advertising. Wilmington, NC.", cta: "GET A FREE QUOTE" };
+  const text = lang === "es" ? { h1: "TU VEHÍCULO ES", h2: "TU MEJOR VENDEDOR.", sub: "Vinilos vehiculares que convierten cada viaje en publicidad. Wilmington, NC.", cta: "COTIZACIÓN GRATIS" } : { h1: "YOUR TRUCK IS", h2: "YOUR BEST SALESPERSON.", sub: "Vehicle wraps that turn every drive into advertising. Wilmington, NC.", cta: "GET A FREE QUOTE" };
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050510] pt-40 pb-20">
       <div className="absolute inset-0 z-0">
@@ -114,16 +114,16 @@ function Services({ waLink }: { waLink: string }) {
   const text = lang === "es" ? {
     title: "LO QUE HACEMOS",
     services: [
-      { num: "01", title: "Vinilo Completo", desc: "Tu vehículo completo\ntransformado en un\nbillboard móvil.", img: "/images/truck-wrap-1.png", cta: "EXPLORAR" },
-      { num: "02", title: "Vinilos Parciales", desc: "Impacto sin cubrir\ntodo el vehículo.\nMás económico.", img: "/images/pickup-wrap.png", cta: "EXPLORAR" },
-      { num: "03", title: "Branding de Flota", desc: "Tu flota completa\ncon la misma identidad.\nReconocimiento total.", img: "/images/fleet-branding.png", cta: "EXPLORAR" },
+      { num: "01", title: "Vinilo Completo", desc: "Tu vehículo completo\ntransformado en un\nbillboard móvil.", img: "/images/real-leon-tires.jpg", cta: "EXPLORAR" },
+      { num: "02", title: "Vinilos Parciales", desc: "Impacto sin cubrir\ntodo el vehículo.\nMás económico.", img: "/images/gallery-IMG_7721-web.png", cta: "EXPLORAR" },
+      { num: "03", title: "Branding de Flota", desc: "Tu flota completa\ncon la misma identidad.\nReconocimiento total.", img: "/images/carousel/empire-metal.jpg", cta: "EXPLORAR" },
     ]
   } : {
     title: "WHAT WE MAKE",
     services: [
-      { num: "01", title: "Full Wraps", desc: "Your entire vehicle\ntransformed into a\nmobile billboard.", img: "/images/truck-wrap-1.png", cta: "EXPLORE" },
-      { num: "02", title: "Partial Wraps", desc: "High impact without\nwrapping the whole\nvehicle. More affordable.", img: "/images/pickup-wrap.png", cta: "EXPLORE" },
-      { num: "03", title: "Fleet Branding", desc: "Your entire fleet with\nthe same identity.\nTotal recognition.", img: "/images/fleet-branding.png", cta: "EXPLORE" },
+      { num: "01", title: "Full Wraps", desc: "Your entire vehicle\ntransformed into a\nmobile billboard.", img: "/images/real-leon-tires.jpg", cta: "EXPLORE" },
+      { num: "02", title: "Partial Wraps", desc: "High impact without\nwrapping the whole\nvehicle. More affordable.", img: "/images/gallery-IMG_7721-web.png", cta: "EXPLORE" },
+      { num: "03", title: "Fleet Branding", desc: "Your entire fleet with\nthe same identity.\nTotal recognition.", img: "/images/carousel/empire-metal.jpg", cta: "EXPLORE" },
     ]
   };
   return (
@@ -186,8 +186,8 @@ function RealWork() {
     { src: "/images/gallery-20230908_183945-web.jpg", alt: "Custom vehicle wrap detail work" },
     { src: "/images/gallery-IMG_7721-web.png", alt: "Commercial vehicle wrap installation" },
     { src: "/images/gallery-IMG_7809-web.png", alt: "Custom truck wrap finished project" },
-    { src: "/images/electrician-truck.png", alt: "Electrician truck wrap by Imagine Studio Design" },
-    { src: "/images/plumber-van.png", alt: "Plumber van wrap by Imagine Studio Design" },
+    { src: "/images/carousel/empire-metal.jpg", alt: "Empire Metal roofing truck wrap by Imagine Studio Design" },
+    { src: "/images/carousel/sunrise.jpg", alt: "Sunrise landscaping vehicle wrap by Imagine Studio Design" },
   ];
   return (
     <section id="section-4" className="relative py-24 lg:py-40 overflow-hidden bg-[#050510]">
@@ -212,7 +212,7 @@ function RealWork() {
 function Industries({ waLink }: { waLink: string }) {
   const { lang } = useLang();
   const text = lang === "es" ? { title: "¿PARA QUIÉN?", items: ["CONTRATISTAS", "TECHADORES", "HVAC", "PLOMEROS"] } : { title: "WHO'S IT FOR?", items: ["CONTRACTORS", "ROOFERS", "HVAC", "PLUMBERS"] };
-  const images = ["/images/real-leon-tires.jpg", "/images/real-pelones-framing.jpg", "/images/electrician-truck.png", "/images/plumber-van.png"];
+  const images = ["/images/gallery-20250917_102801-web.jpg", "/images/carousel/empire-metal.jpg", "/images/carousel/sunrise.jpg", "/images/gallery-20230908_183945-web.jpg"];
   return (
     <section id="section-5" className="relative py-24 lg:py-40 overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
