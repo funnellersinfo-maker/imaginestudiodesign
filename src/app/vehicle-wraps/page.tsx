@@ -63,7 +63,7 @@ function Hero({ waLink }: { waLink: string }) {
     const id = setTimeout(() => setSlideIdx((i) => (i + 1) % HERO_SLIDES.length), 3000);
     return () => clearTimeout(id);
   }, [slideIdx]);
-  const text = lang === "es" ? { h1: "TU VEHÍCULO ES", h2: "TU MEJOR VENDEDOR.", sub: "Vinilos vehiculares que convierten cada viaje en publicidad. Wilmington, NC.", cta: "COTIZACIÓN GRATIS" } : { h1: "YOUR TRUCK IS", h2: "YOUR BEST SALESPERSON.", sub: "Vehicle wraps that turn every drive into advertising. Wilmington, NC.", cta: "GET A FREE QUOTE" };
+  const text = lang === "es" ? { h1: "TU VEHÍCULO ES", h2: "TU MEJOR VENDEDOR.", sub: "Vinilos vehiculares que convierten cada viaje en publicidad. Wilmington, NC.", cta: "COTIZACIÓN GRATIS" } : { h1: "YOUR VEHICLE IS", h2: "YOUR BEST SALESPERSON.", sub: "Vehicle wraps that turn every drive into advertising. Wilmington, NC.", cta: "GET A FREE QUOTE" };
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050510] pt-40 pb-20">
       <div className="absolute inset-0 z-0">
@@ -115,15 +115,15 @@ function Services({ waLink }: { waLink: string }) {
     title: "LO QUE HACEMOS",
     services: [
       { num: "01", title: "Vinilo Completo", desc: "Tu vehículo completo\ntransformado en un\nbillboard móvil.", img: "/images/real-leon-tires.jpg", cta: "EXPLORAR" },
-      { num: "02", title: "Vinilos Parciales", desc: "Impacto sin cubrir\ntodo el vehículo.\nMás económico.", img: "/images/gallery-IMG_7721-web.png", cta: "EXPLORAR" },
-      { num: "03", title: "Branding de Flota", desc: "Tu flota completa\ncon la misma identidad.\nReconocimiento total.", img: "/images/carousel/empire-metal.jpg", cta: "EXPLORAR" },
+      { num: "02", title: "Vinilos Parciales", desc: "Impacto sin cubrir\ntodo el vehículo.\nMás económico.", img: "/images/apparel/partial-wrap-car.png", cta: "EXPLORAR" },
+      { num: "03", title: "Branding de Flota", desc: "Tu flota completa\ncon la misma identidad.\nReconocimiento total.", img: "/images/apparel/fleet-two-cars.jpg", cta: "EXPLORAR" },
     ]
   } : {
     title: "WHAT WE MAKE",
     services: [
       { num: "01", title: "Full Wraps", desc: "Your entire vehicle\ntransformed into a\nmobile billboard.", img: "/images/real-leon-tires.jpg", cta: "EXPLORE" },
-      { num: "02", title: "Partial Wraps", desc: "High impact without\nwrapping the whole\nvehicle. More affordable.", img: "/images/gallery-IMG_7721-web.png", cta: "EXPLORE" },
-      { num: "03", title: "Fleet Branding", desc: "Your entire fleet with\nthe same identity.\nTotal recognition.", img: "/images/carousel/empire-metal.jpg", cta: "EXPLORE" },
+      { num: "02", title: "Partial Wraps", desc: "High impact without\nwrapping the whole\nvehicle. More affordable.", img: "/images/apparel/partial-wrap-car.png", cta: "EXPLORE" },
+      { num: "03", title: "Fleet Branding", desc: "Your entire fleet with\nthe same identity.\nTotal recognition.", img: "/images/apparel/fleet-two-cars.jpg", cta: "EXPLORE" },
     ]
   };
   return (
@@ -166,7 +166,7 @@ function BusinessWraps({ waLink }: { waLink: string }) {
             <a href={waLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-black text-white font-bold px-8 py-4 rounded-xl text-base hover:bg-gray-800 transition-colors">{text.cta} <ArrowRight className="w-5 h-5" /></a>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="relative aspect-[4/3] rounded-3xl overflow-hidden">
-            <Image src="/images/showcase-everything.jpg" alt="Vehicle wrap showcase by Imagine Studio Design in Wilmington NC" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+            <Image src="/images/apparel/team-booth.jpg" alt="Imagine Studio Design team at their booth with branded vehicle wraps showcase" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
           </motion.div>
         </div>
       </div>
@@ -208,23 +208,39 @@ function RealWork() {
   );
 }
 
-/* ───────── SECTION 5 — INDUSTRIES ───────── */
+/* ───────── SECTION 5 — INDUSTRIES (lista dopaminérgica, sin imágenes) ───────── */
 function Industries({ waLink }: { waLink: string }) {
   const { lang } = useLang();
-  const text = lang === "es" ? { title: "¿PARA QUIÉN?", items: ["CONTRATISTAS", "TECHADORES", "HVAC", "PLOMEROS"] } : { title: "WHO'S IT FOR?", items: ["CONTRACTORS", "ROOFERS", "HVAC", "PLUMBERS"] };
-  const images = ["/images/gallery-20250917_102801-web.jpg", "/images/carousel/empire-metal.jpg", "/images/carousel/sunrise.jpg", "/images/gallery-20230908_183945-web.jpg"];
+  const text = lang === "es" ? {
+    title: "¿PARA QUIÉN?",
+    subtitle: "Si tienes un vehículo de trabajo, necesitamos hablar.",
+    items: ["CONTRATISTAS", "TECHADORES", "HVAC", "PLOMEROS", "ELECTRICISTAS", "JARDINEROS", "PINTORES", "TRANSPORTISTAS", "RESTAURANTES", "CONSTRUCTORES"]
+  } : {
+    title: "WHO'S IT FOR?",
+    subtitle: "If you have a work vehicle, we need to talk.",
+    items: ["CONTRACTORS", "ROOFERS", "HVAC", "PLUMBERS", "ELECTRICIANS", "LANDSCAPERS", "PAINTERS", "MOVERS", "RESTAURANTS", "BUILDERS"]
+  };
   return (
-    <section id="section-5" className="relative py-24 lg:py-40 overflow-hidden bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-center text-black mb-16 lg:mb-24">{text.title}</motion.h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+    <section id="section-5" className="relative py-24 lg:py-40 overflow-hidden bg-[#050510]">
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brand-hot-pink/10 rounded-full blur-[100px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-brand-purple/10 rounded-full blur-[100px]" />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-white mb-6">{text.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-lg lg:text-xl text-gray-400 mb-16 lg:mb-20">{text.subtitle}</motion.p>
+        <div className="flex flex-wrap items-center justify-center gap-3 lg:gap-5">
           {text.items.map((item, i) => (
-            <motion.a key={i} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }} className="group cursor-pointer" href={waLink} target="_blank" rel="noopener noreferrer">
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-4">
-                <Image src={images[i]} alt={`${item} vehicle wrap by Imagine Studio Design`} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 25vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <h3 className="absolute bottom-0 left-0 right-0 p-4 lg:p-6 text-white font-bold text-base lg:text-xl">{item}</h3>
-              </div>
+            <motion.a
+              key={i}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group px-5 py-3 lg:px-7 lg:py-4 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-gradient-to-r hover:from-brand-purple/20 hover:to-brand-hot-pink/20 hover:border-brand-purple/30 transition-all duration-300"
+            >
+              <span className="text-white font-bold text-sm lg:text-lg tracking-wide group-hover:gradient-brand-text transition-all">{item}</span>
             </motion.a>
           ))}
         </div>
