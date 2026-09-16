@@ -443,7 +443,7 @@ function Contact() {
 /* ───────── FOOTER ───────── */
 function Footer() {
   return (
-    <footer className="relative border-t border-white/5 bg-[#050510] py-10">
+    <footer className="relative border-t border-white/5 bg-[#050510] py-10 pb-24 md:pb-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-4">
         <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="h-8 w-auto object-contain opacity-70" />
         <p className="text-gray-500 text-sm">Wilmington, NC</p>
