@@ -23,7 +23,10 @@ const appleMapsUrl = `maps://?daddr=${LAT},${LNG}`;
 const genericMapsUrl = `https://maps.apple.com/maps?daddr=${LAT},${LNG}`;
 
 function trackGetDirections() {
-  try { (window as any).fbq("track", "Lead", { content_name: "Get Directions" }); } catch {}
+  try {
+    (window as any).fbq("track", "Lead", { content_name: "Get Directions" });
+    (window as any).fbq("trackCustom", "VisitIntent", { source: "directions_button" });
+  } catch {}
 }
 function trackCall() {
   try { (window as any).fbq("track", "Contact", { content_name: "Call Us" }); } catch {}
