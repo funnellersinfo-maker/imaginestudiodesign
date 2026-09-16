@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Navigation, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Navigation, ArrowRight, X, Menu } from "lucide-react";
+import LangToggle from "@/components/lang-toggle";
+import { useLang } from "@/lib/i18n";
 
 /* ═══════════════════════════════════════════════════
-   VISIT US — Ultra-short, high-conversion landing
-   Goal: Get Directions → Visit the studio
+   VISIT US — Ultra-short, high-conversion, bilingual
    ═══════════════════════════════════════════════════ */
 
 const LAT = 34.2134;
@@ -16,24 +17,20 @@ const ADDRESS = "4608 Cedar Ave, Suite 105, Wilmington, NC 28403";
 const PHONE = "19105474314";
 const PHONE_DISPLAY = "(910) 547-4314";
 
-const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${LAT},${LNG}`;
+const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${LAT},${LNG}`;
+const wazeUrl = `https://www.waze.com/ul?ll=${LAT}%2C${LNG}&navigate=yes`;
+const appleMapsUrl = `maps://?daddr=${LAT},${LNG}`;
+const genericMapsUrl = `https://maps.apple.com/maps?daddr=${LAT},${LNG}`;
 
-/* 🔒 META PIXEL — GetDirections event */
 function trackGetDirections() {
-  try {
-    (window as any).fbq("track", "Lead", { content_name: "Get Directions" });
-  } catch {}
+  try { (window as any).fbq("track", "Lead", { content_name: "Get Directions" }); } catch {}
 }
-
-/* 🔒 META PIXEL — Call event */
 function trackCall() {
-  try {
-    (window as any).fbq("track", "Contact", { content_name: "Call Us" });
-  } catch {}
+  try { (window as any).fbq("track", "Contact", { content_name: "Call Us" }); } catch {}
 }
 
 /* ───────── STICKY CTA (mobile only) ───────── */
-function StickyDirections() {
+function StickyDirections({ t }: { t: (k: string) => string }) {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 300);
@@ -43,7 +40,7 @@ function StickyDirections() {
   if (!visible) return null;
   return (
     <motion.a
-      href={directionsUrl}
+      href={mapsUrl}
       target="_blank"
       rel="noopener noreferrer"
       onClick={trackGetDirections}
@@ -53,16 +50,35 @@ function StickyDirections() {
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
       <div className="cta-primary text-white font-bold py-4 text-center text-base tracking-wide flex items-center justify-center gap-2">
-        <MapPin className="w-5 h-5" /> GET DIRECTIONS
+        <MapPin className="w-5 h-5" /> {t("visit.sticky.cta")}
       </div>
     </motion.a>
   );
 }
 
-/* ───────── HERO ───────── */
+/* ───────── HERO + MAP ───────── */
 function Hero() {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    badge: "Wilmington, NC",
+    h1: "HAZ QUE TU NEGOCIO",
+    h1highlight: "DESTAQUE.",
+    sub: "Vinilos vehiculares, ropa personalizada y bordado para negocios locales.",
+    directions: "CÓMO LLEGAR",
+    call: "LLAMAR",
+    hours: "Lunes – Viernes · 9:00 AM – 5:30 PM"
+  } : {
+    badge: "Wilmington, NC",
+    h1: "MAKE YOUR BUSINESS",
+    h1highlight: "STAND OUT.",
+    sub: "Vehicle wraps, custom apparel & embroidery for local businesses.",
+    directions: "GET DIRECTIONS",
+    call: "CALL US",
+    hours: "Monday – Friday · 9:00 AM – 5:30 PM"
+  };
+
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050510]">
+    <section className="relative min-h-screen overflow-hidden bg-[#050510]">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -70,67 +86,113 @@ function Hero() {
           alt="Custom vehicle wrap by Imagine Studio Design in Wilmington NC"
           fill
           priority
-          className="object-cover opacity-50"
+          className="object-cover opacity-40"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050510]/80 via-[#050510]/60 to-[#050510]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050510]/70 via-[#050510]/80 to-[#050510]" />
       </div>
 
       {/* Glow */}
       <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] bg-brand-purple/15 rounded-full blur-[120px] z-0" />
       <div className="absolute bottom-1/3 right-1/3 w-[400px] h-[400px] bg-brand-hot-pink/10 rounded-full blur-[100px] z-0" />
 
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-6"
-        >
-          Wilmington, NC
-        </motion.p>
+      {/* Nav bar */}
+      <div className="absolute top-0 left-0 right-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-3">
+            <Image src="/LOGO.png" alt="Imagine Studio Design" width={120} height={36} className="h-8 w-auto object-contain" />
+          </a>
+        </div>
+      </div>
 
-        <motion.h1
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 lg:pt-32 pb-12">
+        {/* Text */}
+        <div className="text-center mb-8">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="text-sm font-semibold tracking-widest uppercase text-brand-hot-pink mb-6">
+            {text.badge}
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter leading-[0.95] text-white mb-6"
+          >
+            {text.h1}<br /><span className="gradient-brand-text">{text.h1highlight}</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-xl mx-auto mb-8"
+          >
+            {text.sub}
+          </motion.p>
+        </div>
+
+        {/* MAP — Google Maps embed + navigation buttons */}
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] text-white mb-8"
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="max-w-2xl mx-auto"
         >
-          MAKE YOUR BUSINESS <span className="gradient-brand-text">STAND OUT.</span>
-        </motion.h1>
+          <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10 mb-4">
+            <iframe
+              src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.5!2d${LNG}!3d${LAT}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDEyJzQ4LjIiTiA3N8KwNTInNTYuNiJX!5e0!3m2!1sen!2sus!4v1`}
+              width="100%"
+              height="280"
+              style={{ border: 0, display: "block" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Imagine Studio Design Location"
+            />
+          </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-xl mx-auto mb-12"
-        >
-          Vehicle wraps, custom apparel & embroidery for local businesses.
-        </motion.p>
+          {/* Address + Hours */}
+          <div className="text-center mb-6">
+            <p className="text-white font-semibold text-sm lg:text-base flex items-center justify-center gap-2 mb-1">
+              <MapPin className="w-4 h-4 text-brand-hot-pink" /> {ADDRESS}
+            </p>
+            <p className="text-gray-400 text-xs lg:text-sm">{text.hours}</p>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <a
-            href={directionsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={trackGetDirections}
-            className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow"
-          >
-            <Navigation className="w-5 h-5" /> GET DIRECTIONS <ArrowRight className="w-5 h-5" />
-          </a>
-          <a
-            href={`tel:+${PHONE}`}
-            onClick={trackCall}
-            className="flex items-center gap-2 px-8 py-5 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all text-base sm:text-lg font-semibold backdrop-blur-sm"
-          >
-            <Phone className="w-5 h-5" /> CALL US
-          </a>
+          {/* Navigation buttons */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={trackGetDirections}
+              className="cta-primary text-white font-bold py-4 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2"
+            >
+              <Navigation className="w-4 h-4" /> Google Maps
+            </a>
+            <a
+              href={wazeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={trackGetDirections}
+              className="bg-[#33CCFF] text-white font-bold py-4 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-[#2BB5E8] transition-colors"
+            >
+              <Navigation className="w-4 h-4" /> Waze
+            </a>
+            <a
+              href={appleMapsUrl}
+              onClick={trackGetDirections}
+              className="bg-white/10 border border-white/20 text-white font-bold py-4 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-colors"
+            >
+              <Navigation className="w-4 h-4" /> Apple Maps
+            </a>
+            <a
+              href={`tel:+${PHONE}`}
+              onClick={trackCall}
+              className="bg-emerald-600 text-white font-bold py-4 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-emerald-700 transition-colors"
+            >
+              <Phone className="w-4 h-4" /> {text.call}
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
@@ -139,12 +201,18 @@ function Hero() {
 
 /* ───────── REAL WORK ───────── */
 function RealWork() {
+  const { lang } = useLang();
+  const title = lang === "es" ? "NUESTRO TRABAJO." : "SEE OUR WORK.";
+
   const images = [
     { src: "/images/real-leon-tires.jpg", alt: "Leon Tires vehicle wrap by Imagine Studio Design" },
-    { src: "/images/apparel/service-embroidery.jpg", alt: "Custom embroidery — caps and shirts by Imagine Studio Design" },
-    { src: "/images/apparel/fleet-two-cars.jpg", alt: "Fleet branding — two branded vehicles by Imagine Studio Design" },
+    { src: "/images/apparel/service-embroidery.jpg", alt: "Custom embroidery caps by Imagine Studio Design" },
+    { src: "/images/apparel/fleet-two-cars.jpg", alt: "Fleet branding two vehicles by Imagine Studio Design" },
     { src: "/images/real-cabrera-flooring.jpg", alt: "Cabrera Flooring vehicle wrap by Imagine Studio Design" },
-    { src: "/images/apparel/service-caps.jpg", alt: "Imagine Studio Design team at their booth" },
+    { src: "/images/carousel/sunrise.jpg", alt: "Sunrise landscaping vehicle wrap by Imagine Studio Design" },
+    { src: "/images/apparel/20220207_154015.jpg", alt: "Custom apparel printing by Imagine Studio Design" },
+    { src: "/images/real-pelones-framing.jpg", alt: "Los Pelones Framing van wrap by Imagine Studio Design" },
+    { src: "/images/carousel/empire-metal.jpg", alt: "Empire Metal roofing truck wrap by Imagine Studio Design" },
   ];
   return (
     <section className="relative py-24 lg:py-32 overflow-hidden bg-white">
@@ -155,19 +223,19 @@ function RealWork() {
           viewport={{ once: true }}
           className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-center text-black mb-16 lg:mb-20"
         >
-          SEE OUR WORK.
+          {title}
         </motion.h2>
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
           {images.map((img, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="relative overflow-hidden rounded-2xl aspect-square"
+              transition={{ duration: 0.5, delay: (i % 4) * 0.1 }}
+              className={`relative overflow-hidden rounded-2xl ${i < 2 ? "aspect-[3/4]" : i < 4 ? "aspect-square" : i < 6 ? "aspect-[3/4]" : "aspect-square"}`}
             >
-              <Image src={img.src} alt={img.alt} fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 20vw" />
+              <Image src={img.src} alt={img.alt} fill className="object-cover hover:scale-105 transition-transform duration-700" sizes="(max-width: 768px) 50vw, 25vw" />
             </motion.div>
           ))}
         </div>
@@ -178,6 +246,19 @@ function RealWork() {
 
 /* ───────── VISIT OUR STUDIO ───────── */
 function VisitStudio() {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    title: "VEN A VERNOS.",
+    body: "Visita nuestro estudio en Wilmington y hablemos de tu proyecto en persona.",
+    directions: "CÓMO LLEGAR",
+    hours: "Lunes – Viernes · 9:00 AM – 5:30 PM"
+  } : {
+    title: "COME SEE US.",
+    body: "Visit our studio in Wilmington and let's talk about your project in person.",
+    directions: "GET DIRECTIONS",
+    hours: "Monday – Friday · 9:00 AM – 5:30 PM"
+  };
+
   return (
     <section className="relative py-24 lg:py-40 overflow-hidden bg-[#050510]">
       <div className="absolute top-1/3 left-1/3 w-[600px] h-[600px] bg-brand-hot-pink/10 rounded-full blur-[120px]" />
@@ -190,17 +271,16 @@ function VisitStudio() {
           viewport={{ once: true }}
           className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-white mb-8"
         >
-          COME SEE US.
+          {text.title}
         </motion.h2>
-
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-lg lg:text-xl text-gray-300 mb-12"
+          className="text-lg lg:text-xl text-gray-300 mb-8"
         >
-          Visit our studio in Wilmington and let's talk about your project in person.
+          {text.body}
         </motion.p>
 
         {/* Address card */}
@@ -217,28 +297,45 @@ function VisitStudio() {
             </div>
             <div className="flex-1">
               <p className="text-white font-bold text-base lg:text-lg mb-1">{ADDRESS}</p>
-              <p className="text-gray-400 text-sm lg:text-base mb-4">
-                Monday – Friday<br />9:00 AM – 5:30 PM
-              </p>
+              <p className="text-gray-400 text-sm lg:text-base">{text.hours}</p>
             </div>
           </div>
         </motion.div>
 
-        {/* Get Directions button */}
-        <motion.a
-          href={directionsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={trackGetDirections}
+        {/* Navigation buttons */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="cta-primary text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg tracking-wide flex items-center gap-3 min-w-[260px] justify-center animate-pulse-glow mx-auto"
-          style={{ width: "fit-content" }}
+          className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg mx-auto"
         >
-          <Navigation className="w-5 h-5" /> GET DIRECTIONS <ArrowRight className="w-5 h-5" />
-        </motion.a>
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={trackGetDirections}
+            className="cta-primary text-white font-bold py-4 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2"
+          >
+            <Navigation className="w-4 h-4" /> Google Maps
+          </a>
+          <a
+            href={wazeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={trackGetDirections}
+            className="bg-[#33CCFF] text-white font-bold py-4 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-[#2BB5E8] transition-colors"
+          >
+            <Navigation className="w-4 h-4" /> Waze
+          </a>
+          <a
+            href={appleMapsUrl}
+            onClick={trackGetDirections}
+            className="bg-white/10 border border-white/20 text-white font-bold py-4 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 hover:bg-white/20 transition-colors"
+          >
+            <Navigation className="w-4 h-4" /> Apple Maps
+          </a>
+        </motion.div>
       </div>
     </section>
   );
@@ -246,6 +343,17 @@ function VisitStudio() {
 
 /* ───────── CONTACT ───────── */
 function Contact() {
+  const { lang } = useLang();
+  const text = lang === "es" ? {
+    title: "¿PREGUNTAS?",
+    sub: "Llámanos antes de visitar.",
+    call: "LLAMAR"
+  } : {
+    title: "QUESTIONS?",
+    sub: "Call us before you visit.",
+    call: "CALL US"
+  };
+
   return (
     <section className="relative py-24 lg:py-32 overflow-hidden bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -255,7 +363,7 @@ function Contact() {
           viewport={{ once: true }}
           className="text-4xl sm:text-6xl font-black tracking-tighter text-black mb-6"
         >
-          QUESTIONS?
+          {text.title}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -264,7 +372,7 @@ function Contact() {
           transition={{ delay: 0.1 }}
           className="text-lg lg:text-xl text-gray-500 mb-12"
         >
-          Call us before you visit.
+          {text.sub}
         </motion.p>
         <motion.a
           href={`tel:+${PHONE}`}
@@ -296,14 +404,16 @@ function Footer() {
 
 /* ───────── MAIN PAGE ───────── */
 export default function VisitUsPage() {
+  const { t } = useLang();
   return (
     <main className="min-h-screen bg-background">
+      <LangToggle />
       <Hero />
       <RealWork />
       <VisitStudio />
       <Contact />
       <Footer />
-      <StickyDirections />
+      <StickyDirections t={t} />
     </main>
   );
 }
