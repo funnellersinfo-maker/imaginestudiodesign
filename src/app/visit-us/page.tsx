@@ -29,30 +29,63 @@ function trackCall() {
   try { (window as any).fbq("track", "Contact", { content_name: "Call Us" }); } catch {}
 }
 
-/* ───────── STICKY CTA (mobile only) ───────── */
-function StickyDirections({ t }: { t: (k: string) => string }) {
+/* ───────── STICKY BAR (mobile only) — Google Maps + Apple Maps inteligente ───────── */
+function StickyBar() {
+  const { lang } = useLang();
   const [visible, setVisible] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 300);
     window.addEventListener("scroll", onScroll, { passive: true });
+    // Detectar iOS en tiempo real
+    const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const ios = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+    setIsIOS(ios);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const text = lang === "es" ? {
+    google: "Google Maps",
+    apple: "Apple Maps",
+    waze: "Waze"
+  } : {
+    google: "Google Maps",
+    apple: "Apple Maps",
+    waze: "Waze"
+  };
+
   if (!visible) return null;
   return (
-    <motion.a
-      href={mapsUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={trackGetDirections}
+    <motion.div
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       exit={{ y: 100 }}
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
-      <div className="cta-primary text-white font-bold py-4 text-center text-base tracking-wide flex items-center justify-center gap-2">
-        <MapPin className="w-5 h-5" /> {t("visit.sticky.cta")}
+      <div className="glass-strong border-t border-white/10 px-3 py-2.5 flex items-center gap-2">
+        {/* Google Maps — siempre disponible */}
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={trackGetDirections}
+          className="flex-1 flex items-center justify-center gap-2 cta-primary text-white font-bold py-3.5 rounded-xl text-xs tracking-wide min-h-[56px]"
+        >
+          <Navigation className="w-4 h-4" /> {text.google}
+        </a>
+        {/* Apple Maps si iOS, Waze si Android, fallback Apple Maps */}
+        <a
+          href={isIOS ? appleMapsUrl : wazeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={trackGetDirections}
+          className="flex-1 flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-white font-bold py-3.5 rounded-xl text-xs tracking-wide min-h-[56px] hover:bg-white/20 transition-colors"
+        >
+          <Navigation className="w-4 h-4" /> {isIOS ? text.apple : text.waze}
+        </a>
       </div>
-    </motion.a>
+    </motion.div>
   );
 }
 
@@ -404,7 +437,6 @@ function Footer() {
 
 /* ───────── MAIN PAGE ───────── */
 export default function VisitUsPage() {
-  const { t } = useLang();
   return (
     <main className="min-h-screen bg-background">
       <LangToggle />
@@ -413,7 +445,7 @@ export default function VisitUsPage() {
       <VisitStudio />
       <Contact />
       <Footer />
-      <StickyDirections t={t} />
+      <StickyBar />
     </main>
   );
 }
