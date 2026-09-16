@@ -16,11 +16,12 @@ const LNG = -77.8824;
 const ADDRESS = "4608 Cedar Ave, Suite 105, Wilmington, NC 28403";
 const PHONE = "19105474314";
 const PHONE_DISPLAY = "(910) 547-4314";
+const BUSINESS_QUERY = "Imagine+Studio+Design+4608+Cedar+Ave+Wilmington+NC+28403";
 
-const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${LAT},${LNG}`;
+const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${BUSINESS_QUERY}`;
 const wazeUrl = `https://www.waze.com/ul?ll=${LAT}%2C${LNG}&navigate=yes`;
-const appleMapsUrl = `maps://?daddr=${LAT},${LNG}`;
-const genericMapsUrl = `https://maps.apple.com/maps?daddr=${LAT},${LNG}`;
+const appleMapsUrl = `maps://?daddr=${LAT},${LNG}&q=${BUSINESS_QUERY}`;
+const mapsEmbedUrl = `https://www.google.com/maps?q=${BUSINESS_QUERY}&output=embed`;
 
 function trackGetDirections() {
   try {
@@ -175,7 +176,7 @@ function Hero() {
         >
           <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-purple/10 mb-4">
             <iframe
-              src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.5!2d${LNG}!3d${LAT}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDEyJzQ4LjIiTiA3N8KwNTInNTYuNiJX!5e0!3m2!1sen!2sus!4v1`}
+              src={mapsEmbedUrl}
               width="100%"
               height="280"
               style={{ border: 0, display: "block" }}
