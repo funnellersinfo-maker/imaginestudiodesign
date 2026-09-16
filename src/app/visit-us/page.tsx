@@ -101,6 +101,7 @@ function Hero() {
     h1: "HAZ QUE TU NEGOCIO",
     h1highlight: "DESTAQUE.",
     sub: "Vinilos vehiculares, ropa personalizada y bordado para negocios locales.",
+    urgency: "Visitas sin cita bienvenidas · Agendamiento con prioridad",
     directions: "CÓMO LLEGAR",
     call: "LLAMAR",
     hours: "Lunes – Viernes · 9:00 AM – 5:30 PM"
@@ -109,6 +110,7 @@ function Hero() {
     h1: "MAKE YOUR BUSINESS",
     h1highlight: "STAND OUT.",
     sub: "Vehicle wraps, custom apparel & embroidery for local businesses.",
+    urgency: "Walk-ins welcome · Appointments get priority",
     directions: "GET DIRECTIONS",
     call: "CALL US",
     hours: "Monday – Friday · 9:00 AM – 5:30 PM"
@@ -164,6 +166,17 @@ function Hero() {
             className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-xl mx-auto mb-8"
           >
             {text.sub}
+          </motion.p>
+
+          {/* Urgency line */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-medium mb-8"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            {text.urgency}
           </motion.p>
         </div>
 
