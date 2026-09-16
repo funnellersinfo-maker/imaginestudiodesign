@@ -101,7 +101,7 @@ function Hero() {
     h1: "HAZ QUE TU NEGOCIO",
     h1highlight: "DESTAQUE.",
     sub: "Vinilos vehiculares, ropa personalizada y bordado para negocios locales.",
-    urgency: "Visitas sin cita bienvenidas · Agendamiento con prioridad",
+    urgency: "Puedes venir cuando quieras · Agenda para atenderte mejor",
     directions: "CÓMO LLEGAR",
     call: "LLAMAR",
     hours: "Lunes – Viernes · 9:00 AM – 5:30 PM"
@@ -431,7 +431,7 @@ function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="inline-flex items-center gap-3 bg-black text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg hover:bg-gray-800 transition-colors"
+          className="inline-flex items-center gap-3 bg-[#25D366] text-white font-bold px-10 py-5 rounded-xl text-base sm:text-lg hover:bg-[#22c55e] transition-colors animate-pulse-glow"
         >
           <Phone className="w-5 h-5" /> {PHONE_DISPLAY}
         </motion.a>
