@@ -19,7 +19,7 @@ const PHONE_DISPLAY = "(910) 547-4314";
 const BUSINESS_QUERY = "Imagine+Studio+Design+4608+Cedar+Ave+Wilmington+NC+28403";
 
 const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${BUSINESS_QUERY}`;
-const wazeUrl = `https://www.waze.com/ul?ll=${LAT}%2C${LNG}&navigate=yes`;
+const wazeUrl = `https://www.waze.com/ul?q=${BUSINESS_QUERY}&navigate=yes`;
 const appleMapsUrl = `maps://?daddr=${LAT},${LNG}&q=${BUSINESS_QUERY}`;
 const mapsEmbedUrl = `https://www.google.com/maps?q=${BUSINESS_QUERY}&output=embed`;
 
