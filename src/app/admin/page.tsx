@@ -83,11 +83,21 @@ export default function AdminPage() {
           </button>
         </div>
 
+        {/* LIVE NOW banner */}
+        {data.today.activeVisitors > 0 && (
+          <div className="mb-6 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-400 font-bold text-lg">
+              {data.today.activeVisitors} {data.today.activeVisitors === 1 ? 'persona viendo la página AHORA MISMO' : 'personas viendo la página AHORA MISMO'}
+            </span>
+          </div>
+        )}
+
         {/* Metric Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
           <MetricCard label="Total Visits Today" value={data.today.totalVisits} color="white" />
           <MetricCard label="Unique Visitors" value={data.today.uniqueVisitors} color="pink" />
-          <MetricCard label="Active Now" value={data.today.activeVisitors} color="green" />
+          <MetricCard label="🔴 EN VIVO AHORA" value={data.today.activeVisitors} color="green" pulse={true} />
           <MetricCard label="Get Directions" value={data.today.events["Get Directions"] || 0} color="blue" />
           <MetricCard label="Calls" value={data.today.events["Call Us"] || 0} color="green" />
           <MetricCard label="Visit Intent" value={data.today.events["VisitIntent"] || 0} color="pink" />
@@ -177,7 +187,7 @@ export default function AdminPage() {
   );
 }
 
-function MetricCard({ label, value, color }: { label: string; value: number; color: string }) {
+function MetricCard({ label, value, color, pulse }: { label: string; value: number; color: string; pulse?: boolean }) {
   const colorClass = {
     white: "text-white",
     green: "text-[#25D366]",
@@ -186,9 +196,9 @@ function MetricCard({ label, value, color }: { label: string; value: number; col
   }[color] || "text-white";
 
   return (
-    <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4 lg:p-6">
+    <div className={`bg-white/[0.03] border rounded-2xl p-4 lg:p-6 ${pulse ? "border-emerald-500/40 animate-pulse" : "border-white/5"}`}>
       <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">{label}</div>
-      <div className={`text-2xl lg:text-4xl font-black ${colorClass}`}>{value}</div>
+      <div className={`text-2xl lg:text-4xl font-black ${colorClass} ${pulse ? "animate-pulse" : ""}`}>{value}</div>
     </div>
   );
 }
