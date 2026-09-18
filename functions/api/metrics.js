@@ -22,7 +22,7 @@ export async function onRequestGet(context) {
   }
 
   try {
-    const todayKey = new Date().toISOString().slice(0, 10);
+    const todayKey = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
     // Total visitors today
     const totalVisits = parseInt(await env.ANALYTICS_KV.get(`counter:${todayKey}`) || "0");
@@ -75,7 +75,7 @@ export async function onRequestGet(context) {
     for (let d = 6; d >= 0; d--) {
       const date = new Date();
       date.setDate(date.getDate() - d);
-      const dateKey = date.toISOString().slice(0, 10);
+      const dateKey = date.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
       const count = parseInt(await env.ANALYTICS_KV.get(`counter:${dateKey}`) || "0");
       const uniques = JSON.parse(await env.ANALYTICS_KV.get(`unique:${dateKey}`) || "[]");
       daily.push({ date: dateKey, visits: count, uniques: uniques.length });
