@@ -19,7 +19,7 @@ export async function onRequestPost(context) {
     const city = cf.city || "unknown";
     const region = cf.region || "unknown";
     const now = Date.now();
-    const todayKey = new Date().toISOString().slice(0, 10);
+    const todayKey = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
     if (body.type === "pageview") {
       const visitor = {
