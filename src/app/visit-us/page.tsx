@@ -460,8 +460,54 @@ function Footer() {
   );
 }
 
+/* ───────── TRACKING — Analytics ═══ */
+function trackPageView() {
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "pageview",
+      path: window.location.pathname,
+      referrer: document.referrer,
+    }),
+  }).catch(() => {});
+}
+
+function trackEvent(eventName: string, eventType: string = "click") {
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "event",
+      eventName,
+      eventType,
+      path: window.location.pathname,
+    }),
+  }).catch(() => {});
+}
+
 /* ───────── MAIN PAGE ───────── */
 export default function VisitUsPage() {
+  useEffect(() => {
+    trackPageView();
+  }, []);
+
+  // Wrap trackGetDirections and trackCall to also send analytics
+  const originalTrackGetDirections = trackGetDirections;
+  const originalTrackCall = trackCall;
+
+  useEffect(() => {
+    // Override to add analytics tracking
+    (window as any).__trackGetDirections = () => {
+      originalTrackGetDirections();
+      trackEvent("Get Directions");
+    };
+    (window as any).__trackCall = () => {
+      originalTrackCall();
+      trackEvent("Call Us");
+    };
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
       <LangToggle />
