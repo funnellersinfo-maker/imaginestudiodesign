@@ -1,4 +1,4 @@
-// Cloudflare Pages Function — Analytics tracking endpoint
+// Cloudflare Pages Function — Analytics tracking endpoint (optimized, no list())
 // POST /api/track — receives tracking events from frontend
 
 const CORS_HEADERS = {
@@ -7,6 +7,9 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
   "Content-Type": "application/json",
 };
+
+const MAX_RECENT = 50; // Keep last 50 visitors
+const MAX_EVENTS = 30;  // Keep last 30 events
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -30,19 +33,12 @@ export async function onRequestPost(context) {
         userAgent: request.headers.get("User-Agent") || "unknown",
       };
 
-      // Store visitor record
-      await env.ANALYTICS_KV.put(
-        `visitors:${todayKey}:${now}:${ip}`,
-        JSON.stringify(visitor),
-        { expirationTtl: 86400 * 7 }
-      );
-
-      // Update daily counter
+      // 1. Update daily counter (single key)
       const counterKey = `counter:${todayKey}`;
       const current = parseInt(await env.ANALYTICS_KV.get(counterKey) || "0");
       await env.ANALYTICS_KV.put(counterKey, String(current + 1), { expirationTtl: 86400 * 7 });
 
-      // Update unique visitors
+      // 2. Update unique visitors (single key with array)
       const uniqueKey = `unique:${todayKey}`;
       const uniqueList = JSON.parse(await env.ANALYTICS_KV.get(uniqueKey) || "[]");
       if (!uniqueList.includes(ip)) {
@@ -50,14 +46,30 @@ export async function onRequestPost(context) {
         await env.ANALYTICS_KV.put(uniqueKey, JSON.stringify(uniqueList), { expirationTtl: 86400 * 7 });
       }
 
-      // Update active visitors (5 min window)
-      await env.ANALYTICS_KV.put(
-        `active:${ip}`,
-        JSON.stringify({ path: visitor.path, timestamp: now, city, country }),
-        { expirationTtl: 300 }
-      );
+      // 3. Update rolling recent visitors log (single key, no list())
+      const recentKey = `recentLog:${todayKey}`;
+      const recentList = JSON.parse(await env.ANALYTICS_KV.get(recentKey) || "[]");
+      recentList.push(visitor);
+      if (recentList.length > MAX_RECENT) recentList.shift();
+      await env.ANALYTICS_KV.put(recentKey, JSON.stringify(recentList), { expirationTtl: 86400 * 7 });
 
-      // Track hourly visits
+      // 4. Update active visitors (single key with array, 5 min window)
+      const activeKey = `activeList:${todayKey}`;
+      const activeList = JSON.parse(await env.ANALYTICS_KV.get(activeKey) || "[]");
+      // Remove expired entries (older than 5 min)
+      const fiveMinAgo = now - 300000;
+      const filtered = activeList.filter(v => v.timestamp > fiveMinAgo);
+      // Update or add this visitor
+      const existingIdx = filtered.findIndex(v => v.ip === ip);
+      const activeEntry = { ip, path: visitor.path, timestamp: now, city, country };
+      if (existingIdx >= 0) {
+        filtered[existingIdx] = activeEntry;
+      } else {
+        filtered.push(activeEntry);
+      }
+      await env.ANALYTICS_KV.put(activeKey, JSON.stringify(filtered), { expirationTtl: 86400 * 7 });
+
+      // 5. Track hourly visits (single key per hour)
       const hour = new Date().getHours();
       const hourlyKey = `hourly:${todayKey}:${hour}`;
       const hourCount = parseInt(await env.ANALYTICS_KV.get(hourlyKey) || "0");
@@ -72,10 +84,14 @@ export async function onRequestPost(context) {
         timestamp: now,
       };
 
-      const eventKey = `events:${todayKey}:${now}:${ip}:${body.eventName}`;
-      await env.ANALYTICS_KV.put(eventKey, JSON.stringify(event), { expirationTtl: 86400 * 7 });
+      // 1. Update rolling event log (single key, no list())
+      const eventLogKey = `eventLog:${todayKey}`;
+      const eventList = JSON.parse(await env.ANALYTICS_KV.get(eventLogKey) || "[]");
+      eventList.push(event);
+      if (eventList.length > MAX_EVENTS) eventList.shift();
+      await env.ANALYTICS_KV.put(eventLogKey, JSON.stringify(eventList), { expirationTtl: 86400 * 7 });
 
-      // Update event counter
+      // 2. Update event counter (single key per event name)
       const eventCounterKey = `eventcounter:${todayKey}:${body.eventName}`;
       const eventCount = parseInt(await env.ANALYTICS_KV.get(eventCounterKey) || "0");
       await env.ANALYTICS_KV.put(eventCounterKey, String(eventCount + 1), { expirationTtl: 86400 * 7 });

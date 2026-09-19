@@ -1,4 +1,4 @@
-// Cloudflare Pages Function — Analytics metrics endpoint
+// Cloudflare Pages Function — Analytics metrics endpoint (optimized, no list())
 // GET /api/metrics?key=isd-admin-2024 — returns dashboard data
 
 const CORS_HEADERS = {
@@ -24,53 +24,37 @@ export async function onRequestGet(context) {
   try {
     const todayKey = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
-    // Total visitors today
+    // Total visitors today (counter, no list())
     const totalVisits = parseInt(await env.ANALYTICS_KV.get(`counter:${todayKey}`) || "0");
 
-    // Unique visitors
+    // Unique visitors (array, no list())
     const uniqueList = JSON.parse(await env.ANALYTICS_KV.get(`unique:${todayKey}`) || "[]");
 
-    // Recent visitors (last 50)
-    const visitorList = await env.ANALYTICS_KV.list({ prefix: `visitors:${todayKey}:` });
-    const recentVisitors = [];
-    for (const entry of visitorList.keys.slice(-50).reverse()) {
-      const data = JSON.parse(await env.ANALYTICS_KV.get(entry.name) || "{}");
-      recentVisitors.push(data);
-    }
+    // Active visitors — use a single key with a list (no list() call)
+    const activeData = JSON.parse(await env.ANALYTICS_KV.get(`activeList:${todayKey}`) || "[]");
 
-    // Active visitors
-    const activeList = await env.ANALYTICS_KV.list({ prefix: "active:" });
-    const activeVisitors = [];
-    for (const entry of activeList.keys) {
-      const data = JSON.parse(await env.ANALYTICS_KV.get(entry.name) || "{}");
-      activeVisitors.push({ ip: entry.name.replace("active:", ""), ...data });
-    }
+    // Recent visitors — use a rolling log (no list())
+    const recentVisitors = JSON.parse(await env.ANALYTICS_KV.get(`recentLog:${todayKey}`) || "[]");
 
-    // Events today
-    const eventList = await env.ANALYTICS_KV.list({ prefix: `events:${todayKey}:` });
-    const events = [];
-    for (const entry of eventList.keys.slice(-30).reverse()) {
-      const data = JSON.parse(await env.ANALYTICS_KV.get(entry.name) || "{}");
-      events.push(data);
-    }
+    // Events today — use a rolling log (no list())
+    const events = JSON.parse(await env.ANALYTICS_KV.get(`eventLog:${todayKey}`) || "[]");
 
-    // Event counters
+    // Event counters (known keys, no list())
+    const eventNames = ["Get Directions", "Call Us", "VisitIntent", "Apparel WhatsApp", "Sticky WhatsApp", "Floating WhatsApp", "Hero Mini Form", "Free Quote Form"];
     const eventCounters = {};
-    const eventCounterList = await env.ANALYTICS_KV.list({ prefix: `eventcounter:${todayKey}:` });
-    for (const entry of eventCounterList.keys) {
-      const name = entry.name.split(":").pop();
-      const count = await env.ANALYTICS_KV.get(entry.name);
-      eventCounters[name] = parseInt(count || "0");
+    for (const name of eventNames) {
+      const count = parseInt(await env.ANALYTICS_KV.get(`eventcounter:${todayKey}:${name}`) || "0");
+      if (count > 0) eventCounters[name] = count;
     }
 
-    // Hourly visits
+    // Hourly visits (24 known keys, no list())
     const hourly = [];
     for (let h = 0; h < 24; h++) {
       const count = parseInt(await env.ANALYTICS_KV.get(`hourly:${todayKey}:${h}`) || "0");
       hourly.push(count);
     }
 
-    // Last 7 days
+    // Last 7 days (7 known keys, no list())
     const daily = [];
     for (let d = 6; d >= 0; d--) {
       const date = new Date();
@@ -85,13 +69,13 @@ export async function onRequestGet(context) {
       today: {
         totalVisits,
         uniqueVisitors: uniqueList.length,
-        activeVisitors: activeVisitors.length,
+        activeVisitors: activeData.length,
         events: eventCounters,
         hourly,
       },
       last7days: daily,
       recentVisitors,
-      activeVisitors,
+      activeVisitors: activeData,
       events,
       timestamp: Date.now(),
     };
