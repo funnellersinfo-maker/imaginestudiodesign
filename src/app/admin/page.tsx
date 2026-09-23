@@ -138,11 +138,13 @@ export default function AdminPage() {
         {/* Recent Visitors */}
         <Section title="Recent Visitors (Last 50)">
           <Table
-            headers={["IP", "City", "Country", "Page", "Time"]}
+            headers={["IP", "City", "Country", "GPS", "Meta", "Page", "Time"]}
             rows={data.recentVisitors.map((v: any) => [
               v.ip,
               v.city,
               v.country,
+              v.lat ? `${v.lat.toFixed(4)}, ${v.lng.toFixed(4)}` : "—",
+              v.metaBrowser ? <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-400">IG/FB</span> : "—",
               v.path,
               new Date(v.timestamp).toLocaleTimeString()
             ])}

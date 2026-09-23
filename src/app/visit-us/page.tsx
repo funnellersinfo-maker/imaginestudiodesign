@@ -460,8 +460,23 @@ function Footer() {
   );
 }
 
-/* ───────── TRACKING — Analytics ═══ */
-function trackPageView() {
+/* ───────── TRACKING — Analytics con geolocalización ═══ */
+function getGeo(): Promise<{ latitude: number; longitude: number } | null> {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve(null);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+      () => resolve(null),
+      { timeout: 5000, maximumAge: 60000 }
+    );
+  });
+}
+
+async function trackPageView() {
+  const geo = await getGeo();
   fetch("/api/track", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -469,11 +484,13 @@ function trackPageView() {
       type: "pageview",
       path: window.location.pathname,
       referrer: document.referrer,
+      geo: geo,
     }),
   }).catch(() => {});
 }
 
-function trackEvent(eventName: string, eventType: string = "click") {
+async function trackEvent(eventName: string, eventType: string = "click") {
+  const geo = await getGeo();
   fetch("/api/track", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -482,6 +499,7 @@ function trackEvent(eventName: string, eventType: string = "click") {
       eventName,
       eventType,
       path: window.location.pathname,
+      geo: geo,
     }),
   }).catch(() => {});
 }

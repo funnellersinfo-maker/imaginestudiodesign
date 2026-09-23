@@ -18,19 +18,29 @@ export async function onRequestPost(context) {
     const body = await request.json();
     const cf = request.cf || {};
     const ip = request.headers.get("CF-Connecting-IP") || "unknown";
-    const country = cf.country || "unknown";
-    const city = cf.city || "unknown";
-    const region = cf.region || "unknown";
+
+    // Detectar si es navegador interno de Meta (Instagram/Facebook)
+    const userAgent = request.headers.get("User-Agent") || "";
+    const isMetaBrowser = userAgent.includes("Instagram") || userAgent.includes("FBAN") || userAgent.includes("FBAV");
+
+    // Si el cliente envía su ubicación (geo) desde el navegador, usar esa
+    // Si no, usar la de Cloudflare (cf)
+    const country = body.geo?.country || cf.country || "unknown";
+    const city = body.geo?.city || cf.city || "unknown";
+    const region = body.geo?.region || cf.region || "unknown";
+    const lat = body.geo?.latitude || null;
+    const lng = body.geo?.longitude || null;
     const now = Date.now();
     const todayKey = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 
     if (body.type === "pageview") {
       const visitor = {
-        ip, country, city, region,
+        ip, country, city, region, lat, lng,
+        metaBrowser: isMetaBrowser,
         path: body.path || "/",
         referrer: body.referrer || "",
         timestamp: now,
-        userAgent: request.headers.get("User-Agent") || "unknown",
+        userAgent: userAgent,
       };
 
       // 1. Update daily counter (single key)
